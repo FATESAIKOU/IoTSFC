@@ -17,7 +17,7 @@ def test_UpdateGlobalParameter():
 
     result = OpenUrl('http://localhost:8000', action, args)
 
-    assert result['args'] == args
+    assert result == args
 
 def test_GetSFC():
     action = 'GetSFC'
