@@ -42,16 +42,14 @@ def test_UpdateRL():
     # assert result
     assert True
 
-def test_GetLocalTime():
-    action = 'GetLocalTime'
-    args = {
-        # ...
-    }
+def test_GetLocaltime():
+    action = 'GetLocaltime'
 
-    result = OpenUrl('http://localhost:8000', action, args)
+    result = OpenUrl('http://localhost:8000', action, None)
 
     # assert result
-    assert True
+    import time
+    assert time.time() - result['result'] < 0.001
 
 """ Http toolkits """
 from urllib import request, parse
