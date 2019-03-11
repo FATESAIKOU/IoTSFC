@@ -11,29 +11,43 @@ import json
 def test_UpdateGlobalParameter():
     action = 'UpdateGlobalParameter'
     args = {
-        'tolerance_sigma': 0.1,
+        'init_obj': {
+            'tolerance_sigma': 0.1,
+            'node_num': 3
+        },
         'debug': True
     }
 
     result = OpenUrl('http://localhost:8000', action, args)
 
-    assert result == args
+    assert result['result'] == {'tolerance_sigma': 0.1, 'node_num': 3}
 
 def test_GetSFC():
     action = 'GetSFC'
     args = {
-        'request_desc': None
-        # ...
+        'request_desc': {
+            'service_name': 'WTF',
+            'request_ID': 1,
+            'tolerance': 0.5,
+            'std_verification_cost': 1,
+            'std_computing_cost': 10,
+            'model_size': 3
+        },
+        'debug': True
     }
 
     result = OpenUrl('http://localhost:8000', action, args)
 
     # assert result
-    assert True
+    assert result['result']['token'] == '5c9597f3c8245907ea71a89d9d39d08e'
+    assert 'V_node' in result['result'].keys()
+    assert 'C_node' in result['result'].keys()
+    assert 'D_node' in result['result'].keys()
 
 def test_UpdateRL():
     action = 'UpdateRL'
     args = {
+        'RL_rewards': None
         # ...
     }
 

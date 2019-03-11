@@ -41,5 +41,4 @@ def run():
     httpd.serve_forever()
 
 if __name__ == '__main__':
-    Router.InitializeEnv()
     run()
