@@ -12,7 +12,7 @@ def test_UpdateGlobalParameter():
     action = 'UpdateGlobalParameter'
     args = {
         'init_obj': {
-            'tolerance_sigma': 0.1,
+            'loadfactor_sigma': 0.1,
             'node_num': 3
         },
         'debug': True
@@ -20,7 +20,7 @@ def test_UpdateGlobalParameter():
 
     result = OpenUrl('http://localhost:8000', action, args)
 
-    assert result['result'] == {'tolerance_sigma': 0.1, 'node_num': 3}
+    assert result['result'] == {'loadfactor_sigma': 0.1, 'node_num': 3}
 
 def test_GetSFC():
     action = 'GetSFC'
@@ -28,7 +28,7 @@ def test_GetSFC():
         'request_desc': {
             'service_name': 'WTF',
             'request_ID': 1,
-            'tolerance': 0.5,
+            'loadfactor': 2,
             'std_verification_cost': 1,
             'std_computing_cost': 10,
             'model_size': 3
@@ -47,8 +47,33 @@ def test_GetSFC():
 def test_UpdateRL():
     action = 'UpdateRL'
     args = {
-        'RL_rewards': None
-        # ...
+        'RL_rewards': {
+            'request_desc': {
+                'service_name': 'WTF',
+                'request_ID': 1,
+                'loadfactor': 2,
+                'std_verification_cost': 1,
+                'std_computing_cost': 10,
+                'model_size': 3
+            },
+            'SFC_info': {
+                'V_node': 1,
+                'C_node': 2,
+                'D_node': 0,
+            },
+            'event_list': {
+                'Start': 1552376713.307387,
+                'GotSFC': 1552376715.307387,
+                'GotReq_V': 1552376717.307387,
+                'Verified': 1552376719.307387,
+                'GotReq_C': 1552376721.307387,
+                'GotModel': 1552376723.307387,
+                'Computed': 1552376725.307387,
+                'GotReturn_V': 1552376727.307387,
+                'GotReturn_Client':1552376729.307387
+            }
+        },
+        'debug': True
     }
 
     result = OpenUrl('http://localhost:8000', action, args)

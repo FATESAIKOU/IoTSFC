@@ -20,7 +20,8 @@ class Router():
             result = RLAgent.GetSFC(args['request_desc'])
             return {'result': result}
         elif action == 'UpdateRL':
-            return args
+            result = RLAgent.UpdateRL(args['RL_rewards'])
+            return result
         if action == 'GetLocaltime':
             return {'result': GetLocaltime()}
         else:

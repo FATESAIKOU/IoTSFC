@@ -25,10 +25,10 @@ def test_LoadConfig():
             'CNN_200x200',
             'CNN_100x100'
         ],
-        'tolerance_min': 0.9,
-        'tolerance_max': 1.5,
-        'tolerance_avg': 1,
-        'tolerance_sigma': 0.5
+        'loadfactor_min': 0.9,
+        'loadfactor_max': 1.5,
+        'loadfactor_avg': 1,
+        'loadfactor_sigma': 0.5
     }
     assert result == answer
 

@@ -27,11 +27,11 @@ def GenerateRequestSequence(config_data, nnlog_data):
         request = {
             'service_name': service_name,
             'request_ID': i,
-            'tolerance': TruncatedNormal(
-                config_data['tolerance_avg'],
-                config_data['tolerance_sigma'],
-                config_data['tolerance_min'],
-                config_data['tolerance_max']
+            'loadfactor': TruncatedNormal(
+                config_data['loadfactor_avg'],
+                config_data['loadfactor_sigma'],
+                config_data['loadfactor_min'],
+                config_data['loadfactor_max']
             ),
             'std_verification_cost': nnlog_data[service_name]['std_verification_cost'],
             'std_computing_cost': nnlog_data[service_name]['std_computing_cost'],
