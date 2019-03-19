@@ -25,9 +25,9 @@ def test_DoVerify():
             },
             'SFC_desc': {
                 'token': '5c9597f3c8245907ea71a89d9d39d08e',
-                'V_node': 1,
-                'C_node': 1,
-                'D_node': 1
+                'V_node': 0,
+                'C_node': 0,
+                'D_node': 0
             }
         },
         'debug': False

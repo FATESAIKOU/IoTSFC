@@ -9,6 +9,7 @@ import json
 
 from urllib import parse
 from http.server import HTTPServer, BaseHTTPRequestHandler
+from socketserver import ThreadingMixIn
 from ServiceHelperLib.Router import Router
 
 class RequestHandler(BaseHTTPRequestHandler):
@@ -31,14 +32,18 @@ class RequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(bytes(json.dumps(result), 'utf-8'))
 
+class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+    pass
+
 def run():
     port = 8000
 
     service_address = ('', port)
-    httpd = HTTPServer(service_address, RequestHandler)
+    httpd = ThreadedHTTPServer(service_address, RequestHandler)
 
     print('start service')
     httpd.serve_forever()
+
 
 if __name__ == '__main__':
     run()

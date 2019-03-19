@@ -11,9 +11,9 @@ import sys
 
 from urllib import parse
 from http.server import HTTPServer, BaseHTTPRequestHandler
+from socketserver import ThreadingMixIn
 from NodeServerLib.Router import Router
 
-# TODO need to deal with multi request problem
 class RequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         # arg parse from self.path
@@ -34,6 +34,9 @@ class RequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(bytes(json.dumps(result), 'utf-8'))
 
+class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+    pass
+
 def LoadEnv(env_file):
     with open(env_file, 'r') as src:
         return json.loads(src.read())
@@ -42,7 +45,7 @@ def run():
     port = 8001
 
     service_address = ('', port)
-    httpd = HTTPServer(service_address, RequestHandler)
+    httpd = ThreadedHTTPServer(service_address, RequestHandler)
     Router.InitEnv( LoadEnv(sys.argv[1]) )
 
     print('start service')
