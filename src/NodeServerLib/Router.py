@@ -13,12 +13,22 @@ from .Transmitter import Transmitter
 
 class Router():
     @staticmethod
+    def InitEnv(init_obj):
+        Verifier.env_params = init_obj
+        Computer.env_params = init_obj
+        Transmitter.env_params = init_obj
+
+    @staticmethod
     def Route(action, args):
         if action == 'DoVerify':
-            result = Verifier.DoVerify(args['process_obj'])
+            result = Verifier.DoVerify(
+                args['process_obj'], args.get('debug', False))
+
             return result
         elif action == 'DoCompute':
-            result = Computer.DoCompute(args['process_obj'])
+            result = Computer.DoCompute(
+                args['process_obj'], args.get('debug', False))
+
             return result
         elif action == 'DoTransmit':
             result = Transmitter.DoTransmit(args['model_name'])

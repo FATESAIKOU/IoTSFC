@@ -1,16 +1,19 @@
 """
 The program for NodeServer to provide service.
 
-@author: FATESAIKOU
-@date  : 03/18/2019
+@author : FATESAIKOU
+@date   : 03/18/2019
+@argv[1]: env_file_path
 """
 
 import json
+import sys
 
 from urllib import parse
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from NodeServerLib.Router import Router
 
+# TODO need to deal with multi request problem
 class RequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         # arg parse from self.path
@@ -31,11 +34,16 @@ class RequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(bytes(json.dumps(result), 'utf-8'))
 
+def LoadEnv(env_file):
+    with open(env_file, 'r') as src:
+        return json.loads(src.read())
+
 def run():
     port = 8001
 
     service_address = ('', port)
     httpd = HTTPServer(service_address, RequestHandler)
+    Router.InitEnv( LoadEnv(sys.argv[1]) )
 
     print('start service')
     httpd.serve_forever()

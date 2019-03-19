@@ -6,6 +6,8 @@ The toolkits for node to do predict.
 """
 
 class Computer:
+    env_params = None
+
     @staticmethod
-    def DoCompute(process_obj):
-        return {'result': process_obj}
+    def DoCompute(process_obj, debug):
+        return {'process_obj': process_obj}

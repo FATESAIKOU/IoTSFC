@@ -6,6 +6,8 @@ The toolkit for node to transmit models.
 """
 
 class Transmitter:
+    env_params = None
+
     @staticmethod
     def DoTransmit(model_name):
         return {'result': model_name}

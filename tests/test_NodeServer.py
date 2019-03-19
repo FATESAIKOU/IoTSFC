@@ -25,17 +25,19 @@ def test_DoVerify():
             },
             'SFC_desc': {
                 'token': '5c9597f3c8245907ea71a89d9d39d08e',
-                'V_node': 0,
+                'V_node': 1,
                 'C_node': 1,
-                'D_node': 2
+                'D_node': 1
             }
         },
-        'debug': True
+        'debug': False
     }
 
     result = OpenUrl('http://localhost:8001', action, args)
 
-    assert args['process_obj'] == result['result']
+    assert 'GotReq_V' in result['process_obj']['event_list'].keys()
+    assert 'Verified' in result['process_obj']['event_list'].keys()
+    assert 'GotReturn_V' in result['process_obj']['event_list'].keys()
 
 def test_DoCompute():
     action = 'DoCompute'
@@ -65,7 +67,7 @@ def test_DoCompute():
 
     result = OpenUrl('http://localhost:8001', action, args)
 
-    assert args['process_obj'] == result['result']
+    assert args['process_obj'] == result['process_obj']
 
 def test_DoTransmit():
     action = 'DoTransmit'

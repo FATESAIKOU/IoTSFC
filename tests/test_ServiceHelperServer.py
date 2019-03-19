@@ -56,7 +56,7 @@ def test_UpdateRL():
                 'std_computing_cost': 10,
                 'model_size': 3
             },
-            'SFC_info': {
+            'SFC_desc': {
                 'V_node': 1,
                 'C_node': 2,
                 'D_node': 0,
@@ -84,11 +84,12 @@ def test_UpdateRL():
 def test_GetLocaltime():
     action = 'GetLocaltime'
 
+    import time
     result = OpenUrl('http://localhost:8000', action, None)
+    sample = time.time()
 
     # assert result
-    import time
-    assert time.time() - result['result'] < 0.001
+    assert sample - result['result'] < 0.001
 
 """ Http toolkits """
 from urllib import request, parse

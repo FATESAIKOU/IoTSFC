@@ -47,7 +47,7 @@ class RLAgent():
 
     @staticmethod
     def GetSFC(request):
-        SFC_info = {
+        SFC_desc = {
             'token': '5c9597f3c8245907ea71a89d9d39d08e',
             'V_node': -1,
             'C_node': -1,
@@ -57,14 +57,14 @@ class RLAgent():
         v_state, v_sd, c_state, c_sd, d_state, d_sd = \
             RLAgent.CalculateStateAndSd(request)
 
-        SFC_info['V_node'] = int(RLAgent.SelectNode(
+        SFC_desc['V_node'] = int(RLAgent.SelectNode(
                 V_Table, V_States, v_state, v_sd))
-        SFC_info['C_node'] = int(RLAgent.SelectNode(
+        SFC_desc['C_node'] = int(RLAgent.SelectNode(
                 C_Table, C_States, c_state, c_sd))
-        SFC_info['D_node'] = int(RLAgent.SelectNode(
+        SFC_desc['D_node'] = int(RLAgent.SelectNode(
                 D_Table, D_States, d_state, d_sd))
 
-        return SFC_info
+        return SFC_desc
 
     @staticmethod
     def UpdateRL(rewards):
@@ -77,15 +77,15 @@ class RLAgent():
 
         global V_Table
         RLAgent.UpdateTable(V_Table, V_States, v_state, v_sd,
-            v_update_value, rewards['SFC_info']['V_node'])
+            v_update_value, rewards['SFC_desc']['V_node'])
 
         global C_Table
         RLAgent.UpdateTable(C_Table, C_States, c_state, c_sd,
-            c_update_value, rewards['SFC_info']['C_node'])
+            c_update_value, rewards['SFC_desc']['C_node'])
 
         global D_Table
         RLAgent.UpdateTable(D_Table, D_States, d_state, d_sd,
-            d_update_value, rewards['SFC_info']['D_node'])
+            d_update_value, rewards['SFC_desc']['D_node'])
 
         return {'Status': 'success'}
 
