@@ -30,7 +30,7 @@ def test_DoVerify():
                 'D_node': 0
             }
         },
-        'debug': False
+        'debug': True
     }
 
     result = OpenUrl('http://localhost:8001', action, args)
@@ -67,7 +67,9 @@ def test_DoCompute():
 
     result = OpenUrl('http://localhost:8001', action, args)
 
-    assert args['process_obj'] == result['process_obj']
+    assert 'GotReq_C' in result['process_obj']['event_list'].keys()
+    assert 'GotModel' in result['process_obj']['event_list'].keys()
+    assert 'Computed' in result['process_obj']['event_list'].keys()
 
 def test_DoTransmit():
     action = 'DoTransmit'
