@@ -27,7 +27,7 @@ def test_DoVerify():
                 'token': '5c9597f3c8245907ea71a89d9d39d08e',
                 'V_node': 0,
                 'C_node': 0,
-                'D_node': 3
+                'D_node': 0
             }
         },
         'debug': True
@@ -59,7 +59,7 @@ def test_DoCompute():
                 'token': '5c9597f3c8245907ea71a89d9d39d08e',
                 'V_node': 0,
                 'C_node': 0,
-                'D_node': 3
+                'D_node': 0
             }
         },
         'debug': True
@@ -72,17 +72,20 @@ def test_DoCompute():
     assert 'Computed' in result['process_obj']['event_list'].keys()
     assert result['process_obj']['predict'] == 7
 
+import base64
 def test_DoTransmit():
     action = 'DoTransmit'
     args = {
-        'model_name': 'MLP_10',
+        'file_name': 'MLP_10.model',
         'debug': True
     }
 
+    with open('./MLP_10.model', 'rb') as src:
+        file_raw = src.read()
+
     result = OpenUrl('http://localhost:8001', action, args)
 
-    assert args['model_name'] == result['result']
-    assert True
+    assert file_raw == base64.b64decode(result['result'])
 
 
 """ Http toolkits """

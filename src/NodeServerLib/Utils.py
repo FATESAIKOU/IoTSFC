@@ -25,13 +25,16 @@ def SendRequest(target_url, action, args):
 
     return json.loads(result_raw)
 
+import base64
 def GetFile(target_info, file_name):
     if target_info['type'] == 'wifi':
-        file_raw = SendRequest(
+        file_encoded = SendRequest(
             target_info['addr'],
             'DoTransmit',
-            file_name
-        )
+            {'file_name': file_name}
+        )['result']
+
+        file_raw = base64.b64decode(file_encoded)
     elif target_info['type'] == 'bluetooth':
         file_raw = GetBluetoothFile(target_info['addr'], file_name)
 

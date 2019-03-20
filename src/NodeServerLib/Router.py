@@ -31,7 +31,7 @@ class Router():
 
             return result
         elif action == 'DoTransmit':
-            result = Transmitter.DoTransmit(args['model_name'])
+            result = Transmitter.DoTransmit(args['file_name'])
             return result
         else:
             return None
