@@ -16,7 +16,7 @@ def test_DoVerify():
                 # ...
             },
             'request_desc': {
-                'service_name': 'CNN_10',
+                'service_name': 'MLP_10',
                 'request_ID': 1,
                 'loadfactor': 2,
                 'std_verification_cost': 1,
@@ -27,7 +27,7 @@ def test_DoVerify():
                 'token': '5c9597f3c8245907ea71a89d9d39d08e',
                 'V_node': 0,
                 'C_node': 0,
-                'D_node': 0
+                'D_node': 3
             }
         },
         'debug': True
@@ -48,7 +48,7 @@ def test_DoCompute():
                 # ...
             },
             'request_desc': {
-                'service_name': 'CNN_10',
+                'service_name': 'MLP_10',
                 'request_ID': 1,
                 'loadfactor': 2,
                 'std_verification_cost': 1,
@@ -58,8 +58,8 @@ def test_DoCompute():
             'SFC_desc': {
                 'token': '5c9597f3c8245907ea71a89d9d39d08e',
                 'V_node': 0,
-                'C_node': 1,
-                'D_node': 2
+                'C_node': 0,
+                'D_node': 3
             }
         },
         'debug': True
@@ -70,11 +70,12 @@ def test_DoCompute():
     assert 'GotReq_C' in result['process_obj']['event_list'].keys()
     assert 'GotModel' in result['process_obj']['event_list'].keys()
     assert 'Computed' in result['process_obj']['event_list'].keys()
+    assert result['process_obj']['predict'] == 7
 
 def test_DoTransmit():
     action = 'DoTransmit'
     args = {
-        'model_name': 'CNN_10',
+        'model_name': 'MLP_10',
         'debug': True
     }
 

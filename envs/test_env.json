@@ -12,7 +12,7 @@
         },
         {
             "type": "bluetooth",
-            "addr": "00:1A:7D:DA:71:0D"
+            "addr": "00:1A:7D:DA:71:0D:9"
         },
         {
             "type": "wifi",
@@ -20,7 +20,7 @@
         },
         {
             "type": "bluetooth",
-            "addr": "00:1A:7D:DA:71:0E"
+            "addr": "B8:27:EB:E2:09:61:9"
         },
         {
             "type": "wifi",
@@ -28,7 +28,7 @@
         },
         {
             "type": "bluetooth",
-            "addr": "00:1A:7D:DA:71:0F"
+            "addr": "00:1A:7D:DA:71:0F:9"
         }
     ]
 }

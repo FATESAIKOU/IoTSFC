@@ -5,6 +5,7 @@ The toolkits for node to do predict.
 @date  : 03/18/2019
 """
 
+import os
 import numpy as np
 
 import chainer
@@ -12,7 +13,7 @@ import chainer.functions as F
 import chainer.links as L
 from chainer import serializers
 
-from .Utils import GetTime, SendRequest
+from .Utils import GetTime, SendRequest, GetFile
 
 class Computer:
     env_params = None
@@ -23,15 +24,18 @@ class Computer:
         process_obj['event_list']['GotReq_C'] = \
                 GetTime(Computer.env_params['service_helper_url'])
 
-        # Get model (wifi or bluetooth)
-        service_name = 'MLP_4000'
+        # Get model
+        model_path = Computer.RequestModel(process_obj)
 
         # Get timestamp (GotModel)
         process_obj['event_list']['GotModel'] = \
                 GetTime(Computer.env_params['service_helper_url'])
 
         # Load model
-        model = Computer.LoadModel(service_name)
+        model = Computer.LoadModel(
+            process_obj['request_desc']['service_name'],
+            model_path
+        )
 
         # Get data & Predict
         process_obj['predict'] = Computer.Predict(model)
@@ -40,13 +44,26 @@ class Computer:
         process_obj['event_list']['Computed'] = \
                 GetTime(Computer.env_params['service_helper_url'])
 
+        # Env cleanup
+        os.remove(model_path)
+
         # return result
         return {'process_obj': process_obj}
 
     @staticmethod
-    def LoadModel(service_name):
+    def RequestModel(process_obj):
+        target_info = Computer.env_params['T_map'][
+            process_obj['SFC_desc']['D_node']
+        ]
+
+        service_name = process_obj['request_desc']['service_name']
+        model_path = GetFile(target_info, service_name + '.model')
+
+        return model_path
+
+    @staticmethod
+    def LoadModel(service_name, model_path):
         unit_num = int(service_name[service_name.find('_') + 1:])
-        model_path = '/home/fatesaikou/testPY/IoTSFC/models/{}.model'.format(service_name)
 
         model = L.Classifier(MLP(unit_num, 10))
         serializers.load_npz(model_path, model)
