@@ -63,11 +63,13 @@ class RLAgent():
                 C_Table, C_States, c_state, c_sd))
         SFC_desc['D_node'] = int(RLAgent.SelectNode(
                 D_Table, D_States, d_state, d_sd))
+        # TODO Lock V, C, D table's row in SFC_desc (For concurrent support)
 
         return SFC_desc
 
     @staticmethod
     def UpdateRL(rewards):
+        # TODO Unlock V, C, D table's row in SFC_desc (For concurrent support)
         v_update_value, c_update_value, d_update_value = \
             RLAgent.CalculateUpdateValue(rewards['request_desc'], rewards['event_list'])
 
@@ -121,12 +123,15 @@ class RLAgent():
     @staticmethod
     def SelectNode(table, state_list, state, sd):
         weights = Gaussian(np.array(state_list), state, sd)
+        # TODO Filter out the locked rows (for concurrent support)
+
         sum_raw = np.dot( weights/sum(weights), table )
 
         sum_weights = 1 / (sum_raw / 10)
         sum_weights = sum_weights / sum(sum_weights)
 
         return np.random.choice(Node_Num, 1, p=sum_weights)[0]
+        # TODO Recalculate the real id with lock_list (for concurrent support)
 
     @staticmethod
     def UpdateTable(table, state_list, state, sd, update_value, update_ind):
