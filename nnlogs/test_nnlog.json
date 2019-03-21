@@ -1,31 +1,26 @@
 {
-    "CNN_600x600": {
-        "std_verification_cost":  1,
+    "std_verification_cost":  1,
+    "MLP_600": {
         "std_computing_cost": 10,
         "model_size": 20
     },
-    "CNN_500x500": {
-        "std_verification_cost":  1,
+    "MLP_500": {
         "std_computing_cost": 8.3,
         "model_size": 8.5
     },
-    "CNN_400x400": {
-        "std_verification_cost":  1,
+    "MLP_400": {
         "std_computing_cost": 6.7,
         "model_size": 14
     },
-    "CNN_300x300": {
-        "std_verification_cost":  1,
+    "MLP_300": {
         "std_computing_cost": 5,
         "model_size": 10
     },
-    "CNN_200x200": {
-        "std_verification_cost":  1,
+    "MLP_200": {
         "std_computing_cost": 3.3,
         "model_size": 7
     },
-    "CNN_100x100": {
-        "std_verification_cost":  1,
+    "MLP_100": {
         "std_computing_cost": 2,
         "model_size": 3
     }

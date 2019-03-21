@@ -48,7 +48,7 @@ def test_DoCompute():
                 # ...
             },
             'request_desc': {
-                'service_name': 'MLP_10',
+                'service_name': 'MLP_20',
                 'request_ID': 1,
                 'loadfactor': 2,
                 'std_verification_cost': 1,
@@ -65,6 +65,16 @@ def test_DoCompute():
         'debug': True
     }
 
+    # Test wifi
+    result = OpenUrl('http://localhost:8001', action, args)
+
+    assert 'GotReq_C' in result['process_obj']['event_list'].keys()
+    assert 'GotModel' in result['process_obj']['event_list'].keys()
+    assert 'Computed' in result['process_obj']['event_list'].keys()
+    assert result['process_obj']['predict'] == 7
+
+    # Test bluetooth
+    args['process_obj']['SFC_desc']['D_node'] = 3
     result = OpenUrl('http://localhost:8001', action, args)
 
     assert 'GotReq_C' in result['process_obj']['event_list'].keys()
@@ -76,11 +86,11 @@ import base64
 def test_DoTransmit():
     action = 'DoTransmit'
     args = {
-        'file_name': 'MLP_10.model',
+        'file_name': 'MLP_20.model',
         'debug': True
     }
 
-    with open('./MLP_10.model', 'rb') as src:
+    with open('./MLP_20.model', 'rb') as src:
         file_raw = src.read()
 
     result = OpenUrl('http://localhost:8001', action, args)

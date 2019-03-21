@@ -1,7 +1,7 @@
 {
     "parallel_request_num": 10,
     "sequence_length": 100,
-    "service_name_pool": ["CNN_600x600", "CNN_500x500", "CNN_400x400", "CNN_300x300", "CNN_200x200", "CNN_100x100"],
+    "service_name_pool": ["MLP_600", "MLP_500", "MLP_400", "MLP_300", "MLP_200", "MLP_100"],
     "loadfactor_min": 0.9,
     "loadfactor_max": 1.5,
     "loadfactor_avg": 1,

@@ -33,7 +33,7 @@ def GenerateRequestSequence(config_data, nnlog_data):
                 config_data['loadfactor_min'],
                 config_data['loadfactor_max']
             ),
-            'std_verification_cost': nnlog_data[service_name]['std_verification_cost'],
+            'std_verification_cost': nnlog_data['std_verification_cost'],
             'std_computing_cost': nnlog_data[service_name]['std_computing_cost'],
             'model_size': nnlog_data[service_name]['model_size']
         }
