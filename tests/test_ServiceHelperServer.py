@@ -13,14 +13,19 @@ def test_UpdateGlobalParameter():
     args = {
         'init_obj': {
             'loadfactor_sigma': 0.1,
-            'node_num': 3
+            'node_num': 3,
+            'v_threshold': 10000,
+            'c_threshold': 10000,
+            'd_threshold': 10000
         },
         'debug': True
     }
 
     result = OpenUrl('http://localhost:8000', action, args)
 
-    assert result['result'] == {'loadfactor_sigma': 0.1, 'node_num': 3}
+    assert result['result'] == {'loadfactor_sigma': 0.1, 'node_num': 3,
+                                'v_threshold': 10000, 'c_threshold': 10000,
+                                'd_threshold': 10000}
 
 def test_GetSFC():
     action = 'GetSFC'
