@@ -44,10 +44,15 @@ from PyOBEX import client
 def GetBluetoothFile(bluetooth_addr, file_name):
     mac_addr, port = bluetooth_addr.rsplit(':', 1)
 
-    c = client.Client(mac_addr, int(port))
-    c.connect()
-    file_raw = c.get(file_name)
-    c.disconnect()
+    for i in range(10):
+        try:
+            c = client.Client(mac_addr, int(port))
+            c.connect()
+            file_raw = c.get(file_name)
+            c.disconnect()
+            break
+        except ConnectionAbortedError:
+            print("Retry! [{}]".format(i + 1))
 
     return file_raw[1]
 
