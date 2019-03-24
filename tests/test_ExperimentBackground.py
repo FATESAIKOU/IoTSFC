@@ -51,8 +51,4 @@ def test_GenerateRequestSequence():
 
     request_sequence = GenerateRequestSequence(config_data, nnlog_data)
 
-    with open('wtf.json', 'w') as dest:
-        import json
-        dest.write(json.dumps(request_sequence, indent=4))
-
     assert len(request_sequence) == config_data['sequence_length']

@@ -5,11 +5,37 @@ The experiment client.
 @date: 03/24/2019
 @argv[1]: experiment config path
 @argv[2]: service config path
-@argv[3]: nnlogs dir path
+@argv[3]: nnlogs path
+@argv[4]: env config path
+@argv[5]: output log
 """
 
+import sys
+
+from ExperimentBackground import LoadConfig, LoadNNLog, GenerateRequestSequence
+from ClientLib.Utils import GetExperimentAgent
+
+from pprint import pprint
+
 def main():
-    print('Hello, World!')
+    # Load configs
+    experiment_config = LoadConfig(sys.argv[1])
+    service_config = LoadConfig(sys.argv[2])
+    nnlogs = LoadNNLog(sys.argv[3])
+    env_config = LoadConfig(sys.argv[4])
+
+    # Generate requests
+    request_sequence = GenerateRequestSequence(service_config, nnlogs)
+
+    # Get experiment agent
+    exp_agent = GetExperimentAgent(experiment_config, env_config)
+
+    # Do experiment
+    exp_agent.DoExperiment(service_config, request_sequence)
+
+    # Output result
+    exp_agent.DumpLogs(sys.argv[5])
+
 
 if __name__ == '__main__':
     main()

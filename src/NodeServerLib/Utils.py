@@ -13,7 +13,7 @@ def GetTime(service_helper_url):
         service_helper_url, 'GetLocaltime')
 
     result_raw = request.urlopen(request_url).read()
-    timestamp = json.loads(result_raw)['result']
+    timestamp = json.loads(result_raw.decode('utf-8'))['result']
 
     return timestamp
 
@@ -23,7 +23,7 @@ def SendRequest(target_url, action, args):
 
     result_raw = request.urlopen(request_url).read()
 
-    return json.loads(result_raw)
+    return json.loads(result_raw.decode('utf-8'))
 
 import base64
 def GetFile(target_info, file_name):

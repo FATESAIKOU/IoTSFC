@@ -52,6 +52,7 @@ class RLAgent():
         D_Node_Num = init_obj['d_node_num']
 
         global V_State_Factor, C_State_Factor, D_State_Factor
+
         V_State_Factor = init_obj['v_state_factor']
         C_State_Factor = init_obj['c_state_factor']
         D_State_Factor = init_obj['d_state_factor']
@@ -132,9 +133,6 @@ class RLAgent():
         RLAgent.UpdateTable(D_Table, D_States, d_state, d_sd,
             d_update_value, rewards['SFC_desc']['D_node'])
         D_Locked.discard(rewards['SFC_desc']['D_node'])
-
-        from pprint import pprint
-
 
         return {'Status': 'success'}
 
