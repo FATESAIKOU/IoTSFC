@@ -51,7 +51,7 @@ def GetBluetoothFile(bluetooth_addr, file_name):
             file_raw = c.get(file_name)
             c.disconnect()
             break
-        except ConnectionAbortedError:
+        except (ConnectionAbortedError, OSError):
             print("Retry! [{}]".format(i + 1))
 
     return file_raw[1]

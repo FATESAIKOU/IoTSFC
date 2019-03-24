@@ -13,25 +13,43 @@ def test_UpdateGlobalParameter():
     args = {
         'init_obj': {
             'loadfactor_sigma': 0.1,
-            'node_num': 3,
-            'v_threshold': 10000,
-            'c_threshold': 10000,
-            'd_threshold': 10000
+            'v_node_num': 3,
+            'c_node_num': 3,
+            'd_node_num': 6,
+            'v_state_factor': 100,
+            'c_state_factor': 100,
+            'd_state_factor': 100,
+            'v_threshold': 1000.0,
+            'c_threshold': 1000.0,
+            'd_threshold': 1000.0,
+            'state_max': 1001,
+            'state_step': 100
         },
         'debug': True
     }
 
     result = OpenUrl('http://localhost:8000', action, args)
 
-    assert result['result'] == {'loadfactor_sigma': 0.1, 'node_num': 3,
-                                'v_threshold': 10000, 'c_threshold': 10000,
-                                'd_threshold': 10000}
+    assert result['result'] == {
+        'loadfactor_sigma': 0.1,
+        'v_node_num': 3,
+        'c_node_num': 3,
+        'd_node_num': 6,
+        'v_state_factor': 100,
+        'c_state_factor': 100,
+        'd_state_factor': 100,
+        'v_threshold': 1000.0,
+        'c_threshold': 1000.0,
+        'd_threshold': 1000.0,
+        'state_max': 1001,
+        'state_step': 100
+    }
 
 def test_GetSFC():
     action = 'GetSFC'
     args = {
         'request_desc': {
-            'service_name': 'WTF',
+            'service_name': 'MLP_100',
             'request_ID': 1,
             'loadfactor': 2,
             'std_verification_cost': 1,
@@ -54,7 +72,7 @@ def test_UpdateRL():
     args = {
         'RL_rewards': {
             'request_desc': {
-                'service_name': 'WTF',
+                'service_name': 'MLP_100',
                 'request_ID': 1,
                 'loadfactor': 2,
                 'std_verification_cost': 1,

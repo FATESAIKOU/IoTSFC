@@ -5,6 +5,7 @@
 """
 
 import numpy as np
+import math
 
 from pprint import pprint
 from .Utils import Gaussian
@@ -14,9 +15,12 @@ class RLAgent():
     global V_States, C_States, D_States
     global V_Locked, C_Locked, D_Locked
     global V_Threshold, C_Threshold, D_Threshold
+    global V_State_Factor, C_State_Factor, D_State_Factor
+    global V_Node_Num, C_Node_Num, D_Node_Num
+
+    global State_Max, State_Step, State_Num
 
     global LoadFactor_Sigma
-    global Node_Num
 
     @staticmethod
     def Setup():
@@ -24,38 +28,59 @@ class RLAgent():
         global V_States, C_States, D_States
         global V_Locked, C_Locked, D_Locked
 
-        V_Table = np.ones(shape=(10, Node_Num))
-        V_States = np.array(range(1, 1001, 100))
+        V_Table = np.ones(shape=(State_Num, V_Node_Num))
+        V_States = np.array(range(1, State_Max, State_Step))
         V_Locked = set()
 
-        C_Table = np.ones(shape=(10, Node_Num))
-        C_States = np.array(range(1, 1001, 100))
+        C_Table = np.ones(shape=(State_Num, C_Node_Num))
+        C_States = np.array(range(1, State_Max, State_Step))
         C_Locked = set()
 
-        D_Table = np.ones(shape=(10, Node_Num))
-        D_States = np.array(range(1, 1001, 100))
+        D_Table = np.ones(shape=(State_Num, D_Node_Num))
+        D_States = np.array(range(1, State_Max, State_Step))
         D_Locked = set()
 
     @staticmethod
     def UpdateGlobalParam(init_obj):
-        global LoadFactor_Sigma, Node_Num
-
+        global LoadFactor_Sigma
         LoadFactor_Sigma = init_obj['loadfactor_sigma']
-        Node_Num  = init_obj['node_num']
+
+        # Count env.json
+        global V_Node_Num, C_Node_Num, D_Node_Num
+        V_Node_Num = init_obj['v_node_num']
+        C_Node_Num = init_obj['c_node_num']
+        D_Node_Num = init_obj['d_node_num']
+
+        global V_State_Factor, C_State_Factor, D_State_Factor
+        V_State_Factor = init_obj['v_state_factor']
+        C_State_Factor = init_obj['c_state_factor']
+        D_State_Factor = init_obj['d_state_factor']
 
         global V_Threshold, C_Threshold, D_Threshold
         V_Threshold = init_obj['v_threshold']
         C_Threshold = init_obj['c_threshold']
         D_Threshold = init_obj['d_threshold']
 
+        global State_Max, State_Step, State_Num
+        State_Max = init_obj['state_max']
+        State_Step = init_obj['state_step']
+        State_Num = math.ceil((State_Max - 1) / State_Step)
+
         RLAgent.Setup()
 
         return {
             'loadfactor_sigma': LoadFactor_Sigma,
-            'node_num': Node_Num,
+            'v_node_num': V_Node_Num,
+            'c_node_num': C_Node_Num,
+            'd_node_num': D_Node_Num,
+            'v_state_factor': V_State_Factor,
+            'c_state_factor': C_State_Factor,
+            'd_state_factor': D_State_Factor,
             'v_threshold': V_Threshold,
             'c_threshold': C_Threshold,
-            'd_threshold': D_Threshold
+            'd_threshold': D_Threshold,
+            'state_max': State_Max,
+            'state_step': State_Step
         }
 
     @staticmethod
@@ -116,12 +141,11 @@ class RLAgent():
     """ Toolkits """
     @staticmethod
     def CalculateStateAndSd(request):
-        # TODO define V, C, D state coeificient
-        v_state = request['std_verification_cost'] * 100.0 * request['loadfactor']
+        v_state = request['std_verification_cost'] * V_State_Factor * request['loadfactor']
         v_sd    = v_state * LoadFactor_Sigma
-        c_state = request['std_computing_cost'] * 100.0 * request['loadfactor']
+        c_state = request['std_computing_cost'] * C_State_Factor * request['loadfactor']
         c_sd    = c_state * LoadFactor_Sigma
-        d_state = request['model_size'] * 100.0 * request['loadfactor']
+        d_state = request['model_size'] * D_State_Factor * request['loadfactor']
         d_sd    = d_state * LoadFactor_Sigma
 
         return [
@@ -136,9 +160,9 @@ class RLAgent():
         c_cost = event_list['Computed'] - event_list['GotModel']
         d_cost = event_list['GotModel'] - event_list['GotReq_C']
 
-        v_update_value = request['std_verification_cost'] * 100.0 / v_cost
-        c_update_value = request['std_computing_cost'] * 100.0 / c_cost
-        d_update_value = request['model_size'] * 100.0 / d_cost
+        v_update_value = request['std_verification_cost'] * V_State_Factor / v_cost
+        c_update_value = request['std_computing_cost'] * C_State_Factor / c_cost
+        d_update_value = request['model_size'] * D_State_Factor / d_cost
 
         return (v_update_value, c_update_value, d_update_value)
 
@@ -158,10 +182,10 @@ class RLAgent():
         # Calculate random number
         sum_raw = np.dot( weights/sum(weights), table )
 
-        sum_weights = 1 / (sum_raw / 10)
+        sum_weights = 10 / sum_raw
         sum_weights = sum_weights / sum(sum_weights)
 
-        random_id = np.random.choice(Node_Num, 1, p=sum_weights)[0]
+        random_id = np.random.choice(sum_weights.shape[0], 1, p=sum_weights)[0]
 
         # Refine the random_id with filtered_list
         return RLAgent.RefineRandomID(random_id, filtered_list)

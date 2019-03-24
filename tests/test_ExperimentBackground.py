@@ -28,7 +28,15 @@ def test_LoadConfig():
         'loadfactor_min': 0.9,
         'loadfactor_max': 1.5,
         'loadfactor_avg': 1,
-        'loadfactor_sigma': 0.5
+        'loadfactor_sigma': 0.5,
+        'v_state_factor': 100,
+        'c_state_factor': 100,
+        'd_state_factor': 100,
+        'v_threshold': 1000.0,
+        'c_threshold': 1000.0,
+        'd_threshold': 1000.0,
+        'state_max': 1001,
+        'state_step': 100
     }
     assert result == answer
 
