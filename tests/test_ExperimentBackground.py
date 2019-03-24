@@ -15,7 +15,6 @@ def test_LoadConfig():
     config = '../configs/test_config.json'
     result = LoadConfig(config)
     answer = {
-        'parallel_request_num': 10,
         'sequence_length': 100,
         'units_min': 100,
         'units_max': 1000,
