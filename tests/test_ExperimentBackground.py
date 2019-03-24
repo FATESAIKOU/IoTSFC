@@ -79,7 +79,6 @@ def test_GenerateRequestSequence():
     config_data = LoadConfig('../configs/test_config.json')
     nnlog_data  = LoadNNLog('../nnlogs/test_nnlog.json')
 
-    parallel_request_num, request_sequence = GenerateRequestSequence(config_data, nnlog_data)
+    request_sequence = GenerateRequestSequence(config_data, nnlog_data)
 
-    assert parallel_request_num == 10
     assert len(request_sequence) == config_data['sequence_length']

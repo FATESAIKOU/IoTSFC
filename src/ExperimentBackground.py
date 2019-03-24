@@ -18,7 +18,6 @@ def LoadNNLog(nnlog_path):
         return json.loads(src.read())
 
 def GenerateRequestSequence(config_data, nnlog_data):
-    parallel_request_num = config_data['parallel_request_num']
     request_sequence = []
 
     for i in range(config_data['sequence_length']):
@@ -40,7 +39,7 @@ def GenerateRequestSequence(config_data, nnlog_data):
 
         request_sequence.append(request)
 
-    return (parallel_request_num, request_sequence)
+    return request_sequence
 
 """ Toolkits """
 def TruncatedNormal(mean, sigma, low, upp):
