@@ -21,7 +21,12 @@ def GenerateRequestSequence(config_data, nnlog_data):
     request_sequence = []
 
     for i in range(config_data['sequence_length']):
-        service_name = random.choice(config_data['service_name_pool'])
+        aim_units = int(TruncatedNormal(
+            config_data['units_avg'],
+            config_data['units_sigma'],
+            config_data['units_min'],
+            config_data['units_max']) // config_data['units_step'] * config_data['units_step'])
+        service_name = 'MLP_' + str(aim_units)
 
         request = {
             'service_name': service_name,
