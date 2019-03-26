@@ -8,7 +8,7 @@ import numpy as np
 import math
 
 from pprint import pprint
-from .Utils import Gaussian
+from .Utils import Gaussian, DumpWeights, Dump2DWeights
 
 class RLAgent():
     global V_Table, C_Table, D_Table
@@ -134,7 +134,14 @@ class RLAgent():
             d_update_value, rewards['SFC_desc']['D_node'])
         D_Locked.discard(rewards['SFC_desc']['D_node'])
 
-        return {'Status': 'success'}
+        Dump2DWeights(D_Table, 'D_Table', '/home/fatesaikou/Downloads/tmp/d_table.png')
+
+        return {'result':
+            {
+                'update_values': [v_update_value, c_update_value, d_update_value],
+                'states': [v_state, c_state, d_state]
+            }
+        }
 
     """ Toolkits """
     @staticmethod
@@ -144,7 +151,8 @@ class RLAgent():
         c_state = request['std_computing_cost'] * C_State_Factor * request['loadfactor']
         c_sd    = c_state * LoadFactor_Sigma
         d_state = request['model_size'] * D_State_Factor * request['loadfactor']
-        d_sd    = d_state * LoadFactor_Sigma
+
+        d_sd    = 300
 
         return [
             v_state, v_sd,
@@ -166,23 +174,27 @@ class RLAgent():
 
     @staticmethod
     def SelectNode(table, state_list, locked_list, threshold, state, sd):
-        # Calculate weights
-        weights, filtered_list = RLAgent.FilterWeights(
-            Gaussian(np.array(state_list), state, sd),
+        # Calculate state weights
+        weights = Gaussian(np.array(state_list), state, sd)
+
+        # Calculate random number
+        sum_raw = np.dot( weights/sum(weights), table )
+
+        # Filter out sum_weights
+        sum_weights, filtered_list = RLAgent.FilterWeights(
+            sum_raw,
             locked_list,
             threshold
         )
 
         # If no node available, return None.
-        if weights.shape[0] < 1:
+        if sum_weights.shape[0] < 1:
             return None
 
-        # Calculate random number
-        sum_raw = np.dot( weights/sum(weights), table )
-
-        sum_weights = 10 / sum_raw
+        sum_weights = 10000 / sum_raw
         sum_weights = sum_weights / sum(sum_weights)
 
+        # Random choice
         random_id = np.random.choice(sum_weights.shape[0], 1, p=sum_weights)[0]
 
         # Refine the random_id with filtered_list
@@ -196,17 +208,17 @@ class RLAgent():
                 (np.abs(update_value - state_list) - table[:, update_ind]) * weights
 
     @staticmethod
-    def FilterWeights(weights, locked_list, threshold):
+    def FilterWeights(sum_weights, locked_list, threshold):
         filtered_list = []
-        filtered_weights = []
+        filtered_sum_weights = []
 
-        for i in range(weights.shape[0]):
-            if i in locked_list or weights[i] > threshold:
+        for i in range(sum_weights.shape[0]):
+            if i in locked_list or sum_weights[i] > threshold:
                 filtered_list.append(i)
             else:
-                filtered_weights.append(weights[i])
+                filtered_sum_weights.append(sum_weights[i])
 
-        return np.array(filtered_weights), filtered_list
+        return np.array(filtered_sum_weights), filtered_list
 
     @staticmethod
     def RefineRandomID(random_id, filtered_list):

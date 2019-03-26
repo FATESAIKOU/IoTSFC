@@ -1,0 +1,13 @@
+{
+    "service_helper_url": "http://192.168.0.3:8000",
+    "model_dir": "../models",
+    "VC_map": [
+        "http://192.168.0.4:8001"
+    ],
+    "T_map": [
+        {
+            "type": "wifi",
+            "addr": "http://192.168.0.2:8001"
+        }
+    ]
+}

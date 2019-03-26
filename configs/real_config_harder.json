@@ -1,9 +1,9 @@
 {
-    "sequence_length": 100,
+    "sequence_length": 1000,
     "units_min": 100,
     "units_max": 1000,
-    "units_avg": 200,
-    "units_sigma": 100,
+    "units_avg": 500,
+    "units_sigma": 500,
     "units_step": 10,
     "loadfactor_min": 0.9,
     "loadfactor_max": 1.5,
@@ -11,10 +11,10 @@
     "loadfactor_sigma": 0.5,
     "v_state_factor": 100,
     "c_state_factor": 100,
-    "d_state_factor": 0.0005,
-    "v_threshold": 1000.0,
-    "c_threshold": 1000.0,
-    "d_threshold": 1000.0,
+    "d_state_factor": 0.001,
+    "v_threshold": 100000.0,
+    "c_threshold": 100000.0,
+    "d_threshold": 100000.0,
     "state_max": 10001,
     "state_step": 10
 }

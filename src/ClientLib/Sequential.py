@@ -6,6 +6,7 @@ The basic agent for SFC experiment.
 """
 
 import json
+import time
 
 class SequentialAgent:
     def __init__(this, experiment_config, env_config):
@@ -45,25 +46,32 @@ class SequentialAgent:
         pprint(ret)
 
     def DoRequest(this, request_sequence):
+        cnt = 1
         for r in request_sequence:
             # Init process_obj
             sfc_desc = this.ToServiceHelper('GetSFC', {'request_desc': r, 'debug': False})['result']
             event_list = {'Start': this.ToServiceHelper('GetLocaltime', None)['result']}
             # Do request
-            this.req_logs.append(this.ToVNode(sfc_desc['V_node'], {
-                'process_obj': {
-                    'event_list': event_list,
-                    'request_desc': r,
-                    'SFC_desc': sfc_desc
-                },
-                'debug': False
-            })['process_obj'])
+            try:
+                this.req_logs.append(this.ToVNode(sfc_desc['V_node'], {
+                    'process_obj': {
+                        'event_list': event_list,
+                        'request_desc': r,
+                        'SFC_desc': sfc_desc
+                    },
+                    'debug': False
+                })['process_obj'])
+            except:
+                pass
 
             # Update RL
-            this.ToServiceHelper('UpdateRL',
+            update_ret = this.ToServiceHelper('UpdateRL',
                     {'RL_rewards': this.req_logs[-1], 'debug': False})
 
-        this.req_logs = rewards
+            print('[Round {}][D_Cost {}][Service {}]'.format(cnt,
+                this.req_logs[-1]['event_list']['GotModel'] - this.req_logs[-1]['event_list']['GotReq_C'], r['service_name']))
+            print('[Update_Ret]' + json.dumps(update_ret['result'], indent=4))
+            cnt += 1
 
     def DumpLogs(this, log_path):
         with open(log_path, 'w') as log:
