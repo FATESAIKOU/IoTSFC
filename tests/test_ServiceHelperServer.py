@@ -104,6 +104,20 @@ def test_UpdateRL():
     # assert result
     assert True
 
+def test_DrawOutTables():
+    action = 'DrawOutTables'
+    args = {
+        'graph_config': {
+            'base_title': 'test',
+            'base_path': '/home/fatesaikou/Downloads/tmp',
+            'tag': 'test',
+            'env_labels': {'vc_list': list(range(3)), 't_list': list(range(6))}
+        }
+    }
+
+    result = OpenUrl('http://localhost:8000', action, args)
+    assert True
+
 def test_GetLocaltime():
     action = 'GetLocaltime'
 

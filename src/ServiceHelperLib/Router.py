@@ -22,6 +22,9 @@ class Router():
         elif action == 'UpdateRL':
             result = RLAgent.UpdateRL(args['RL_rewards'])
             return result
+        if action == 'DrawOutTables':
+            result = RLAgent.DrawOutTables(args['graph_config'])
+            return {'result': result}
         if action == 'GetLocaltime':
             return {'result': GetLocaltime()}
         else:

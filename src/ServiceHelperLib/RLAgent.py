@@ -8,7 +8,7 @@ import numpy as np
 import math
 
 from pprint import pprint
-from .Utils import Gaussian, DumpWeights, Dump2DWeights
+from .Utils import Gaussian, Dump2DWeights
 
 class RLAgent():
     global V_Table, C_Table, D_Table
@@ -100,6 +100,7 @@ class RLAgent():
             V_Locked.add(v_id)
             C_Locked.add(c_id)
             D_Locked.add(d_id)
+            print("[Lock][{}, {}, {}]".format(v_id, c_id, d_id))
 
         SFC_desc = {
             'token': '5c9597f3c8245907ea71a89d9d39d08e',
@@ -112,7 +113,6 @@ class RLAgent():
 
     @staticmethod
     def UpdateRL(rewards):
-        # TODO Unlock V, C, D table's row in SFC_desc (For concurrent support)
         v_update_value, c_update_value, d_update_value = \
             RLAgent.CalculateUpdateValue(rewards['request_desc'], rewards['event_list'])
 
@@ -134,25 +134,37 @@ class RLAgent():
             d_update_value, rewards['SFC_desc']['D_node'])
         D_Locked.discard(rewards['SFC_desc']['D_node'])
 
-        Dump2DWeights(D_Table, 'D_Table', '/home/fatesaikou/Downloads/tmp/d_table.png')
+        return {'result':{
+            'update_values': [v_update_value, c_update_value, d_update_value],
+            'states': [v_state, c_state, d_state]
+        }}
 
-        return {'result':
-            {
-                'update_values': [v_update_value, c_update_value, d_update_value],
-                'states': [v_state, c_state, d_state]
-            }
-        }
+    @staticmethod
+    def DrawOutTables(graph_config):
+        base_title = graph_config['base_title']
+        base_path = graph_config['base_path']
+        env_labels = graph_config['env_labels']
+        tag = graph_config.get('tag', None)
+
+        Dump2DWeights(V_Table, 'V_Table-' + base_title, base_path + '/v_table-' + tag + '.png', env_labels['vc_list'])
+        Dump2DWeights(C_Table, 'C_Table-' + base_title, base_path + '/c_table-' + tag + '.png', env_labels['vc_list'])
+        Dump2DWeights(D_Table, 'D_Table-' + base_title, base_path + '/d_table-' + tag + '.png', env_labels['t_list'])
+
 
     """ Toolkits """
     @staticmethod
     def CalculateStateAndSd(request):
+        # TODO set parameter interface for setting v, c, d sd value
         v_state = request['std_verification_cost'] * V_State_Factor * request['loadfactor']
         v_sd    = v_state * LoadFactor_Sigma
         c_state = request['std_computing_cost'] * C_State_Factor * request['loadfactor']
         c_sd    = c_state * LoadFactor_Sigma
         d_state = request['model_size'] * D_State_Factor * request['loadfactor']
 
-        d_sd    = 300
+        # TODO
+        #d_sd    = d_state * LoadFactor_Sigma
+        d_sd    = 150
+        print("[Model][State: {}, {}, {}]".format(v_state, c_state, d_state))
 
         return [
             v_state, v_sd,
@@ -168,7 +180,8 @@ class RLAgent():
 
         v_update_value = request['std_verification_cost'] * V_State_Factor / v_cost
         c_update_value = request['std_computing_cost'] * C_State_Factor / c_cost
-        d_update_value = request['model_size'] * D_State_Factor / d_cost
+        # TODO determined the d_cost appling method
+        d_update_value = request['model_size'] * D_State_Factor / math.sqrt(d_cost)
 
         return (v_update_value, c_update_value, d_update_value)
 
@@ -191,8 +204,11 @@ class RLAgent():
         if sum_weights.shape[0] < 1:
             return None
 
+        # TODO
+        print("[raw_weights][{}]".format(sum_weights))
         sum_weights = 10000 / sum_raw
         sum_weights = sum_weights / sum(sum_weights)
+        print("[sum_weights][{}]".format(sum_weights))
 
         # Random choice
         random_id = np.random.choice(sum_weights.shape[0], 1, p=sum_weights)[0]

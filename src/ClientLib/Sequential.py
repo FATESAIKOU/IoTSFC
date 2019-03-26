@@ -14,6 +14,7 @@ class SequentialAgent:
         this.d_node_num = len(env_config['T_map'])
 
         this.vc_map = env_config['VC_map']
+        this.t_map = env_config['T_map']
         this.service_helper_url = env_config['service_helper_url']
 
         this.exp_config = experiment_config
@@ -46,7 +47,6 @@ class SequentialAgent:
         pprint(ret)
 
     def DoRequest(this, request_sequence):
-        cnt = 1
         for r in request_sequence:
             # Init process_obj
             sfc_desc = this.ToServiceHelper('GetSFC', {'request_desc': r, 'debug': False})['result']
@@ -68,10 +68,22 @@ class SequentialAgent:
             update_ret = this.ToServiceHelper('UpdateRL',
                     {'RL_rewards': this.req_logs[-1], 'debug': False})
 
-            print('[Round {}][D_Cost {}][Service {}]'.format(cnt,
+            print('[Round {}][D_Cost {}][Service {}]'.format(r['request_ID'],
                 this.req_logs[-1]['event_list']['GotModel'] - this.req_logs[-1]['event_list']['GotReq_C'], r['service_name']))
             print('[Update_Ret]' + json.dumps(update_ret['result'], indent=4))
-            cnt += 1
+
+            # Dump Weights
+            this.ToServiceHelper('DrawOutTables', {
+                'graph_config': {
+                    'base_title': 'sequential',
+                    'base_path': '/home/fatesaikou/Downloads/tmp',
+                    'tag': 'sequential',
+                    'env_labels': {
+                        'vc_list': this.vc_map,
+                        't_list': [ t['addr'] for t in this.t_map ]
+                    }
+                }
+            })
 
     def DumpLogs(this, log_path):
         with open(log_path, 'w') as log:
