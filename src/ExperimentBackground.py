@@ -21,6 +21,7 @@ def GenerateRequestSequence(config_data, nnlog_data):
     request_sequence = []
 
     for i in range(config_data['sequence_length']):
+
         aim_units = int(TruncatedNormal(
             config_data['units_avg'],
             config_data['units_sigma'],
@@ -29,17 +30,14 @@ def GenerateRequestSequence(config_data, nnlog_data):
         service_name = 'MLP_' + str(aim_units)
 
         request = {
-            'service_name': service_name,
-            'request_ID': i,
-            'loadfactor': TruncatedNormal(
-                config_data['loadfactor_avg'],
-                config_data['loadfactor_sigma'],
-                config_data['loadfactor_min'],
-                config_data['loadfactor_max']
-            ),
-            'std_verification_cost': nnlog_data['std_verification_cost'],
-            'std_computing_cost': nnlog_data[service_name]['std_computing_cost'],
-            'model_size': nnlog_data[service_name]['model_size']
+            'service_name':             service_name,
+            'request_ID':               i,
+            'std_verification_cost':    nnlog_data['std_verification_cost'],
+            'prefer_verification_cost': config_data['prefer_v_cost'],
+            'std_computing_cost':       nnlog_data[service_name]['std_computing_cost'],
+            'prefer_computing_cost':    config_data['prefer_c_cost'],
+            'model_size':               nnlog_data[service_name]['model_size'],
+            'prefer_data_cost':         config_data['prefer_d_cost']
         }
 
         request_sequence.append(request)
@@ -54,17 +52,14 @@ def GenerateSequentialRequestSequence(config_data, nnlog_data):
         service_name = 'MLP_' + str(aim_units)
 
         request = {
-            'service_name': service_name,
-            'request_ID': i,
-            'loadfactor': TruncatedNormal(
-                config_data['loadfactor_avg'],
-                config_data['loadfactor_sigma'],
-                config_data['loadfactor_min'],
-                config_data['loadfactor_max']
-            ),
-            'std_verification_cost': nnlog_data['std_verification_cost'],
-            'std_computing_cost': nnlog_data[service_name]['std_computing_cost'],
-            'model_size': nnlog_data[service_name]['model_size']
+            'service_name':             service_name,
+            'request_ID':               i,
+            'std_verification_cost':    nnlog_data['std_verification_cost'],
+            'prefer_verification_cost': config_data['prefer_v_cost'],
+            'std_computing_cost':       nnlog_data[service_name]['std_computing_cost'],
+            'prefer_computing_cost':    config_data['prefer_c_cost'],
+            'model_size':               nnlog_data[service_name]['model_size'],
+            'prefer_data_cost':         config_data['prefer_d_cost']
         }
 
         request_sequence.append(request)
