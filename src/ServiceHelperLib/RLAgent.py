@@ -17,6 +17,8 @@ class RLAgent():
     global V_Threshold, C_Threshold, D_Threshold
     global V_State_Factor, C_State_Factor, D_State_Factor
     global V_Node_Num, C_Node_Num, D_Node_Num
+    global V_Update_Width, C_Update_Width, D_Update_Width
+    global V_Systemload, C_Systemload, D_Systemload
 
     global State_Max, State_Step, State_Num
 
@@ -47,10 +49,19 @@ class RLAgent():
         D_Node_Num = init_obj['d_node_num']
 
         global V_State_Factor, C_State_Factor, D_State_Factor
-
         V_State_Factor = init_obj['v_state_factor']
         C_State_Factor = init_obj['c_state_factor']
         D_State_Factor = init_obj['d_state_factor']
+
+        global V_Update_Width, C_Update_Width, D_Update_Width
+        V_Update_Width = init_obj['v_update_width']
+        C_Update_Width = init_obj['c_update_width']
+        D_Update_Width = init_obj['d_update_width']
+
+        global V_Systemload, C_Systemload, D_Systemload
+        V_Systemload = init_obj['v_systemload']
+        C_Systemload = init_obj['c_systemload']
+        D_Systemload = init_obj['d_systemload']
 
         global V_Threshold, C_Threshold, D_Threshold
         V_Threshold = init_obj['v_threshold']
@@ -71,6 +82,12 @@ class RLAgent():
             'v_state_factor': V_State_Factor,
             'c_state_factor': C_State_Factor,
             'd_state_factor': D_State_Factor,
+            'v_update_width': V_Update_Width,
+            'c_update_width': C_Update_Width,
+            'd_update_width': D_Update_Width,
+            'v_systemload': V_Systemload,
+            'c_systemload': C_Systemload,
+            'd_systemload': D_Systemload,
             'v_threshold': V_Threshold,
             'c_threshold': C_Threshold,
             'd_threshold': D_Threshold,
@@ -80,13 +97,12 @@ class RLAgent():
 
     @staticmethod
     def GetSFC(request):
-        v_state, v_sd, c_state, c_sd, d_state, d_sd = \
-            RLAgent.CalculateStateAndSd(request)
+        v_state, c_state, d_state = RLAgent.CalculateState(request)
 
         global V_Locked, C_Locked, D_Locked
-        v_id = int(RLAgent.SelectNode(V_Table, V_States, V_Locked, V_Threshold, v_state, v_sd))
-        c_id = int(RLAgent.SelectNode(C_Table, C_States, C_Locked, C_Threshold, c_state, c_sd))
-        d_id = int(RLAgent.SelectNode(D_Table, D_States, D_Locked, D_Threshold, d_state, d_sd))
+        v_id = int(RLAgent.SelectNode(V_Table, V_States, V_Locked, V_Threshold, v_state, V_Update_Width))
+        c_id = int(RLAgent.SelectNode(C_Table, C_States, C_Locked, C_Threshold, c_state, C_Update_Width))
+        d_id = int(RLAgent.SelectNode(D_Table, D_States, D_Locked, D_Threshold, d_state, D_Update_Width))
 
         if None in [v_id, c_id, d_id]:
             v_id = c_id = d_id = None
@@ -110,21 +126,20 @@ class RLAgent():
         v_update_value, c_update_value, d_update_value = \
             RLAgent.CalculateUpdateValue(rewards['request_desc'], rewards['event_list'])
 
-        v_state, v_sd, c_state, c_sd, d_state, d_sd = \
-            RLAgent.CalculateStateAndSd(rewards['request_desc'])
+        v_state, c_state, d_state = RLAgent.CalculateState(rewards['request_desc'])
 
         global V_Table, V_Locked
-        RLAgent.UpdateTable(V_Table, V_States, v_state, v_sd,
+        RLAgent.UpdateTable(V_Table, V_States, v_state, V_Update_Width,
             v_update_value, rewards['SFC_desc']['V_node'])
         V_Locked.discard(rewards['SFC_desc']['V_node'])
 
         global C_Table, C_Locked
-        RLAgent.UpdateTable(C_Table, C_States, c_state, c_sd,
+        RLAgent.UpdateTable(C_Table, C_States, c_state, C_Update_Width,
             c_update_value, rewards['SFC_desc']['C_node'])
         C_Locked.discard(rewards['SFC_desc']['C_node'])
 
         global D_Table, D_Locked
-        RLAgent.UpdateTable(D_Table, D_States, d_state, d_sd,
+        RLAgent.UpdateTable(D_Table, D_States, d_state, D_Update_Width,
             d_update_value, rewards['SFC_desc']['D_node'])
         D_Locked.discard(rewards['SFC_desc']['D_node'])
 
@@ -147,21 +162,15 @@ class RLAgent():
 
     """ Toolkits """
     @staticmethod
-    def CalculateStateAndSd(request):
+    def CalculateState(request):
         # TODO set parameter interface for setting v, c, d sd value
         v_state = request['std_verification_cost'] * V_State_Factor / request['prefer_verification_cost']
-        v_sd    = 150
         c_state = request['std_computing_cost'] * C_State_Factor / request['prefer_computing_cost']
-        c_sd    = 150
         d_state = request['model_size'] * D_State_Factor / request['prefer_data_cost']
-        d_sd    = 150
+
         print("[Model][State: {}, {}, {}]".format(v_state, c_state, d_state))
 
-        return [
-            v_state, v_sd,
-            c_state, c_sd,
-            d_state, d_sd
-        ]
+        return [ v_state, c_state, d_state ]
 
     @staticmethod
     def CalculateUpdateValue(request, event_list):
@@ -169,10 +178,9 @@ class RLAgent():
         c_cost = event_list['Computed'] - event_list['GotModel']
         d_cost = event_list['GotModel'] - event_list['GotReq_C']
 
-        v_update_value = request['std_verification_cost'] * V_State_Factor / v_cost
-        c_update_value = request['std_computing_cost'] * C_State_Factor / c_cost
-        # TODO determined the d_cost appling method
-        d_update_value = request['model_size'] * D_State_Factor / d_cost
+        v_update_value = request['std_verification_cost'] * V_State_Factor / (v_cost ** V_Systemload)
+        c_update_value = request['std_computing_cost'] * C_State_Factor / (c_cost ** C_Systemload)
+        d_update_value = request['model_size'] * D_State_Factor / (d_cost ** D_Systemload)
 
         return (v_update_value, c_update_value, d_update_value)
 

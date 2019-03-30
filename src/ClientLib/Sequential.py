@@ -36,6 +36,12 @@ class SequentialAgent:
                 'v_state_factor': service_config['v_state_factor'],
                 'c_state_factor': service_config['c_state_factor'],
                 'd_state_factor': service_config['d_state_factor'],
+                'v_update_width': service_config['v_update_width'],
+                'c_update_width': service_config['c_update_width'],
+                'd_update_width': service_config['d_update_width'],
+                'v_systemload': service_config['v_systemload'],
+                'c_systemload': service_config['c_systemload'],
+                'd_systemload': service_config['d_systemload'],
                 'v_threshold': service_config['v_threshold'],
                 'c_threshold': service_config['c_threshold'],
                 'd_threshold': service_config['d_threshold'],
@@ -69,9 +75,6 @@ class SequentialAgent:
             update_ret = this.ToServiceHelper('UpdateRL',
                     {'RL_rewards': this.req_logs[-1], 'debug': False})
 
-            #print('[Loop {}][Round {}][D_Cost {}][D_State {}][D_Value {}]'.format(loop_cnt, r['request_ID'],
-            #    this.req_logs[-1]['event_list']['GotModel'] - this.req_logs[-1]['event_list']['GotReq_C'],
-            #    update_ret['result']['states'][2], update_ret['result']['update_values'][2]))
             print('{' +'"model_size": {}, "D_Factor": 0.001, "D_Cost": {}, "D_State": {}, "D_Value": {}'.format(
                 r['model_size'],
                 this.req_logs[-1]['event_list']['GotModel'] - this.req_logs[-1]['event_list']['GotReq_C'],
