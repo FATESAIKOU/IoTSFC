@@ -12,7 +12,6 @@ def test_UpdateGlobalParameter():
     action = 'UpdateGlobalParameter'
     args = {
         'init_obj': {
-            'loadfactor_sigma': 0.1,
             'v_node_num': 3,
             'c_node_num': 3,
             'd_node_num': 6,
@@ -30,20 +29,7 @@ def test_UpdateGlobalParameter():
 
     result = OpenUrl('http://localhost:8000', action, args)
 
-    assert result['result'] == {
-        'loadfactor_sigma': 0.1,
-        'v_node_num': 3,
-        'c_node_num': 3,
-        'd_node_num': 6,
-        'v_state_factor': 100,
-        'c_state_factor': 100,
-        'd_state_factor': 100,
-        'v_threshold': 1000.0,
-        'c_threshold': 1000.0,
-        'd_threshold': 1000.0,
-        'state_max': 1001,
-        'state_step': 100
-    }
+    assert result['result'] == args['init_obj']
 
 def test_GetSFC():
     action = 'GetSFC'
@@ -51,10 +37,12 @@ def test_GetSFC():
         'request_desc': {
             'service_name': 'MLP_100',
             'request_ID': 1,
-            'loadfactor': 2,
             'std_verification_cost': 1,
+            'prefer_verification_cost': 0.02,
             'std_computing_cost': 10,
-            'model_size': 3
+            'prefer_computing_cost': 2.02,
+            'model_size': 3,
+            'prefer_data_cost': 1.0
         },
         'debug': True
     }
@@ -74,10 +62,12 @@ def test_UpdateRL():
             'request_desc': {
                 'service_name': 'MLP_100',
                 'request_ID': 1,
-                'loadfactor': 2,
                 'std_verification_cost': 1,
+                'prefer_verification_cost': 0.02,
                 'std_computing_cost': 10,
-                'model_size': 3
+                'prefer_computing_cost': 2.02,
+                'model_size': 3,
+                'prefer_data_cost': 1.0
             },
             'SFC_desc': {
                 'V_node': 1,

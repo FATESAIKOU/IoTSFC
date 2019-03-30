@@ -20,8 +20,6 @@ class RLAgent():
 
     global State_Max, State_Step, State_Num
 
-    global LoadFactor_Sigma
-
     @staticmethod
     def Setup():
         global V_Table, C_Table, D_Table
@@ -42,9 +40,6 @@ class RLAgent():
 
     @staticmethod
     def UpdateGlobalParam(init_obj):
-        global LoadFactor_Sigma
-        LoadFactor_Sigma = init_obj['loadfactor_sigma']
-
         # Count env.json
         global V_Node_Num, C_Node_Num, D_Node_Num
         V_Node_Num = init_obj['v_node_num']
@@ -70,7 +65,6 @@ class RLAgent():
         RLAgent.Setup()
 
         return {
-            'loadfactor_sigma': LoadFactor_Sigma,
             'v_node_num': V_Node_Num,
             'c_node_num': C_Node_Num,
             'd_node_num': D_Node_Num,
@@ -155,14 +149,11 @@ class RLAgent():
     @staticmethod
     def CalculateStateAndSd(request):
         # TODO set parameter interface for setting v, c, d sd value
-        v_state = request['std_verification_cost'] * V_State_Factor * request['loadfactor']
-        v_sd    = v_state * LoadFactor_Sigma
-        c_state = request['std_computing_cost'] * C_State_Factor * request['loadfactor']
-        c_sd    = c_state * LoadFactor_Sigma
-        d_state = request['model_size'] * D_State_Factor * request['loadfactor']
-
-        # TODO
-        #d_sd    = d_state * LoadFactor_Sigma
+        v_state = request['std_verification_cost'] * V_State_Factor / request['prefer_verification_cost']
+        v_sd    = 150
+        c_state = request['std_computing_cost'] * C_State_Factor / request['prefer_computing_cost']
+        c_sd    = 150
+        d_state = request['model_size'] * D_State_Factor / request['prefer_data_cost']
         d_sd    = 150
         print("[Model][State: {}, {}, {}]".format(v_state, c_state, d_state))
 
@@ -181,7 +172,7 @@ class RLAgent():
         v_update_value = request['std_verification_cost'] * V_State_Factor / v_cost
         c_update_value = request['std_computing_cost'] * C_State_Factor / c_cost
         # TODO determined the d_cost appling method
-        d_update_value = request['model_size'] * D_State_Factor / math.sqrt(d_cost)
+        d_update_value = request['model_size'] * D_State_Factor / d_cost
 
         return (v_update_value, c_update_value, d_update_value)
 

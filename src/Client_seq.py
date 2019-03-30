@@ -8,6 +8,7 @@ The experiment client.
 @argv[3]: nnlogs path
 @argv[4]: env config path
 @argv[5]: output log
+@argv[6]: loop_num
 """
 
 import sys
@@ -23,6 +24,7 @@ def main():
     service_config = LoadConfig(sys.argv[2])
     nnlogs = LoadNNLog(sys.argv[3])
     env_config = LoadConfig(sys.argv[4])
+    loop_num = int(sys.argv[6])
 
     # Generate requests
     request_sequence = GenerateSequentialRequestSequence(service_config, nnlogs)
@@ -31,7 +33,7 @@ def main():
     exp_agent = GetExperimentAgent(experiment_config, env_config)
 
     # Do experiment
-    exp_agent.DoExperiment(service_config, request_sequence)
+    exp_agent.DoExperiment(service_config, request_sequence, loop_num=loop_num)
 
     # Output result
     exp_agent.DumpLogs(sys.argv[5])

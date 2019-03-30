@@ -21,14 +21,15 @@ class SequentialAgent:
 
         this.req_logs = []
 
-    def DoExperiment(this, service_config, request_sequence) :
+    def DoExperiment(this, service_config, request_sequence, loop_num=1) :
         this.InitEnv(service_config)
-        this.DoRequest(request_sequence)
+
+        for i in range(loop_num):
+            this.DoRequest(request_sequence, i)
 
     def InitEnv(this, service_config):
         ret = this.ToServiceHelper('UpdateGlobalParameter', {
             'init_obj': {
-                'loadfactor_sigma': service_config['loadfactor_sigma'],
                 'v_node_num': this.v_node_num,
                 'c_node_num': this.c_node_num,
                 'd_node_num': this.d_node_num,
@@ -46,7 +47,7 @@ class SequentialAgent:
         from pprint import pprint
         pprint(ret)
 
-    def DoRequest(this, request_sequence):
+    def DoRequest(this, request_sequence, loop_cnt):
         for r in request_sequence:
             # Init process_obj
             sfc_desc = this.ToServiceHelper('GetSFC', {'request_desc': r, 'debug': False})['result']
@@ -68,9 +69,14 @@ class SequentialAgent:
             update_ret = this.ToServiceHelper('UpdateRL',
                     {'RL_rewards': this.req_logs[-1], 'debug': False})
 
-            print('[Round {}][D_Cost {}][Service {}]'.format(r['request_ID'],
-                this.req_logs[-1]['event_list']['GotModel'] - this.req_logs[-1]['event_list']['GotReq_C'], r['service_name']))
-            print('[Update_Ret]' + json.dumps(update_ret['result'], indent=4))
+            #print('[Loop {}][Round {}][D_Cost {}][D_State {}][D_Value {}]'.format(loop_cnt, r['request_ID'],
+            #    this.req_logs[-1]['event_list']['GotModel'] - this.req_logs[-1]['event_list']['GotReq_C'],
+            #    update_ret['result']['states'][2], update_ret['result']['update_values'][2]))
+            print('{' +'"model_size": {}, "D_Factor": 0.001, "D_Cost": {}, "D_State": {}, "D_Value": {}'.format(
+                r['model_size'],
+                this.req_logs[-1]['event_list']['GotModel'] - this.req_logs[-1]['event_list']['GotReq_C'],
+                update_ret['result']['states'][2],
+                update_ret['result']['update_values'][2]) + '},')
 
             # Dump Weights
             this.ToServiceHelper('DrawOutTables', {
