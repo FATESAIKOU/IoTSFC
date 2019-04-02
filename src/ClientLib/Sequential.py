@@ -7,6 +7,7 @@ The basic agent for SFC experiment.
 
 import json
 import time
+import sys
 
 class SequentialAgent:
     def __init__(this, experiment_config, env_config):
@@ -54,6 +55,8 @@ class SequentialAgent:
         pprint(ret)
 
     def DoRequest(this, request_sequence, loop_cnt):
+        # Only for logging
+        i = 0
         for r in request_sequence:
             # Init process_obj
             sfc_desc = this.ToServiceHelper('GetSFC', {'request_desc': r, 'debug': False})['result']
@@ -68,18 +71,23 @@ class SequentialAgent:
                     },
                     'debug': False
                 })['process_obj'])
-            except:
-                pass
+            except Exception as e:
+                print("[Error!]: {}".format(e))
 
             # Update RL
             update_ret = this.ToServiceHelper('UpdateRL',
                     {'RL_rewards': this.req_logs[-1], 'debug': False})
 
-            print('{' +'"model_size": {}, "D_Factor": 0.001, "D_Cost": {}, "D_State": {}, "D_Value": {}'.format(
+            # Only for logging
+            i += 1
+            log_str = '{' +'"model_size": {}, "D_Factor": 0.001, "D_Cost": {}, "D_State": {}, "D_Value": {}'.format(
                 r['model_size'],
                 this.req_logs[-1]['event_list']['GotModel'] - this.req_logs[-1]['event_list']['GotReq_C'],
                 update_ret['result']['states'][2],
-                update_ret['result']['update_values'][2]) + '},')
+                update_ret['result']['update_values'][2]
+            ) + '},'
+            print(log_str)
+            print("[Round: {}-{}] {}]".format(loop_cnt, i, log_str), file=sys.stderr)
 
             # Dump Weights
             this.ToServiceHelper('DrawOutTables', {
@@ -93,6 +101,7 @@ class SequentialAgent:
                     }
                 }
             })
+
 
     def DumpLogs(this, log_path):
         with open(log_path, 'w') as log:

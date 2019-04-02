@@ -97,6 +97,19 @@ def test_DoTransmit():
 
     assert file_raw == base64.b64decode(result['result'])
 
+def test_SetCLoad():
+    action = 'SetCLoad'
+    args = {
+        'load_config': {
+            'available_c_resources': 10
+        },
+        'debug': False
+    }
+
+    result = OpenUrl('http://localhost:8001', action, args)
+
+    assert args['load_config'] == result['load_config']
+
 
 """ Http toolkits """
 from urllib import request, parse

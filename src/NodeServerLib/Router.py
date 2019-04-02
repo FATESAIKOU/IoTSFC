@@ -33,6 +33,10 @@ class Router():
         elif action == 'DoTransmit':
             result = Transmitter.DoTransmit(args['file_name'])
             return result
+
+        elif action == 'SetCLoad':
+            result = Computer.SetCLoad(args['load_config'])
+            return result
         else:
             return None
 

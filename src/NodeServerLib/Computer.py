@@ -6,6 +6,7 @@ The toolkits for node to do predict.
 """
 
 import os
+import subprocess
 import numpy as np
 
 import chainer
@@ -16,10 +17,15 @@ from chainer import serializers
 from .Utils import GetTime, SendRequest, GetFile
 
 class Computer:
+    global Ava_C_Res
+    Ava_C_Res = 100
     env_params = None
 
     @staticmethod
     def DoCompute(process_obj, debug):
+        # Load Ava_C_Res
+        p = subprocess.Popen(["cpulimit", "-p", str(os.getpid()), "-l", str(Ava_C_Res)])
+
         # Get timestamp (GotReq_C)
         process_obj['event_list']['GotReq_C'] = \
                 GetTime(Computer.env_params['service_helper_url'])
@@ -44,11 +50,21 @@ class Computer:
         process_obj['event_list']['Computed'] = \
                 GetTime(Computer.env_params['service_helper_url'])
 
+        # Kill cpulimit process
+        p.terminate()
+
         # Env cleanup
         os.remove(model_path)
 
         # return result
         return {'process_obj': process_obj}
+
+    @staticmethod
+    def SetCLoad(load_config):
+        global Ava_C_Res
+        Ava_C_Res = load_config['available_c_resources']
+
+        return {'load_config': {'available_c_resources': Ava_C_Res}}
 
     @staticmethod
     def RequestModel(process_obj):
