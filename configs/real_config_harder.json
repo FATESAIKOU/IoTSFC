@@ -6,7 +6,7 @@
     "units_sigma": 500,
     "units_step": 10,
     "v_state_factor": 1,
-    "c_state_factor": 300,
+    "c_state_factor": 4000,
     "d_state_factor": 0.001,
     "prefer_v_cost": 0.01,
     "prefer_c_cost": 0.11,
@@ -16,11 +16,11 @@
     "d_update_width": 300,
     "v_systemload": 0.1,
     "c_systemload": 1,
-    "d_systemload": 0.5,
+    "d_systemload": 1,
     "v_threshold": 100000.0,
     "c_threshold": 100000.0,
     "d_threshold": 100000.0,
     "state_max": 10001,
     "state_step": 10,
-    "available_c_resources": 50
+    "available_c_resources": 100
 }

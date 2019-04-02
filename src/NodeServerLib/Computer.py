@@ -19,6 +19,10 @@ from .Utils import GetTime, SendRequest, GetFile
 class Computer:
     global Ava_C_Res
     Ava_C_Res = 100
+
+    global X
+    X = chainer.Variable(np.asarray([chainer.datasets.get_mnist()[1][0][0]]))
+
     env_params = None
 
     @staticmethod
@@ -88,10 +92,7 @@ class Computer:
 
     @staticmethod
     def Predict(model):
-        train, test = chainer.datasets.get_mnist()
-        x = chainer.Variable(np.asarray([test[0][0]]))
-
-        y = model.predictor(x)
+        y = model.predictor(X)
 
         return int(F.argmax(y, axis=1)[0].data)
 

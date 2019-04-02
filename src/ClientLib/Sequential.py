@@ -79,7 +79,7 @@ class SequentialAgent:
                     'debug': False
                 })['process_obj'])
             except Exception as e:
-                print("[Error!]: {}".format(e))
+                print("[Error!]: {}".format(e), file=sys.stderr)
 
             # Update RL
             update_ret = this.ToServiceHelper('UpdateRL',
@@ -87,11 +87,11 @@ class SequentialAgent:
 
             # Only for logging
             i += 1
-            log_str = '{' +'"model_size": {}, "D_Factor": 0.001, "D_Cost": {}, "D_State": {}, "D_Value": {}'.format(
-                r['model_size'],
-                this.req_logs[-1]['event_list']['GotModel'] - this.req_logs[-1]['event_list']['GotReq_C'],
-                update_ret['result']['states'][2],
-                update_ret['result']['update_values'][2]
+            log_str = '{' +'"service_name": {}, "C_Factor": 4000, "C_Cost": {}, "C_State": {}, "C_Value": {}'.format(
+                r['service_name'],
+                this.req_logs[-1]['event_list']['Computed'] - this.req_logs[-1]['event_list']['GotModel'],
+                update_ret['result']['states'][1],
+                update_ret['result']['update_values'][1]
             ) + '},'
             print(log_str)
             print("[Round: {}-{}] {}]".format(loop_cnt, i, log_str), file=sys.stderr)
