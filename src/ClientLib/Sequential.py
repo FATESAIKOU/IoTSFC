@@ -54,6 +54,13 @@ class SequentialAgent:
         from pprint import pprint
         pprint(ret)
 
+        # Init C loads
+        for i in range(len(this.vc_map)):
+            this.ToCNode(i, 'SetCLoad', {
+                'load_config': {
+                    'available_c_resources': service_config['available_c_resources']
+                }})
+
     def DoRequest(this, request_sequence, loop_cnt):
         # Only for logging
         i = 0
@@ -63,7 +70,7 @@ class SequentialAgent:
             event_list = {'Start': this.ToServiceHelper('GetLocaltime', None)['result']}
             # Do request
             try:
-                this.req_logs.append(this.ToVNode(sfc_desc['V_node'], {
+                this.req_logs.append(this.ToVNode(sfc_desc['V_node'], 'DoVerify', {
                     'process_obj': {
                         'event_list': event_list,
                         'request_desc': r,
@@ -110,10 +117,24 @@ class SequentialAgent:
     def ToServiceHelper(this, action, args):
         return SendRequest(this.service_helper_url, action, args)
 
-    def ToVNode(this, v_node_id, args) :
+    def ToVNode(this, v_node_id, action, args):
         return SendRequest(
             this.vc_map[v_node_id],
-            'DoVerify',
+            action,
+            args
+        )
+
+    def ToCNode(this, c_node_id, action, args):
+        return SendRequest(
+            this.vc_map[c_node_id],
+            action,
+            args
+        )
+
+    def ToDNode(this, d_node_id, action, agrs):
+        return SendRequest(
+            this.d_map[d_node_id],
+            action,
             args
         )
 

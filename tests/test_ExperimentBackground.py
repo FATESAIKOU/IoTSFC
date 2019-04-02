@@ -37,7 +37,8 @@ def test_LoadConfig():
         'c_threshold': 1000.0,
         'd_threshold': 1000.0,
         'state_max': 1001,
-        'state_step': 100
+        'state_step': 100,
+        "available_c_resources": 50
     }
 
     assert result == answer
