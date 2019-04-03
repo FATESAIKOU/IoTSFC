@@ -123,10 +123,10 @@ class RLAgent():
 
     @staticmethod
     def UpdateRL(rewards):
-        v_update_value, c_update_value, d_update_value = \
-            RLAgent.CalculateUpdateValue(rewards['request_desc'], rewards['event_list'])
-
         v_state, c_state, d_state = RLAgent.CalculateState(rewards['request_desc'])
+        v_update_value, c_update_value, d_update_value = \
+            RLAgent.CalculateUpdateValue(rewards['request_desc'], rewards['event_list'], [v_state, c_state, d_state])
+
 
         global V_Table, V_Locked
         RLAgent.UpdateTable(V_Table, V_States, v_state, V_Update_Width,
@@ -173,14 +173,14 @@ class RLAgent():
         return [ v_state, c_state, d_state ]
 
     @staticmethod
-    def CalculateUpdateValue(request, event_list):
+    def CalculateUpdateValue(request, event_list, r_states):
         v_cost = event_list['Verified'] - event_list['GotReq_V']
         c_cost = event_list['Computed'] - event_list['GotModel']
         d_cost = event_list['GotModel'] - event_list['GotReq_C']
 
-        v_update_value = request['std_verification_cost'] * V_State_Factor / (v_cost ** V_Systemload)
-        c_update_value = request['std_computing_cost'] * C_State_Factor / (c_cost ** C_Systemload)
-        d_update_value = request['model_size'] * D_State_Factor / (d_cost ** D_Systemload)
+        v_update_value = r_states[0] / ((v_cost / request['prefer_verification_cost']) ** V_Systemload)
+        c_update_value = r_states[1] / ((c_cost / request['prefer_computing_cost']) ** C_Systemload)
+        d_update_value = r_states[2] / ((d_cost / request['prefer_data_cost']) ** D_Systemload)
 
         return (v_update_value, c_update_value, d_update_value)
 

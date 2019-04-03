@@ -15,7 +15,7 @@
     "c_update_width": 300,
     "d_update_width": 300,
     "v_systemload": 0.1,
-    "c_systemload": 1,
+    "c_systemload": 0.8,
     "d_systemload": 1,
     "v_threshold": 100000.0,
     "c_threshold": 100000.0,
