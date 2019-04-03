@@ -13,12 +13,6 @@ from .Transmitter import Transmitter
 
 class Router():
     @staticmethod
-    def InitEnv(init_obj):
-        Verifier.env_params = init_obj
-        Computer.env_params = init_obj
-        Transmitter.env_params = init_obj
-
-    @staticmethod
     def Route(action, args):
         if action == 'DoVerify':
             result = Verifier.DoVerify(
@@ -37,6 +31,12 @@ class Router():
         elif action == 'SetCLoad':
             result = Computer.SetCLoad(args['load_config'])
             return result
+
+        elif action == 'InitEnv':
+            Verifier.env_params = args['init_obj']
+            Computer.env_params = args['init_obj']
+            Transmitter.env_params = args['init_obj']
+
         else:
             return None
 

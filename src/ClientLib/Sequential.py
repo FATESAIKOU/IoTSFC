@@ -19,6 +19,7 @@ class SequentialAgent:
         this.service_helper_url = env_config['service_helper_url']
 
         this.exp_config = experiment_config
+        this.env_config = env_config
 
         this.req_logs = []
 
@@ -51,8 +52,11 @@ class SequentialAgent:
             },
             'debug': False
         })
-        from pprint import pprint
-        pprint(ret)
+        print(json.dumps(ret, indent=4), file=sys.stderr)
+
+        # Init Nodes env
+        for addr in this.env_config['NodeServerList']:
+            SendRequest(addr, 'InitEnv', {'init_obj': this.env_config})
 
         # Init C loads
         for i in range(len(this.vc_map)):

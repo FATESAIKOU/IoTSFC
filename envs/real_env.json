@@ -1,6 +1,10 @@
 {
     "service_helper_url": "http://192.168.0.3:8000",
     "model_dir": "../models",
+    "NodeServerList": [
+        "http://192.168.0.2:8001",
+        "http://192.168.0.4:8001"
+    ],
     "VC_map": [
         "http://192.168.0.4:8001"
     ],

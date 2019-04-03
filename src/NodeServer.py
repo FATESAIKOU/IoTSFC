@@ -37,16 +37,11 @@ class RequestHandler(BaseHTTPRequestHandler):
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     pass
 
-def LoadEnv(env_file):
-    with open(env_file, 'r') as src:
-        return json.loads(src.read())
-
 def run():
     port = 8001
 
     service_address = ('', port)
     httpd = ThreadedHTTPServer(service_address, RequestHandler)
-    Router.InitEnv( LoadEnv(sys.argv[1]) )
 
     print('start service')
     httpd.serve_forever()
