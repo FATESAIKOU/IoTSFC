@@ -10,7 +10,7 @@
     "d_state_factor": 0.001,
     "prefer_v_cost": 0.01,
     "prefer_c_cost": 0.4,
-    "prefer_d_cost": 1,
+    "prefer_d_cost": 0.5,
     "v_update_width": 300,
     "c_update_width": 150,
     "d_update_width": 150,
@@ -23,5 +23,5 @@
     "state_max": 10001,
     "state_step": 10,
     "available_c_resources": 100,
-    "graph_tag": "sequential"
+    "graph_tag": "d_05_20_config-sequential"
 }

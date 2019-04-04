@@ -29,5 +29,6 @@
     "state_max": 1001,
     "state_step": 100,
 
-    "available_c_resources": 50
+    "available_c_resources": 50,
+    "graph_tag": "test"
 }

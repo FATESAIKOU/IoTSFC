@@ -30,6 +30,7 @@ class SequentialAgent:
             this.DoRequest(request_sequence, i)
 
     def InitEnv(this, service_config):
+        this.graph_tag = service_config['graph_tag']
         ret = this.ToServiceHelper('UpdateGlobalParameter', {
             'init_obj': {
                 'v_node_num': this.v_node_num,
@@ -91,11 +92,17 @@ class SequentialAgent:
 
             # Only for logging
             i += 1
-            log_str = '{' +'"service_name": {}, "C_Factor": 4000, "C_Cost": {}, "C_State": {}, "C_Value": {}'.format(
-                r['service_name'],
-                this.req_logs[-1]['event_list']['Computed'] - this.req_logs[-1]['event_list']['GotModel'],
-                update_ret['result']['states'][1],
-                update_ret['result']['update_values'][1]
+            #log_str = '{' +'"service_name": {}, "C_Cost": {}, "C_State": {}, "C_Value": {}'.format(
+            #    r['service_name'],
+            #    this.req_logs[-1]['event_list']['Computed'] - this.req_logs[-1]['event_list']['GotModel'],
+            #    update_ret['result']['states'][1],
+            #    update_ret['result']['update_values'][1]
+            #) + '},'
+            log_str = '{' +'"model_size": {}, "D_Cost": {}, "D_State": {}, "D_Value": {}'.format(
+                r['model_size'],
+                this.req_logs[-1]['event_list']['GotModel'] - this.req_logs[-1]['event_list']['GotReq_C'],
+                update_ret['result']['states'][2],
+                update_ret['result']['update_values'][2]
             ) + '},'
             print(log_str)
             print("[Round: {}-{}] {}]".format(loop_cnt, i, log_str), file=sys.stderr)
@@ -105,7 +112,7 @@ class SequentialAgent:
                 'graph_config': {
                     'base_title': 'sequential',
                     'base_path': '/home/fatesaikou/Downloads/tmp',
-                    'tag': 'sequential',
+                    'tag': this.graph_tag,
                     'env_labels': {
                         'vc_list': this.vc_map,
                         't_list': [ t['addr'] for t in this.t_map ]

@@ -22,5 +22,6 @@
     "d_threshold": 1000.0,
     "state_max": 10001,
     "state_step": 10,
-    "available_c_resources": 50
+    "available_c_resources": 50,
+    "graph_tag": "sequential"
 }
