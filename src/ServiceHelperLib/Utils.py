@@ -14,6 +14,10 @@ import numpy as np
 def Gaussian(x, mean, sd):
     return np.exp(-np.power(x - mean, 2.) / (2 * np.power(sd, 2.)))
 
+import math
+def CalculateUpdateFactor(x, system_load):
+    return min(max((math.log(x, 10) + system_load) / system_load, 0), 1)
+
 
 import matplotlib
 matplotlib.use('Agg')
@@ -23,10 +27,10 @@ def Dump2DWeights(table, title, save_path, labels):
     fig.suptitle(title)
 
     ax = plt.subplot(111)
+    ax.set_ylim([0, int(table.max()) * 1.1])
     for i in range(table.shape[1]):
         data = table[:, i]
         ax.plot(np.arange(data.shape[0]), data, label=labels[i])
-        ax.set_ylim([0, 15000])
         ax.grid()
         ax.legend()
 
