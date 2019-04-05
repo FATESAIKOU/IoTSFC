@@ -153,7 +153,7 @@ class SequentialAgent:
             args
         )
 
-    def ToDNode(this, d_node_id, action, agrs):
+    def ToDNode(this, d_node_id, action, args):
         return SendRequest(
             this.t_map[d_node_id]['addr'],
             action,
