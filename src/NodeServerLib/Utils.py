@@ -25,6 +25,19 @@ def SendRequest(target_url, action, args):
 
     return json.loads(result_raw.decode('utf-8'))
 
+def SendToTangle(target_url, command):
+    stringified = json.dumps(command)
+    headers = {
+        'content-type': 'application/json',
+        'X-IOTA-API-Version': '1'
+    }
+
+    req = request.Request(target_url, data=bytes(stringified, 'utf-8'), headers=headers)
+    ret = request.urlopen(req).read().decode('utf-8')
+
+    return json.loads(ret)
+
+
 import base64
 def GetFile(target_info, file_name):
     if target_info['type'] == 'wifi':

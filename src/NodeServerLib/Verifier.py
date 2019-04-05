@@ -5,10 +5,14 @@ The toolkits for node to do verify.
 @date  : 03/18/2019
 """
 
-from .Utils import GetTime, SendRequest
+from .Utils import GetTime, SendRequest, SendToTangle
 
 class Verifier:
     env_params = None
+
+    @staticmethod
+    def CleanUp():
+        pass
 
     @staticmethod
     def DoVerify(process_obj, debug):
@@ -36,6 +40,16 @@ class Verifier:
 
     @staticmethod
     def Verify(token):
+        SendToTangle(Verifier.env_params['tangle_node'],
+            command = {
+              "command": "getTrytes",
+              "hashes": [
+                "NGDFRIHOOS9J9YBQCDSFJZJKNSAJTNFKSXXEZWPZQSLRTYQDNX9UCGJHU9OZGFATCCQSGSFUZLLET9LID",
+                "MUIYDLYHCAYGYK9IPVQX9GIHIWWCATAJ9BNFPVKZHZOSXAWVHEHHMSVEVTNRJVGCGEMSNI9ATUXFKPZRQ"
+              ]
+            }
+        )
+
         return token == '5c9597f3c8245907ea71a89d9d39d08e'
 
     @staticmethod
