@@ -1,5 +1,6 @@
 {
     "service_helper_url": "http://localhost:8000",
+    "tangle_node": "https://testnet140.tangle.works:443",
     "model_dir": "../models",
     "NodeServerList": [
         "http://192.168.0.3:8001",
