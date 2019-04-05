@@ -32,6 +32,10 @@ class Router():
             result = Computer.SetCLoad(args['load_config'])
             return result
 
+        elif action == 'SetDLoad':
+            result = Transmitter.SetDLoad(args['load_config'])
+            return result
+
         elif action == 'InitEnv':
             Verifier.env_params = args['init_obj']
             Computer.env_params = args['init_obj']
@@ -40,3 +44,8 @@ class Router():
         else:
             return None
 
+    @staticmethod
+    def EnvCleanUp():
+        Verifier.CleanUp()
+        Computer.CleanUp()
+        Transmitter.CleanUp()

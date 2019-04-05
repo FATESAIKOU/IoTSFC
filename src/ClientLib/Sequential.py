@@ -66,6 +66,17 @@ class SequentialAgent:
                     'available_c_resources': service_config['available_c_resources']
                 }})
 
+        # Init D loads
+        for i in range(len(this.t_map)):
+            if this.t_map[i]['type'] != 'wifi':
+                continue
+
+            this.ToDNode(i, 'SetDLoad', {
+                'load_config': {
+                    'network_load': service_config['network_load'],
+                    'load_address': service_config['load_address']
+                }})
+
     def DoRequest(this, request_sequence, loop_cnt):
         # Only for logging
         i = 0
@@ -144,7 +155,7 @@ class SequentialAgent:
 
     def ToDNode(this, d_node_id, action, agrs):
         return SendRequest(
-            this.d_map[d_node_id],
+            this.t_map[d_node_id]['addr'],
             action,
             args
         )

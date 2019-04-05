@@ -7,7 +7,7 @@
     "units_step": 10,
     "v_state_factor": 1,
     "c_state_factor": 12000,
-    "d_state_factor": 0.001,
+    "d_state_factor": 0.0008,
     "prefer_v_cost": 0.01,
     "prefer_c_cost": 0.4,
     "prefer_d_cost": 0.5,
@@ -23,5 +23,7 @@
     "state_max": 10001,
     "state_step": 10,
     "available_c_resources": 100,
-    "graph_tag": "d_05_05_config-sequential"
+    "network_load": "0k",
+    "load_address": "pi@192.168.4",
+    "graph_tag": "d_05_05-sequential"
 }

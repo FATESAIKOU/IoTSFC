@@ -26,6 +26,10 @@ class Computer:
     env_params = None
 
     @staticmethod
+    def CleanUp():
+        pass
+
+    @staticmethod
     def DoCompute(process_obj, debug):
         # Load Ava_C_Res
         p = subprocess.Popen(["cpulimit", "-p", str(os.getpid()), "-l", str(Ava_C_Res)])

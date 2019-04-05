@@ -8,6 +8,7 @@ The program for NodeServer to provide service.
 
 import json
 import sys
+import signal
 
 from urllib import parse
 from http.server import HTTPServer, BaseHTTPRequestHandler
@@ -37,11 +38,16 @@ class RequestHandler(BaseHTTPRequestHandler):
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     pass
 
+def end_handler(signal, frame):
+    Router.EnvCleanUp()
+    sys.exit()
+
 def run():
     port = 8001
 
     service_address = ('', port)
     httpd = ThreadedHTTPServer(service_address, RequestHandler)
+    signal.signal(signal.SIGINT, end_handler)
 
     print('start service')
     httpd.serve_forever()

@@ -38,8 +38,10 @@ def test_LoadConfig():
         'd_threshold': 1000.0,
         'state_max': 1001,
         'state_step': 100,
-        "available_c_resources": 50,
-        "graph_tag": "test"
+        'available_c_resources': 50,
+        'network_load': '0k',
+        'load_address': 'pi@192.168.0.4',
+        'graph_tag': 'test'
     }
 
     assert result == answer
