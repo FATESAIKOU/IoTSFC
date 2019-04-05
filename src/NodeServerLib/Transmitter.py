@@ -42,6 +42,6 @@ class Transmitter:
                 load_config['load_address']
             )
 
-            d_load_p = subprocess.Popen(command, shell=True, preexec_fn=os.setsid)
+            d_load_p = subprocess.Popen(command, shell=True, start_new_session=True)
 
         return {'load_config': load_config}
