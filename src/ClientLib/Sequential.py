@@ -89,7 +89,7 @@ class SequentialAgent:
             event_list = {'Start': this.ToServiceHelper('GetLocaltime', None)['result']}
             # Do request
             try:
-                signal.alarm(300)
+                signal.alarm(150)
                 this.req_logs.append(this.ToVNode(sfc_desc['V_node'], 'DoVerify', {
                     'process_obj': {
                         'event_list': event_list,
@@ -101,34 +101,34 @@ class SequentialAgent:
 
             except Exception as e:
                 this.req_logs.append({
-                    'predict': -1
+                    'predict': -1,
+                    'SFC_desc': sfc_desc
                 })
                 print("[Error!]: {}".format(e), file=sys.stderr)
 
             signal.alarm(0)
-            if this.req_logs[-1]['predict'] == -1:
-                continue
 
             # Update RL
             update_ret = this.ToServiceHelper('UpdateRL',
                 {'RL_rewards': this.req_logs[-1], 'debug': False})
 
-            # Only for logging
-            i += 1
-            #log_str = '{' +'"service_name": {}, "C_Cost": {}, "C_State": {}, "C_Value": {}'.format(
-            #    r['service_name'],
-            #    this.req_logs[-1]['event_list']['Computed'] - this.req_logs[-1]['event_list']['GotModel'],
-            #    update_ret['result']['states'][1],
-            #    update_ret['result']['update_values'][1]
-            #) + '},'
-            log_str = '{' +'"model_size": {}, "D_Cost": {}, "D_State": {}, "D_Value": {}'.format(
-                r['model_size'],
-                this.req_logs[-1]['event_list']['GotModel'] - this.req_logs[-1]['event_list']['GotReq_C'],
-                update_ret['result']['states'][2],
-                update_ret['result']['update_values'][2]
-            ) + '},'
-            print(log_str)
-            print("[Round: {}-{}] {}]".format(loop_cnt, i, log_str), file=sys.stderr)
+            if this.req_logs[-1]['predict'] != -1:
+                # Only for logging
+                i += 1
+                #log_str = '{' +'"service_name": {}, "C_Cost": {}, "C_State": {}, "C_Value": {}'.format(
+                #    r['service_name'],
+                #    this.req_logs[-1]['event_list']['Computed'] - this.req_logs[-1]['event_list']['GotModel'],
+                #    update_ret['result']['states'][1],
+                #    update_ret['result']['update_values'][1]
+                #) + '},'
+                log_str = '{' +'"model_size": {}, "D_Cost": {}, "D_State": {}, "D_Value": {}'.format(
+                    r['model_size'],
+                    this.req_logs[-1]['event_list']['GotModel'] - this.req_logs[-1]['event_list']['GotReq_C'],
+                    update_ret['result']['states'][2],
+                    update_ret['result']['update_values'][2]
+                ) + '},'
+                print(log_str)
+                print("[Round: {}-{}] {}]".format(loop_cnt, i, log_str), file=sys.stderr)
 
             # Dump Weights
             this.ToServiceHelper('DrawOutTables', {

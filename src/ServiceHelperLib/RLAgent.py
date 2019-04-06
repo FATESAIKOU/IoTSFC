@@ -123,24 +123,27 @@ class RLAgent():
 
     @staticmethod
     def UpdateRL(rewards):
-        v_state, c_state, d_state = RLAgent.CalculateState(rewards['request_desc'])
-        v_update_value, c_update_value, d_update_value = \
-            RLAgent.CalculateUpdateValue(rewards['request_desc'], rewards['event_list'])
-
-        global V_Table, V_Locked
-        RLAgent.UpdateTable(V_Table, V_States, v_state, V_Update_Width,
-            v_update_value, rewards['SFC_desc']['V_node'])
+        global V_Locked, C_Locked, D_Locked
         V_Locked.discard(rewards['SFC_desc']['V_node'])
-
-        global C_Table, C_Locked
-        RLAgent.UpdateTable(C_Table, C_States, c_state, C_Update_Width,
-            c_update_value, rewards['SFC_desc']['C_node'])
         C_Locked.discard(rewards['SFC_desc']['C_node'])
-
-        global D_Table, D_Locked
-        RLAgent.UpdateTable(D_Table, D_States, d_state, D_Update_Width,
-            d_update_value, rewards['SFC_desc']['D_node'])
         D_Locked.discard(rewards['SFC_desc']['D_node'])
+
+
+        if rewards['predict'] != -1:
+            v_state, c_state, d_state = RLAgent.CalculateState(rewards['request_desc'])
+            v_update_value, c_update_value, d_update_value = \
+                RLAgent.CalculateUpdateValue(rewards['request_desc'], rewards['event_list'])
+
+            global V_Table, C_Table, D_Table
+            RLAgent.UpdateTable(V_Table, V_States, v_state, V_Update_Width,
+                v_update_value, rewards['SFC_desc']['V_node'])
+            RLAgent.UpdateTable(C_Table, C_States, c_state, C_Update_Width,
+                c_update_value, rewards['SFC_desc']['C_node'])
+            RLAgent.UpdateTable(D_Table, D_States, d_state, D_Update_Width,
+                d_update_value, rewards['SFC_desc']['D_node'])
+        else:
+            v_update_value = c_update_value = d_update_value = -1
+            v_state = c_state = d_state = -1
 
         return {'result':{
             'update_values': [v_update_value, c_update_value, d_update_value],
