@@ -8,6 +8,7 @@ The basic agent for SFC experiment.
 import json
 import time
 import sys
+import signal
 
 class SequentialAgent:
     def __init__(this, experiment_config, env_config):
@@ -22,6 +23,8 @@ class SequentialAgent:
         this.env_config = env_config
 
         this.req_logs = []
+
+        signal.signal(signal.SIGALRM, TimeoutHandler)
 
     def DoExperiment(this, service_config, request_sequence, loop_num=1) :
         this.InitEnv(service_config)
@@ -86,6 +89,7 @@ class SequentialAgent:
             event_list = {'Start': this.ToServiceHelper('GetLocaltime', None)['result']}
             # Do request
             try:
+                signal.alarm(300)
                 this.req_logs.append(this.ToVNode(sfc_desc['V_node'], 'DoVerify', {
                     'process_obj': {
                         'event_list': event_list,
@@ -94,12 +98,20 @@ class SequentialAgent:
                     },
                     'debug': False
                 })['process_obj'])
+
             except Exception as e:
+                this.req_logs.append({
+                    'predict': -1
+                })
                 print("[Error!]: {}".format(e), file=sys.stderr)
+
+            signal.alarm(0)
+            if this.req_logs[-1]['predict'] == -1:
+                continue
 
             # Update RL
             update_ret = this.ToServiceHelper('UpdateRL',
-                    {'RL_rewards': this.req_logs[-1], 'debug': False})
+                {'RL_rewards': this.req_logs[-1], 'debug': False})
 
             # Only for logging
             i += 1
@@ -170,3 +182,6 @@ def SendRequest(target_url, action, args):
     result_raw = request.urlopen(request_url).read()
 
     return json.loads(result_raw.decode('utf-8'))
+
+def TimeoutHandler(signum, frame):
+    raise TimeoutError('Timeout!')
