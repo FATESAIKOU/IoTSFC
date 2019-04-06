@@ -18,7 +18,6 @@ def test_DoVerify():
             'request_desc': {
                 'service_name': 'MLP_10',
                 'request_ID': 1,
-                'loadfactor': 2,
                 'std_verification_cost': 1,
                 'std_computing_cost': 10,
                 'model_size': 3
