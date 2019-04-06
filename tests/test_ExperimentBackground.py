@@ -51,7 +51,7 @@ def test_LoadNNLog():
     nnlog_path = '../nnlogs/test_nnlog.json'
     result = LoadNNLog(nnlog_path)
 
-    assert len(result.keys()) == 92
+    assert len(result.keys()) == 91
 
 from ExperimentBackground import GenerateRequestSequence
 def test_GenerateRequestSequence():

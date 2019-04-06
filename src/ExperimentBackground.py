@@ -32,7 +32,7 @@ def GenerateRequestSequence(config_data, nnlog_data):
         request = {
             'service_name':             service_name,
             'request_ID':               i,
-            'std_verification_cost':    nnlog_data['std_verification_cost'],
+            'std_verification_cost':    nnlog_data[service_name]['std_verification_cost'],
             'prefer_verification_cost': config_data['prefer_v_cost'],
             'std_computing_cost':       nnlog_data[service_name]['std_computing_cost'],
             'prefer_computing_cost':    config_data['prefer_c_cost'],
@@ -54,7 +54,7 @@ def GenerateSequentialRequestSequence(config_data, nnlog_data):
         request = {
             'service_name':             service_name,
             'request_ID':               i,
-            'std_verification_cost':    nnlog_data['std_verification_cost'],
+            'std_verification_cost':    nnlog_data[service_name]['std_verification_cost'],
             'prefer_verification_cost': config_data['prefer_v_cost'],
             'std_computing_cost':       nnlog_data[service_name]['std_computing_cost'],
             'prefer_computing_cost':    config_data['prefer_c_cost'],
