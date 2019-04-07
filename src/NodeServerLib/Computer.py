@@ -6,6 +6,7 @@ The toolkits for node to do predict.
 """
 
 import os
+import signal
 import subprocess
 import numpy as np
 
@@ -32,37 +33,41 @@ class Computer:
     @staticmethod
     def DoCompute(process_obj, debug):
         # Load Ava_C_Res
-        p = subprocess.Popen(["cpulimit", "-p", str(os.getpid()), "-l", str(Ava_C_Res)])
+        c_limit_p = subprocess.Popen("cpulimit -z -l {} -p {}".format(
+               Ava_C_Res, os.getpid()), shell=True, start_new_session=True)
 
-        # Get timestamp (GotReq_C)
-        process_obj['event_list']['GotReq_C'] = \
-                GetTime(Computer.env_params['service_helper_url'])
+        try:
+            # Get timestamp (GotReq_C)
+            process_obj['event_list']['GotReq_C'] = \
+                    GetTime(Computer.env_params['service_helper_url'])
 
-        # Get model
-        model_path = Computer.RequestModel(process_obj)
+            # Get model
+            model_path = Computer.RequestModel(process_obj)
 
-        # Get timestamp (GotModel)
-        process_obj['event_list']['GotModel'] = \
-                GetTime(Computer.env_params['service_helper_url'])
+            # Get timestamp (GotModel)
+            process_obj['event_list']['GotModel'] = \
+                    GetTime(Computer.env_params['service_helper_url'])
 
-        # Load model
-        model = Computer.LoadModel(
-            process_obj['request_desc']['service_name'],
-            model_path
-        )
+            # Load model
+            model = Computer.LoadModel(
+                process_obj['request_desc']['service_name'],
+                model_path
+            )
 
-        # Get data & Predict
-        process_obj['predict'] = Computer.Predict(model)
+            # Get data & Predict
+            process_obj['predict'] = Computer.Predict(model)
 
-        # Get timestamp (Computed)
-        process_obj['event_list']['Computed'] = \
-                GetTime(Computer.env_params['service_helper_url'])
+            # Get timestamp (Computed)
+            process_obj['event_list']['Computed'] = \
+                    GetTime(Computer.env_params['service_helper_url'])
+
+            # Env cleanup
+            os.remove(model_path)
+        except Exception as e:
+            process_obj['predict'] = -1
 
         # Kill cpulimit process
-        p.terminate()
-
-        # Env cleanup
-        os.remove(model_path)
+        os.killpg(os.getpgid(c_limit_p.pid), signal.SIGTERM)
 
         # return result
         return {'process_obj': process_obj}

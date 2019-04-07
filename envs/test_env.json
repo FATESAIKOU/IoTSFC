@@ -19,7 +19,8 @@
         },
         {
             "type": "bluetooth",
-            "addr": "00:1A:7D:DA:71:0D:9"
+            "addr": "00:1A:7D:DA:71:0D:9",
+            "restart_addr": "pi@192.168.0.3"
         },
         {
             "type": "wifi",
@@ -27,7 +28,8 @@
         },
         {
             "type": "bluetooth",
-            "addr": "B8:27:EB:E2:09:61:9"
+            "addr": "B8:27:EB:E2:09:61:9",
+            "restart_addr": "pi@192.168.0.2"
         },
         {
             "type": "wifi",
@@ -35,7 +37,8 @@
         },
         {
             "type": "bluetooth",
-            "addr": "00:1A:7D:DA:71:0F:9"
+            "addr": "00:1A:7D:DA:71:0F:9",
+            "restart_addr": "pi@192.168.0.5"
         }
     ]
 }

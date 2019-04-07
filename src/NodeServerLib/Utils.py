@@ -49,12 +49,13 @@ def GetFile(target_info, file_name):
 
         file_raw = base64.b64decode(file_encoded)
     elif target_info['type'] == 'bluetooth':
-        file_raw = GetBluetoothFile(target_info['addr'], file_name)
+        file_raw = GetBluetoothFile(target_info['addr'], file_name, target_info['restart_addr'])
 
     return MakeTempFile(file_raw)
 
+import time
 from PyOBEX import client
-def GetBluetoothFile(bluetooth_addr, file_name):
+def GetBluetoothFile(bluetooth_addr, file_name, restart_addr):
     mac_addr, port = bluetooth_addr.rsplit(':', 1)
 
     for i in range(10):
@@ -66,6 +67,8 @@ def GetBluetoothFile(bluetooth_addr, file_name):
             break
         except (ConnectionAbortedError, OSError):
             print("Retry! [BluetoothReadError][{}]".format(i + 1))
+            RestartBluetooth(bluetooth_addr, restart_addr)
+            time.sleep(1)
         except:
             print("Retry! [OthreError][{}]".format(i + 1))
 
@@ -79,3 +82,13 @@ def MakeTempFile(file_raw):
         tmp.write(file_raw)
 
     return tmp_filename
+
+import subprocess
+def RestartBluetooth(bluetooth_addr, restart_addr):
+    command = "ssh {} 'sudo killall -9 obexpushd; \
+            sudo obexpushd -B {} -o ~/testPY/IoTSFC/models -n \
+            -t FTP >/dev/null 2>&1 &'".format(
+                restart_addr, bluetooth_addr
+            )
+
+    p = subprocess.Popen(command, shell=True)
