@@ -22,8 +22,5 @@
     "d_threshold": 10000000.0,
     "state_max": 10001,
     "state_step": 10,
-    "available_c_resources": 100,
-    "network_load": "0k",
-    "load_address": "pi@192.168.4",
     "graph_tag": "d_15_15-sequential"
 }
