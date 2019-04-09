@@ -65,12 +65,13 @@ def GetBluetoothFile(bluetooth_addr, file_name, restart_addr):
             file_raw = c.get(file_name)
             c.disconnect()
             break
-        except (ConnectionAbortedError, OSError):
-            print("Retry! [BluetoothReadError][{}]".format(i + 1))
-            RestartBluetooth(bluetooth_addr, restart_addr)
-            time.sleep(1)
-        except:
-            print("Retry! [OthreError][{}]".format(i + 1))
+        except Exception as e:
+            print("Retry! [{}][{}][{}]".format(i + 1, type(e).__name__, e))
+
+            if "Connection refused" or "Device or resource busy" in str(e):
+                RestartBluetooth(bluetooth_addr, restart_addr)
+            elif "Transport endpoint is not connected" or "Connection reset by peer" in str(e):
+                return None
 
     return file_raw[1]
 

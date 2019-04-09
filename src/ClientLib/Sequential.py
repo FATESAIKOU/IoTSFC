@@ -80,7 +80,7 @@ class SequentialAgent:
             # Init process_obj
             sfc_desc = this.ToServiceHelper('GetSFC', {'request_desc': r, 'debug': False})['result']
 
-            print(sfc_desc)
+            print("[Round: {}-{}] {}]".format(loop_cnt, i, sfc_desc), file=sys.stderr)
             event_list = {'Start': this.ToServiceHelper('GetLocaltime', None)['result']}
             # Do request
             try:
@@ -109,7 +109,6 @@ class SequentialAgent:
 
             if this.req_logs[-1]['predict'] != -1:
                 # Only for logging
-                i += 1
                 #log_str = '{' +'"service_name": {}, "C_Cost": {}, "C_State": {}, "C_Value": {}'.format(
                 #    r['service_name'],
                 #    this.req_logs[-1]['event_list']['Computed'] - this.req_logs[-1]['event_list']['GotModel'],
@@ -123,7 +122,8 @@ class SequentialAgent:
                     update_ret['result']['update_values'][2]
                 ) + '},'
                 print(log_str)
-                print("[Round: {}-{}] {}]".format(loop_cnt, i, log_str), file=sys.stderr)
+
+            i += 1
 
             # Dump Weights
             this.ToServiceHelper('DrawOutTables', {
