@@ -41,6 +41,11 @@ class Router():
             Computer.env_params = args['init_obj']
             Transmitter.env_params = args['init_obj']
 
+        elif action =='CleanUp':
+            Verifier.CleanUp()
+            Computer.CleanUp()
+            Transmitter.CleanUp()
+
         else:
             return None
 
