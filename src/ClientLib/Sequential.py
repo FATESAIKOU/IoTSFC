@@ -26,13 +26,13 @@ class SequentialAgent:
 
         signal.signal(signal.SIGALRM, TimeoutHandler)
 
-    def DoExperiment(this, service_config, request_sequence, loop_num=1) :
-        this.InitEnv(service_config)
+    def DoExperiment(this, service_config, loads_config, request_sequence, loop_num=1) :
+        this.InitEnv(service_config, loads_config)
 
         for i in range(loop_num):
             this.DoRequest(request_sequence, i)
 
-    def InitEnv(this, service_config):
+    def InitEnv(this, service_config, loads_config):
         this.graph_tag = service_config['graph_tag']
         ret = this.ToServiceHelper('UpdateGlobalParameter', {
             'init_obj': {
@@ -58,26 +58,19 @@ class SequentialAgent:
         })
         print(json.dumps(ret, indent=4), file=sys.stderr)
 
-        # Init Nodes env
         for addr in this.env_config['NodeServerList']:
+            # Init Nodes env
             SendRequest(addr, 'InitEnv', {'init_obj': this.env_config})
 
-        # Init C loads
-        for i in range(len(this.vc_map)):
-            this.ToCNode(i, 'SetCLoad', {
+            # Init Loads
+            load = loads_config[addr]
+            print("Limit {} {}".format(addr, load))
+            SendRequest(addr, 'SetCLoad', {
+                'load_config': {'available_c_resources': load['C_AVA']}})
+            SendRequest(addr, 'SetDLoad', {
                 'load_config': {
-                    'available_c_resources': service_config['available_c_resources']
-                }})
-
-        # Init D loads
-        for i in range(len(this.t_map)):
-            if this.t_map[i]['type'] != 'wifi':
-                continue
-
-            this.ToDNode(i, 'SetDLoad', {
-                'load_config': {
-                    'network_load': service_config['network_load'],
-                    'load_address': service_config['load_address']
+                    'network_load': load['D_Load'],
+                    'load_address': load['D_Load_To']
                 }})
 
     def DoRequest(this, request_sequence, loop_cnt):
@@ -86,6 +79,8 @@ class SequentialAgent:
         for r in request_sequence:
             # Init process_obj
             sfc_desc = this.ToServiceHelper('GetSFC', {'request_desc': r, 'debug': False})['result']
+
+            print(sfc_desc)
             event_list = {'Start': this.ToServiceHelper('GetLocaltime', None)['result']}
             # Do request
             try:
@@ -143,6 +138,10 @@ class SequentialAgent:
                 }
             })
 
+    def CleanUpEnv(this):
+        # Clean up Nodes env
+        for addr in this.env_config['NodeServerList']:
+            SendRequest(addr, 'CleanUp', None)
 
     def DumpLogs(this, log_path):
         with open(log_path, 'w') as log:
