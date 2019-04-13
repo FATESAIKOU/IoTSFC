@@ -35,4 +35,17 @@ def Dump2DWeights(table, title, save_path, labels):
         ax.legend()
 
     plt.savefig(save_path)
+    plt.close()
+
+def DumpWeights(table, save_path, tag):
+    file_name = save_path + '-' + tag + '.weights'
+    with open(file_name, 'wb') as dst:
+        np.save(dst, table)
+
+    return file_name
+
+def LoadWeights(load_path, tag):
+    file_name = load_path + '-' + tag + '.weights'
+    with open(file_name, 'rb') as src:
+        return np.load(src)
 

@@ -8,7 +8,7 @@ import numpy as np
 import math
 
 from pprint import pprint
-from .Utils import Gaussian, Dump2DWeights, CalculateUpdateFactor
+from .Utils import Gaussian, Dump2DWeights, DumpWeights, LoadWeights, CalculateUpdateFactor
 
 class RLAgent():
     global V_Table, C_Table, D_Table
@@ -161,6 +161,40 @@ class RLAgent():
         Dump2DWeights(C_Table, 'C_Table-' + base_title, base_path + '/c_table-' + tag + '.png', env_labels['vc_list'])
         Dump2DWeights(D_Table, 'D_Table-' + base_title, base_path + '/d_table-' + tag + '.png', env_labels['t_list'])
 
+    @staticmethod
+    def DumpWeights(dump_config):
+        dir_base = dump_config['dir'] + '/' + dump_config['tag']
+        return {
+            'v_table': DumpWeights(V_Table, dir_base, 'v_table'),
+            'v_states': DumpWeights(V_States, dir_base, 'v_states'),
+            'c_table': DumpWeights(C_Table, dir_base, 'c_table'),
+            'c_states': DumpWeights(C_States, dir_base, 'c_states'),
+            'd_table': DumpWeights(D_Table, dir_base, 'd_table'),
+            'd_states': DumpWeights(D_States, dir_base, 'd_states')
+        }
+
+    @staticmethod
+    def LoadWeights(load_config):
+        dir_base = load_config['dir'] + '/' + load_config['tag']
+
+        global V_Table, C_Table, D_Table
+        global V_States, C_States, D_States
+
+        V_Table = LoadWeights(dir_base, 'v_table')
+        V_States = LoadWeights(dir_base, 'v_states')
+        C_Table = LoadWeights(dir_base, 'c_table')
+        C_States = LoadWeights(dir_base, 'c_states')
+        D_Table = LoadWeights(dir_base, 'd_table')
+        D_States = LoadWeights(dir_base, 'd_states')
+
+        return {
+            'v_table': dir_base + '-v_table.weights',
+            'v_states': dir_base + '-v_states.weights',
+            'c_table': dir_base + '-c_table.weights',
+            'c_states': dir_base + '-c_states.weights',
+            'd_table': dir_base + '-d_table.weights',
+            'd_states': dir_base + '-d_states.weights'
+        }
 
     """ Toolkits """
     @staticmethod
@@ -208,11 +242,8 @@ class RLAgent():
         if sum_weights.shape[0] < 1:
             return None
 
-        # TODO
-        print("[raw_weights][{}]".format(sum_weights))
         sum_weights = 10000 / sum_raw
         sum_weights = sum_weights / sum(sum_weights)
-        print("[sum_weights][{}]".format(sum_weights))
 
         # Random choice
         random_id = np.random.choice(sum_weights.shape[0], 1, p=sum_weights)[0]

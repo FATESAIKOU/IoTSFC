@@ -25,6 +25,12 @@ class Router():
         if action == 'DrawOutTables':
             result = RLAgent.DrawOutTables(args['graph_config'])
             return {'result': result}
+        if action == 'DumpWeights':
+            result = RLAgent.DumpWeights(args['dump_config'])
+            return {'result': result}
+        if action == 'LoadWeights':
+            result = RLAgent.LoadWeights(args['load_config'])
+            return {'result': result}
         if action == 'GetLocaltime':
             return {'result': GetLocaltime()}
         else:
