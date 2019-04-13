@@ -8,6 +8,7 @@ The toolkits for node to do predict.
 import os
 import signal
 import subprocess
+import time
 import numpy as np
 
 import chainer
@@ -18,8 +19,9 @@ from chainer import serializers
 from .Utils import GetTime, SendRequest, GetFile
 
 class Computer:
-    global Ava_C_Res
-    Ava_C_Res = 100
+    global c_stress_p, c_limit_p
+    c_limit_p = None
+    c_stress_p = None
 
     global X
     X = chainer.Variable(np.asarray([chainer.datasets.get_mnist()[1][0][0]]))
@@ -32,10 +34,6 @@ class Computer:
 
     @staticmethod
     def DoCompute(process_obj, debug):
-        # Load Ava_C_Res
-        c_limit_p = subprocess.Popen("cpulimit -z -l {} -p {}".format(
-               Ava_C_Res, os.getpid()), shell=True, start_new_session=True)
-
         try:
             # Get timestamp (GotReq_C)
             process_obj['event_list']['GotReq_C'] = \
@@ -64,20 +62,40 @@ class Computer:
             # Env cleanup
             os.remove(model_path)
         except Exception as e:
+            print("[Error][{}]".format(e))
             process_obj['predict'] = -1
-
-        # Kill cpulimit process
-        os.killpg(os.getpgid(c_limit_p.pid), signal.SIGTERM)
 
         # return result
         return {'process_obj': process_obj}
 
     @staticmethod
     def SetCLoad(load_config):
-        global Ava_C_Res
-        Ava_C_Res = load_config['available_c_resources']
+        c_ava = load_config['available_c_resources']
 
-        return {'load_config': {'available_c_resources': Ava_C_Res}}
+        global c_stress_p, c_limit_p
+
+        # control stress-ng process
+        if c_ava == 100:
+            if c_limit_p != None:
+                os.killpg(os.getpgid(c_limit_p.pid), signal.SIGTERM)
+                c_limit_p = None
+
+            if c_stress_p != None:
+                os.killpg(os.getpgid(c_stress_p.pid), signal.SIGTERM)
+                c_stress_p = None
+        else:
+            if c_stress_p == None:
+                c_stress_p = subprocess.Popen("stress-ng -c 1 --taskset 0",
+                    shell=True, start_new_session=True)
+                time.sleep(1)
+
+            if c_limit_p != None:
+                os.killpg(os.getpgid(c_limit_p.pid), signal.SIGTERM)
+
+            c_limit_p = subprocess.Popen('cpulimit -z -l {} -p $( pidof -o {} stress-ng )'.format(
+                100 - c_ava, c_stress_p.pid), shell=True, start_new_session=True)
+
+        return {'load_config': {'available_c_resources': c_ava}}
 
     @staticmethod
     def RequestModel(process_obj):
