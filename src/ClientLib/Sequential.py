@@ -8,7 +8,6 @@ The basic agent for SFC experiment.
 import json
 import time
 import sys
-import signal
 
 class SequentialAgent:
     def __init__(this, experiment_config, env_config):
@@ -23,8 +22,6 @@ class SequentialAgent:
         this.env_config = env_config
 
         this.req_logs = []
-
-        signal.signal(signal.SIGALRM, TimeoutHandler)
 
     def DoExperiment(this, service_config, loads_config, request_sequence, loop_num=1) :
         this.InitEnv(service_config, loads_config)
@@ -77,31 +74,40 @@ class SequentialAgent:
         # Only for logging
         i = 0
         for r in request_sequence:
-            # Init process_obj
+            # Get sfc
             sfc_desc = this.ToServiceHelper('GetSFC', {'request_desc': r, 'debug': False})['result']
 
-            print("[Round: {}-{}] {}]".format(loop_cnt, i, sfc_desc), file=sys.stderr)
-            event_list = {'Start': this.ToServiceHelper('GetLocaltime', None)['result']}
             # Do request
-            try:
-                signal.alarm(150)
-                this.req_logs.append(this.ToVNode(sfc_desc['V_node'], 'DoVerify', {
-                    'process_obj': {
-                        'event_list': event_list,
-                        'request_desc': r,
+            for j in range(10):
+                print("[Round: {}-{}] {}]".format(loop_cnt, i, sfc_desc), file=sys.stderr)
+                event_list = {'Start': this.ToServiceHelper('GetLocaltime', None)['result']}
+
+                try:
+                    process_obj = this.ToVNode(sfc_desc['V_node'], 'DoVerify', {
+                        'process_obj': {
+                            'event_list': event_list,
+                            'request_desc': r,
+                            'SFC_desc': sfc_desc
+                        },
+                        'debug': False
+                    })['process_obj']
+                except Exception as e:
+                    print("[Error {}]".format(e), file=sys.stderr)
+
+                    if 'time' in str(e):
+                        CheckAndRestartBluetooth(this.env_config['T_map'][sfc_desc['D_node']])
+
+                    process_obj = {
+                        'predict': -1,
                         'SFC_desc': sfc_desc
-                    },
-                    'debug': False
-                })['process_obj'])
+                    }
 
-            except Exception as e:
-                this.req_logs.append({
-                    'predict': -1,
-                    'SFC_desc': sfc_desc
-                })
-                print("[Error!]: {}".format(e), file=sys.stderr)
+                if process_obj['predict'] != -1:
+                    break
 
-            signal.alarm(0)
+                print("[Retry {}]".format(j), file=sys.stderr)
+
+            this.req_logs.append(process_obj)
 
             # Update RL
             update_ret = this.ToServiceHelper('UpdateRL',
@@ -154,7 +160,8 @@ class SequentialAgent:
         return SendRequest(
             this.vc_map[v_node_id],
             action,
-            args
+            args,
+            timeout=CalculateTimeout(args['process_obj'])
         )
 
     def ToCNode(this, c_node_id, action, args):
@@ -174,13 +181,31 @@ class SequentialAgent:
 
 """ Utils """
 from urllib import request, parse
-def SendRequest(target_url, action, args):
+def SendRequest(target_url, action, args, timeout=150):
     request_url = "{}/?action={}&args={}".format(
         target_url, action, parse.quote(json.dumps(args)))
 
-    result_raw = request.urlopen(request_url).read()
+    result_raw = request.urlopen(request_url, timeout=timeout).read()
 
     return json.loads(result_raw.decode('utf-8'))
 
-def TimeoutHandler(signum, frame):
-    raise TimeoutError('Timeout!')
+def CalculateTimeout(process_obj):
+    return (process_obj['request_desc']['model_size'] / 20480) * 5
+
+import subprocess
+def CheckAndRestartBluetooth(d_node_info):
+    if d_node_info['type'] == 'wifi':
+        return None
+
+    print("[Restart bt][{}][{}]".format(
+        d_node_info['restart_addr'], d_node_info['addr']))
+
+    command = "ssh {} 'sudo killall -9 obexpushd; \
+            sudo obexpushd -B {} -o ~/testPY/IoTSFC/models -n \
+            -t FTP >/dev/null 2>&1 &'".format(
+                d_node_info['restart_addr'], d_node_info['addr']
+            )
+
+    p = subprocess.Popen(command, shell=True)
+
+    time.sleep(1)
