@@ -8,7 +8,6 @@ The experiment client.
 @argv[3]: nnlogs path
 @argv[4]: env config path
 @agrv[5]: env load path
-@argv[6]: output log
 """
 
 import sys
@@ -37,10 +36,6 @@ def main():
 
     # Clean up env
     exp_agent.CleanUpEnv()
-
-    # Output result
-    exp_agent.DumpLogs(sys.argv[6])
-
 
 if __name__ == '__main__':
     main()

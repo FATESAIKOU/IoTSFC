@@ -1,3 +1,6 @@
 {
-    "experiment_name": "sequential"
+    "experiment_name": "sequential",
+    "reward_log_dir": "/home/fatesaikou/testPY/IoTSFC/rw_logs",
+    "weights_dir": "/home/fatesaikou/testPY/IoTSFC/weights",
+    "tag": "sequential"
 }

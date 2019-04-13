@@ -9,6 +9,8 @@ import json
 import time
 import sys
 
+from .Utils import SendRequest, CalculateTimeout, CheckAndRestartBluetooth, DumpRWLogs
+
 class SequentialAgent:
     def __init__(this, experiment_config, env_config):
         this.v_node_num = this.c_node_num = len(env_config['VC_map'])
@@ -144,14 +146,18 @@ class SequentialAgent:
                 }
             })
 
+        this.ToServiceHelper('DumpWeights', {'dump_config': {
+            'dir': this.exp_config['weights_dir'],
+            'tag': this.exp_config['tag']
+        }})
+
+        DumpRWLogs(this.req_logs, "{}/{}_log.json".format(
+            this.exp_config['reward_log_dir'], this.exp_config['tag']))
+
     def CleanUpEnv(this):
         # Clean up Nodes env
         for addr in this.env_config['NodeServerList']:
             SendRequest(addr, 'CleanUp', None)
-
-    def DumpLogs(this, log_path):
-        with open(log_path, 'w') as log:
-            log.write(json.dumps(this.req_logs, indent=4))
 
     def ToServiceHelper(this, action, args):
         return SendRequest(this.service_helper_url, action, args)
@@ -179,33 +185,3 @@ class SequentialAgent:
         )
 
 
-""" Utils """
-from urllib import request, parse
-def SendRequest(target_url, action, args, timeout=150):
-    request_url = "{}/?action={}&args={}".format(
-        target_url, action, parse.quote(json.dumps(args)))
-
-    result_raw = request.urlopen(request_url, timeout=timeout).read()
-
-    return json.loads(result_raw.decode('utf-8'))
-
-def CalculateTimeout(process_obj):
-    return (process_obj['request_desc']['model_size'] / 20480) * 5
-
-import subprocess
-def CheckAndRestartBluetooth(d_node_info):
-    if d_node_info['type'] == 'wifi':
-        return None
-
-    print("[Restart bt][{}][{}]".format(
-        d_node_info['restart_addr'], d_node_info['addr']))
-
-    command = "ssh {} 'sudo killall -9 obexpushd; \
-            sudo obexpushd -B {} -o ~/testPY/IoTSFC/models -n \
-            -t FTP >/dev/null 2>&1 &'".format(
-                d_node_info['restart_addr'], d_node_info['addr']
-            )
-
-    p = subprocess.Popen(command, shell=True)
-
-    time.sleep(1)
