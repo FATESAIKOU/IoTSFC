@@ -146,11 +146,12 @@ class SequentialAgent:
                 }
             })
 
-        this.ToServiceHelper('DumpWeights', {'dump_config': {
-            'dir': this.exp_config['weights_dir'],
-            'tag': this.exp_config['tag']
-        }})
+            this.ToServiceHelper('DumpWeights', {'dump_config': {
+                'dir': this.exp_config['weights_dir'],
+                'tag': this.exp_config['tag']
+            }})
 
+        # Dump Rewards
         DumpRWLogs(this.req_logs, "{}/{}_log.json".format(
             this.exp_config['reward_log_dir'], this.exp_config['tag']))
 
