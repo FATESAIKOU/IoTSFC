@@ -7,8 +7,12 @@ The utils for Client.
 
 def GetExperimentAgent(experiment_config, env_config):
     from .Sequential import SequentialAgent
+    from .Concurrent import ConcurrentAgent
+
     if experiment_config['experiment_name'] == 'sequential':
         return SequentialAgent(experiment_config, env_config)
+    if experiment_config['experiment_name'] == 'concurrent':
+        return ConcurrentAgent(experiment_config, env_config)
     else:
         return None
 

@@ -19,6 +19,9 @@ class Router():
         elif action == 'GetSFC':
             result = RLAgent.GetSFC(args['request_desc'])
             return {'result': result}
+        elif action == 'UnlockSFC':
+            result = RLAgent.UnlockSFC(args['SFC_desc'])
+            return {'result': result}
         elif action == 'UpdateRL':
             result = RLAgent.UpdateRL(args['RL_rewards'])
             return result

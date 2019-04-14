@@ -99,13 +99,14 @@ class RLAgent():
     def GetSFC(request):
         v_state, c_state, d_state = RLAgent.CalculateState(request)
 
-        global V_Locked, C_Locked, D_Locked
+        global C_Locked, D_Locked
+        V_Locked = set()
         v_id = int(RLAgent.SelectNode(V_Table, V_States, V_Locked, V_Threshold, v_state, V_Update_Width))
         c_id = int(RLAgent.SelectNode(C_Table, C_States, C_Locked, C_Threshold, c_state, C_Update_Width))
         d_id = int(RLAgent.SelectNode(D_Table, D_States, D_Locked, D_Threshold, d_state, D_Update_Width))
 
-        if None in [v_id, c_id, d_id]:
-            v_id = c_id = d_id = None
+        if -1 in [v_id, c_id, d_id]:
+            v_id = c_id = d_id = -1
         else:
             V_Locked.add(v_id)
             C_Locked.add(c_id)
@@ -121,13 +122,16 @@ class RLAgent():
 
         return SFC_desc
 
+    def UnlockSFC(SFC_desc):
+        global V_Locked, C_Locked, D_Locked
+        V_Locked.discard(SFC_desc['V_node'])
+        C_Locked.discard(SFC_desc['C_node'])
+        D_Locked.discard(SFC_desc['D_node'])
+
+
     @staticmethod
     def UpdateRL(rewards):
-        global V_Locked, C_Locked, D_Locked
-        V_Locked.discard(rewards['SFC_desc']['V_node'])
-        C_Locked.discard(rewards['SFC_desc']['C_node'])
-        D_Locked.discard(rewards['SFC_desc']['D_node'])
-
+        RLAgent.UnlockSFC(rewards['SFC_desc'])
 
         if rewards['predict'] != -1:
             v_state, c_state, d_state = RLAgent.CalculateState(rewards['request_desc'])
@@ -240,9 +244,9 @@ class RLAgent():
 
         # If no node available, return None.
         if sum_weights.shape[0] < 1:
-            return None
+            return -1
 
-        sum_weights = 10000 / sum_raw
+        sum_weights = 10000 / sum_weights
         sum_weights = sum_weights / sum(sum_weights)
 
         # Random choice
