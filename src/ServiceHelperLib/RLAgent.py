@@ -111,7 +111,6 @@ class RLAgent():
             V_Locked.add(v_id)
             C_Locked.add(c_id)
             D_Locked.add(d_id)
-            print("[Lock][{}, {}, {}]".format(v_id, c_id, d_id))
 
         SFC_desc = {
             'token': '5c9597f3c8245907ea71a89d9d39d08e',
@@ -234,6 +233,7 @@ class RLAgent():
 
         # Calculate random number
         sum_raw = np.dot( weights/sum(weights), table )
+        print("[Raw weights] {}".format(sum_raw))
 
         # Filter out sum_weights
         sum_weights, filtered_list = RLAgent.FilterWeights(
@@ -246,8 +246,11 @@ class RLAgent():
         if sum_weights.shape[0] < 1:
             return -1
 
-        sum_weights = 10000 / sum_weights
+        print("[Filtered weights] {}".format(sum_weights))
+        sum_weights = max(sum_weights) * 3 / sum_weights
         sum_weights = sum_weights / sum(sum_weights)
+        print("[Final weights] {}".format(sum_weights))
+
 
         # Random choice
         random_id = np.random.choice(sum_weights.shape[0], 1, p=sum_weights)[0]

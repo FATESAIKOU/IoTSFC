@@ -5,6 +5,7 @@ The toolkits for node to do verify.
 @date  : 03/18/2019
 """
 
+import time
 from .Utils import GetTime, SendRequest, SendToTangle
 
 class Verifier:
@@ -40,16 +41,16 @@ class Verifier:
 
     @staticmethod
     def Verify(token):
-        SendToTangle(Verifier.env_params['tangle_node'],
-            command = {
-              "command": "getTrytes",
-              "hashes": [
-                "NGDFRIHOOS9J9YBQCDSFJZJKNSAJTNFKSXXEZWPZQSLRTYQDNX9UCGJHU9OZGFATCCQSGSFUZLLET9LID",
-                "MUIYDLYHCAYGYK9IPVQX9GIHIWWCATAJ9BNFPVKZHZOSXAWVHEHHMSVEVTNRJVGCGEMSNI9ATUXFKPZRQ"
-              ]
-            }
-        )
-
+        #SendToTangle(Verifier.env_params['tangle_node'],
+        #    command = {
+        #      "command": "getTrytes",
+        #      "hashes": [
+        #        "NGDFRIHOOS9J9YBQCDSFJZJKNSAJTNFKSXXEZWPZQSLRTYQDNX9UCGJHU9OZGFATCCQSGSFUZLLET9LID",
+        #        "MUIYDLYHCAYGYK9IPVQX9GIHIWWCATAJ9BNFPVKZHZOSXAWVHEHHMSVEVTNRJVGCGEMSNI9ATUXFKPZRQ"
+        #      ]
+        #    }
+        #)
+        time.sleep(1)
         return token == '5c9597f3c8245907ea71a89d9d39d08e'
 
     @staticmethod

@@ -30,11 +30,13 @@ class ConcurrentAgent:
     def DoExperiment(this, service_config, loads_config, request_sequence, loop_num=1):
         this.InitEnv(service_config, loads_config)
 
+        data = []
         for i in range(loop_num):
-            this.DoRequest(request_sequence, this.exp_config['paral_num'], i)
+            data.extend( this.DoRequest(request_sequence.copy(), this.exp_config['paral_num'], i) )
 
-        DumpRWLogs(this.req_logs, "{}/{}_log.json".format(
-            this.exp_config['reward_log_dir'], this.exp_config['tag']))
+            data = sorted(data, key=lambda l: l['event_list']['Start'])
+            DumpRWLogs(data, "{}/{}_log.json".format(
+                this.exp_config['reward_log_dir'], this.exp_config['tag']))
 
     """ Concurrent Experiment Utils """
     # Prepare enviroment with provided configs
@@ -65,7 +67,7 @@ class ConcurrentAgent:
         print(json.dumps(ret, indent=4), file=sys.stderr)
 
         # load weights
-        ret = this.ToServiceHelper('DumpWeights', {'dump_config': {
+        ret = this.ToServiceHelper('LoadWeights', {'load_config': {
             'dir': this.exp_config['weights_dir'],
             'tag': this.exp_config['tag']
         }})
@@ -108,7 +110,7 @@ class ConcurrentAgent:
         data = [t.result() for t in ts]
         data = [d for d in data if d['predict'] != -1]
 
-        return sorted(data, key=lambda l: l['event_list']['Start'])
+        return data
 
     # Clean up the environment
     def CleanUpEnv(this):
@@ -123,6 +125,10 @@ class ConcurrentAgent:
             sfc_desc = this.ToServiceHelper('GetSFC', {'request_desc': req, 'debug': False})['result']
             if -1 in sfc_desc.values():
                 raise OSError("Resource is busy")
+
+            # TODO for C node test
+            real_d = sfc_desc['D_node']
+            sfc_desc['D_node'] = sfc_desc['C_node']
 
             print("[Round: {}-{}]: {}-{}-{}".format(loop_cnt, round_cnt,
                 sfc_desc['V_node'], sfc_desc['C_node'], sfc_desc['D_node'], indent=4), file=sys.stderr)
@@ -139,6 +145,9 @@ class ConcurrentAgent:
                 },
                 'debug': False
             })['process_obj']
+
+            # TODO for C node test
+            sfc_desc['D_node'] = real_d
 
             # update for unlock
             update_ret = this.ToServiceHelper('UnlockSFC',
