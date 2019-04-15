@@ -1,0 +1,962 @@
+{
+    "MLP_100": {
+        "std_verification_cost": 1.024396284421285,
+        "std_computing_cost": 0.08441484769185384,
+        "model_size": 333663
+    },
+    "MLP_110": {
+        "std_verification_cost": 1.0029834349950155,
+        "std_computing_cost": 0.0829112688700358,
+        "model_size": 371014
+    },
+    "MLP_120": {
+        "std_verification_cost": 1.0133180936177573,
+        "std_computing_cost": 0.08598328431447347,
+        "model_size": 409042
+    },
+    "MLP_130": {
+        "std_verification_cost": 1.0061599969863892,
+        "std_computing_cost": 0.0866625706354777,
+        "model_size": 447956
+    },
+    "MLP_140": {
+        "std_verification_cost": 1.032742198308309,
+        "std_computing_cost": 0.090621018409729,
+        "model_size": 487577
+    },
+    "MLP_150": {
+        "std_verification_cost": 1.0072982390721639,
+        "std_computing_cost": 0.0959240198135376,
+        "model_size": 527766
+    },
+    "MLP_160": {
+        "std_verification_cost": 1.009994133313497,
+        "std_computing_cost": 0.09862736066182455,
+        "model_size": 568784
+    },
+    "MLP_170": {
+        "std_verification_cost": 1.0016772349675496,
+        "std_computing_cost": 0.11061468124389648,
+        "model_size": 610570
+    },
+    "MLP_180": {
+        "std_verification_cost": 1.001930006345113,
+        "std_computing_cost": 0.11254578431447347,
+        "model_size": 653086
+    },
+    "MLP_190": {
+        "std_verification_cost": 1.1002570072809854,
+        "std_computing_cost": 0.1153425931930542,
+        "model_size": 696311
+    },
+    "MLP_200": {
+        "std_verification_cost": 0.9948239167531331,
+        "std_computing_cost": 0.11736749807993571,
+        "model_size": 740196
+    },
+    "MLP_210": {
+        "std_verification_cost": 1.0073011636734008,
+        "std_computing_cost": 0.12306898434956869,
+        "model_size": 784843
+    },
+    "MLP_220": {
+        "std_verification_cost": 0.9951512734095256,
+        "std_computing_cost": 0.12969878514607747,
+        "model_size": 830121
+    },
+    "MLP_230": {
+        "std_verification_cost": 0.9960320870081584,
+        "std_computing_cost": 0.13254160086313885,
+        "model_size": 876600
+    },
+    "MLP_240": {
+        "std_verification_cost": 1.0059346119562784,
+        "std_computing_cost": 0.13866130510965982,
+        "model_size": 923408
+    },
+    "MLP_250": {
+        "std_verification_cost": 0.9925943374633789,
+        "std_computing_cost": 0.1444111426671346,
+        "model_size": 971169
+    },
+    "MLP_260": {
+        "std_verification_cost": 0.996505610148112,
+        "std_computing_cost": 0.15258100827534993,
+        "model_size": 1019414
+    },
+    "MLP_270": {
+        "std_verification_cost": 0.9995951255162557,
+        "std_computing_cost": 0.1564411401748657,
+        "model_size": 1068662
+    },
+    "MLP_280": {
+        "std_verification_cost": 1.018074131011963,
+        "std_computing_cost": 0.16310492356618245,
+        "model_size": 1118669
+    },
+    "MLP_290": {
+        "std_verification_cost": 1.0093974033991495,
+        "std_computing_cost": 0.17164988517761232,
+        "model_size": 1169327
+    },
+    "MLP_300": {
+        "std_verification_cost": 0.9967854817708334,
+        "std_computing_cost": 0.17414992650349934,
+        "model_size": 1220612
+    },
+    "MLP_310": {
+        "std_verification_cost": 1.0099576950073241,
+        "std_computing_cost": 0.18018185297648112,
+        "model_size": 1272827
+    },
+    "MLP_320": {
+        "std_verification_cost": 0.9994873205820719,
+        "std_computing_cost": 0.1872264305750529,
+        "model_size": 1325448
+    },
+    "MLP_330": {
+        "std_verification_cost": 1.0016346454620362,
+        "std_computing_cost": 0.19208837350209554,
+        "model_size": 1379171
+    },
+    "MLP_340": {
+        "std_verification_cost": 0.9966072003046672,
+        "std_computing_cost": 0.19668838183085124,
+        "model_size": 1433536
+    },
+    "MLP_350": {
+        "std_verification_cost": 0.9983146905899047,
+        "std_computing_cost": 0.2064261515935262,
+        "model_size": 1488389
+    },
+    "MLP_360": {
+        "std_verification_cost": 1.0104116837183634,
+        "std_computing_cost": 0.21111342906951905,
+        "model_size": 1544321
+    },
+    "MLP_370": {
+        "std_verification_cost": 0.9966659625371297,
+        "std_computing_cost": 0.21813398996988934,
+        "model_size": 1601094
+    },
+    "MLP_380": {
+        "std_verification_cost": 1.0054984887440999,
+        "std_computing_cost": 0.225315531094869,
+        "model_size": 1658108
+    },
+    "MLP_390": {
+        "std_verification_cost": 0.9945525169372559,
+        "std_computing_cost": 0.2308929999669393,
+        "model_size": 1716455
+    },
+    "MLP_400": {
+        "std_verification_cost": 1.0121725082397461,
+        "std_computing_cost": 0.24169769287109374,
+        "model_size": 1775180
+    },
+    "MLP_410": {
+        "std_verification_cost": 1.014224680264791,
+        "std_computing_cost": 0.24380028247833252,
+        "model_size": 1834744
+    },
+    "MLP_420": {
+        "std_verification_cost": 0.9996581157048543,
+        "std_computing_cost": 0.2525747776031494,
+        "model_size": 1895162
+    },
+    "MLP_430": {
+        "std_verification_cost": 1.0009968678156536,
+        "std_computing_cost": 0.26067222754160563,
+        "model_size": 1956230
+    },
+    "MLP_440": {
+        "std_verification_cost": 1.0023279587427776,
+        "std_computing_cost": 0.26699413458506266,
+        "model_size": 2017850
+    },
+    "MLP_450": {
+        "std_verification_cost": 1.0075904687245687,
+        "std_computing_cost": 0.27685534159342445,
+        "model_size": 2080461
+    },
+    "MLP_460": {
+        "std_verification_cost": 1.0059792041778564,
+        "std_computing_cost": 0.28149890104929604,
+        "model_size": 2143766
+    },
+    "MLP_470": {
+        "std_verification_cost": 1.000267712275187,
+        "std_computing_cost": 0.28850754102071124,
+        "model_size": 2207343
+    },
+    "MLP_480": {
+        "std_verification_cost": 0.9997344175974529,
+        "std_computing_cost": 0.2954615592956543,
+        "model_size": 2272473
+    },
+    "MLP_490": {
+        "std_verification_cost": 1.001165755589803,
+        "std_computing_cost": 0.303761355082194,
+        "model_size": 2337926
+    },
+    "MLP_500": {
+        "std_verification_cost": 1.0174222310384116,
+        "std_computing_cost": 0.31101446946461997,
+        "model_size": 2404211
+    },
+    "MLP_510": {
+        "std_verification_cost": 1.0006901025772095,
+        "std_computing_cost": 0.31933763027191164,
+        "model_size": 2471260
+    },
+    "MLP_520": {
+        "std_verification_cost": 0.9980105479558309,
+        "std_computing_cost": 0.32693841457366946,
+        "model_size": 2538512
+    },
+    "MLP_530": {
+        "std_verification_cost": 0.9933825095494588,
+        "std_computing_cost": 0.33423691590627036,
+        "model_size": 2607199
+    },
+    "MLP_540": {
+        "std_verification_cost": 1.0000713268915813,
+        "std_computing_cost": 0.3417416969935099,
+        "model_size": 2676605
+    },
+    "MLP_550": {
+        "std_verification_cost": 1.0077735265096028,
+        "std_computing_cost": 0.35267156759897866,
+        "model_size": 2746320
+    },
+    "MLP_560": {
+        "std_verification_cost": 1.0118146578470866,
+        "std_computing_cost": 0.3577689250310262,
+        "model_size": 2817090
+    },
+    "MLP_570": {
+        "std_verification_cost": 0.997667113939921,
+        "std_computing_cost": 0.3642955462137858,
+        "model_size": 2888511
+    },
+    "MLP_580": {
+        "std_verification_cost": 1.003451903661092,
+        "std_computing_cost": 0.37504080136617024,
+        "model_size": 2961051
+    },
+    "MLP_590": {
+        "std_verification_cost": 1.007779590288798,
+        "std_computing_cost": 0.38263545831044515,
+        "model_size": 3033489
+    },
+    "MLP_600": {
+        "std_verification_cost": 0.9962654829025268,
+        "std_computing_cost": 0.39346521695454917,
+        "model_size": 3107277
+    },
+    "MLP_610": {
+        "std_verification_cost": 1.003590186436971,
+        "std_computing_cost": 0.40153319040934243,
+        "model_size": 3182181
+    },
+    "MLP_620": {
+        "std_verification_cost": 1.0018128077189128,
+        "std_computing_cost": 0.4149566809336344,
+        "model_size": 3257309
+    },
+    "MLP_630": {
+        "std_verification_cost": 1.0045079708099365,
+        "std_computing_cost": 0.42363911469777427,
+        "model_size": 3333119
+    },
+    "MLP_640": {
+        "std_verification_cost": 1.0105356454849244,
+        "std_computing_cost": 0.43260788917541504,
+        "model_size": 3409696
+    },
+    "MLP_650": {
+        "std_verification_cost": 1.0134527126948039,
+        "std_computing_cost": 0.4378145933151245,
+        "model_size": 3487328
+    },
+    "MLP_660": {
+        "std_verification_cost": 0.9963372151056925,
+        "std_computing_cost": 0.45490434964497883,
+        "model_size": 3565218
+    },
+    "MLP_670": {
+        "std_verification_cost": 0.9908277908960978,
+        "std_computing_cost": 0.4617024819056193,
+        "model_size": 3644328
+    },
+    "MLP_680": {
+        "std_verification_cost": 1.008710249265035,
+        "std_computing_cost": 0.4614300092061361,
+        "model_size": 3723431
+    },
+    "MLP_690": {
+        "std_verification_cost": 1.0008214871088663,
+        "std_computing_cost": 0.47816893259684246,
+        "model_size": 3804442
+    },
+    "MLP_700": {
+        "std_verification_cost": 1.0031800031661988,
+        "std_computing_cost": 0.48462324937184653,
+        "model_size": 3885128
+    },
+    "MLP_710": {
+        "std_verification_cost": 1.018679642677307,
+        "std_computing_cost": 0.49677600860595705,
+        "model_size": 3967654
+    },
+    "MLP_720": {
+        "std_verification_cost": 1.0122804005940755,
+        "std_computing_cost": 0.49944387276967367,
+        "model_size": 4049940
+    },
+    "MLP_730": {
+        "std_verification_cost": 1.012600310643514,
+        "std_computing_cost": 0.5086056073506673,
+        "model_size": 4133276
+    },
+    "MLP_740": {
+        "std_verification_cost": 1.008043638865153,
+        "std_computing_cost": 0.5196566343307495,
+        "model_size": 4218007
+    },
+    "MLP_750": {
+        "std_verification_cost": 1.0012784639994303,
+        "std_computing_cost": 0.5347236315409343,
+        "model_size": 4302579
+    },
+    "MLP_760": {
+        "std_verification_cost": 1.0388354460398357,
+        "std_computing_cost": 0.5462026596069336,
+        "model_size": 4388517
+    },
+    "MLP_770": {
+        "std_verification_cost": 1.0003612200419107,
+        "std_computing_cost": 0.5543408393859863,
+        "model_size": 4474584
+    },
+    "MLP_780": {
+        "std_verification_cost": 1.000467308362325,
+        "std_computing_cost": 0.5673369248708089,
+        "model_size": 4561733
+    },
+    "MLP_790": {
+        "std_verification_cost": 1.0057086547215779,
+        "std_computing_cost": 0.5732356071472168,
+        "model_size": 4649490
+    },
+    "MLP_800": {
+        "std_verification_cost": 1.0058899402618409,
+        "std_computing_cost": 0.5870675961176555,
+        "model_size": 4738040
+    },
+    "MLP_810": {
+        "std_verification_cost": 1.0256962458292642,
+        "std_computing_cost": 0.5922808488210042,
+        "model_size": 4827786
+    },
+    "MLP_820": {
+        "std_verification_cost": 1.006529974937439,
+        "std_computing_cost": 0.6033068656921386,
+        "model_size": 4917464
+    },
+    "MLP_830": {
+        "std_verification_cost": 1.0258816560109456,
+        "std_computing_cost": 0.6141243855158488,
+        "model_size": 5008571
+    },
+    "MLP_840": {
+        "std_verification_cost": 1.0054009278615317,
+        "std_computing_cost": 0.6273407300313314,
+        "model_size": 5100034
+    },
+    "MLP_850": {
+        "std_verification_cost": 1.0098517100016275,
+        "std_computing_cost": 0.6412167390187581,
+        "model_size": 5192654
+    },
+    "MLP_860": {
+        "std_verification_cost": 1.0108155965805055,
+        "std_computing_cost": 0.6553289095560709,
+        "model_size": 5285260
+    },
+    "MLP_870": {
+        "std_verification_cost": 1.0046063343683878,
+        "std_computing_cost": 0.6631453434626261,
+        "model_size": 5378905
+    },
+    "MLP_880": {
+        "std_verification_cost": 1.0064194679260254,
+        "std_computing_cost": 0.6766175429026285,
+        "model_size": 5474516
+    },
+    "MLP_890": {
+        "std_verification_cost": 1.021983273824056,
+        "std_computing_cost": 0.6916657527287801,
+        "model_size": 5569837
+    },
+    "MLP_900": {
+        "std_verification_cost": 1.003281291325887,
+        "std_computing_cost": 0.6878726641337077,
+        "model_size": 5665571
+    },
+    "MLP_910": {
+        "std_verification_cost": 1.0120614926020304,
+        "std_computing_cost": 0.7087794780731201,
+        "model_size": 5762674
+    },
+    "MLP_920": {
+        "std_verification_cost": 1.000439453125,
+        "std_computing_cost": 0.7156810681025187,
+        "model_size": 5860116
+    },
+    "MLP_930": {
+        "std_verification_cost": 1.0056297620137533,
+        "std_computing_cost": 0.7213193813959757,
+        "model_size": 5958371
+    },
+    "MLP_940": {
+        "std_verification_cost": 1.0082730929056802,
+        "std_computing_cost": 0.7223663727442423,
+        "model_size": 6057705
+    },
+    "MLP_950": {
+        "std_verification_cost": 1.0022665023803712,
+        "std_computing_cost": 0.7360132137934366,
+        "model_size": 6157581
+    },
+    "MLP_960": {
+        "std_verification_cost": 1.0021098454793294,
+        "std_computing_cost": 0.756944990158081,
+        "model_size": 6258182
+    },
+    "MLP_970": {
+        "std_verification_cost": 1.0571016867955525,
+        "std_computing_cost": 0.7592751423517863,
+        "model_size": 6359439
+    },
+    "MLP_980": {
+        "std_verification_cost": 1.0464004198710124,
+        "std_computing_cost": 0.7754825592041016,
+        "model_size": 6461346
+    },
+    "MLP_990": {
+        "std_verification_cost": 1.006772271792094,
+        "std_computing_cost": 0.7894476811091106,
+        "model_size": 6564294
+    },
+    "MLP_1000": {
+        "std_verification_cost": 1.008493463198344,
+        "std_computing_cost": 0.789755892753601,
+        "model_size": 6668299
+    },
+    "MLP_1000": {
+        "std_verification_cost": 1.2303994735081991,
+        "std_computing_cost": 0.8000753879547119,
+        "model_size": 6668299
+    },
+    "MLP_1010": {
+        "std_verification_cost": 2.2270272016525268,
+        "std_computing_cost": 0.8090535004933676,
+        "model_size": 6772422
+    },
+    "MLP_1020": {
+        "std_verification_cost": 1.0318379084269205,
+        "std_computing_cost": 0.82272367477417,
+        "model_size": 6877374
+    },
+    "MLP_1030": {
+        "std_verification_cost": 1.5101906299591064,
+        "std_computing_cost": 0.833329725265503,
+        "model_size": 6983536
+    },
+    "MLP_1040": {
+        "std_verification_cost": 1.5214322010676067,
+        "std_computing_cost": 0.8454962094624837,
+        "model_size": 7089831
+    },
+    "MLP_1050": {
+        "std_verification_cost": 0.9940539757410686,
+        "std_computing_cost": 0.856336259841919,
+        "model_size": 7197372
+    },
+    "MLP_1060": {
+        "std_verification_cost": 2.48421467145284,
+        "std_computing_cost": 0.8727481047312419,
+        "model_size": 7305302
+    },
+    "MLP_1070": {
+        "std_verification_cost": 1.8483872969945272,
+        "std_computing_cost": 0.8818637609481812,
+        "model_size": 7414111
+    },
+    "MLP_1080": {
+        "std_verification_cost": 1.0193044344584148,
+        "std_computing_cost": 0.8897029002507527,
+        "model_size": 7524126
+    },
+    "MLP_1090": {
+        "std_verification_cost": 1.7170190413792927,
+        "std_computing_cost": 0.9032779693603515,
+        "model_size": 7633799
+    },
+    "MLP_1100": {
+        "std_verification_cost": 1.0749168316523234,
+        "std_computing_cost": 0.9168364763259887,
+        "model_size": 7745275
+    },
+    "MLP_1110": {
+        "std_verification_cost": 1.0057021458943685,
+        "std_computing_cost": 0.9273523330688477,
+        "model_size": 7856335
+    },
+    "MLP_1120": {
+        "std_verification_cost": 1.9848047971725464,
+        "std_computing_cost": 0.9396554708480835,
+        "model_size": 7969193
+    },
+    "MLP_1130": {
+        "std_verification_cost": 1.4415283203125,
+        "std_computing_cost": 0.95253853003184,
+        "model_size": 8082985
+    },
+    "MLP_1140": {
+        "std_verification_cost": 1.3511627197265625,
+        "std_computing_cost": 0.9652630488077799,
+        "model_size": 8197046
+    },
+    "MLP_1150": {
+        "std_verification_cost": 1.538252305984497,
+        "std_computing_cost": 0.9771275917689005,
+        "model_size": 8311418
+    },
+    "MLP_1160": {
+        "std_verification_cost": 1.4646299759546915,
+        "std_computing_cost": 0.989811364809672,
+        "model_size": 8427151
+    },
+    "MLP_1170": {
+        "std_verification_cost": 1.666634194056193,
+        "std_computing_cost": 1.0032063245773315,
+        "model_size": 8543896
+    },
+    "MLP_1180": {
+        "std_verification_cost": 1.0101906776428222,
+        "std_computing_cost": 1.0185697635014852,
+        "model_size": 8660630
+    },
+    "MLP_1190": {
+        "std_verification_cost": 1.6373896916707358,
+        "std_computing_cost": 1.0311539967854817,
+        "model_size": 8778041
+    },
+    "MLP_1200": {
+        "std_verification_cost": 1.989918867746989,
+        "std_computing_cost": 1.043277883529663,
+        "model_size": 8896156
+    },
+    "MLP_1210": {
+        "std_verification_cost": 1.7307247718175252,
+        "std_computing_cost": 1.0606724739074707,
+        "model_size": 9015188
+    },
+    "MLP_1220": {
+        "std_verification_cost": 1.0057348966598512,
+        "std_computing_cost": 1.0718695084253946,
+        "model_size": 9135177
+    },
+    "MLP_1230": {
+        "std_verification_cost": 2.55930118560791,
+        "std_computing_cost": 1.0871305783589682,
+        "model_size": 9255993
+    },
+    "MLP_1240": {
+        "std_verification_cost": 1.1505557854970296,
+        "std_computing_cost": 1.0980194250742594,
+        "model_size": 9377351
+    },
+    "MLP_1250": {
+        "std_verification_cost": 1.4946053187052408,
+        "std_computing_cost": 1.113905390103658,
+        "model_size": 9500298
+    },
+    "MLP_1260": {
+        "std_verification_cost": 1.2440088351567586,
+        "std_computing_cost": 1.1268656571706137,
+        "model_size": 9623023
+    },
+    "MLP_1270": {
+        "std_verification_cost": 1.002278733253479,
+        "std_computing_cost": 1.1393999894460043,
+        "model_size": 9746615
+    },
+    "MLP_1280": {
+        "std_verification_cost": 1.842898416519165,
+        "std_computing_cost": 1.1514253536860148,
+        "model_size": 9870794
+    },
+    "MLP_1290": {
+        "std_verification_cost": 1.7013739109039308,
+        "std_computing_cost": 1.1679517428080242,
+        "model_size": 9996589
+    },
+    "MLP_1300": {
+        "std_verification_cost": 1.3975565830866497,
+        "std_computing_cost": 1.181087334950765,
+        "model_size": 10121964
+    },
+    "MLP_1310": {
+        "std_verification_cost": 1.4235745747884114,
+        "std_computing_cost": 1.1974597454071045,
+        "model_size": 10248313
+    },
+    "MLP_1320": {
+        "std_verification_cost": 1.0178042332331338,
+        "std_computing_cost": 1.211487110455831,
+        "model_size": 10375947
+    },
+    "MLP_1330": {
+        "std_verification_cost": 1.5904513438542685,
+        "std_computing_cost": 1.2242276748021443,
+        "model_size": 10504260
+    },
+    "MLP_1340": {
+        "std_verification_cost": 1.3009451468785604,
+        "std_computing_cost": 1.2426248788833618,
+        "model_size": 10633446
+    },
+    "MLP_1350": {
+        "std_verification_cost": 2.45479994614919,
+        "std_computing_cost": 1.2573981126149496,
+        "model_size": 10762201
+    },
+    "MLP_1360": {
+        "std_verification_cost": 1.4018905401229858,
+        "std_computing_cost": 1.2730632702509561,
+        "model_size": 10893276
+    },
+    "MLP_1370": {
+        "std_verification_cost": 1.1625264008839926,
+        "std_computing_cost": 1.2873360474904378,
+        "model_size": 11024723
+    },
+    "MLP_1380": {
+        "std_verification_cost": 1.478616444269816,
+        "std_computing_cost": 1.303873602549235,
+        "model_size": 11155925
+    },
+    "MLP_1390": {
+        "std_verification_cost": 1.5197508176167807,
+        "std_computing_cost": 1.3129639784495035,
+        "model_size": 11288819
+    },
+    "MLP_1400": {
+        "std_verification_cost": 2.2588186343510945,
+        "std_computing_cost": 1.3268383820851644,
+        "model_size": 11421139
+    },
+    "MLP_1410": {
+        "std_verification_cost": 1.5455108880996704,
+        "std_computing_cost": 1.3447028160095216,
+        "model_size": 11555467
+    },
+    "MLP_1420": {
+        "std_verification_cost": 2.9022316455841066,
+        "std_computing_cost": 1.3576768159866333,
+        "model_size": 11690967
+    },
+    "MLP_1430": {
+        "std_verification_cost": 1.1867700099945069,
+        "std_computing_cost": 1.3721852858861288,
+        "model_size": 11825172
+    },
+    "MLP_1440": {
+        "std_verification_cost": 1.6131418148676555,
+        "std_computing_cost": 1.3870531558990478,
+        "model_size": 11962118
+    },
+    "MLP_1450": {
+        "std_verification_cost": 1.1462996006011963,
+        "std_computing_cost": 1.4050235430399576,
+        "model_size": 12099113
+    },
+    "MLP_1460": {
+        "std_verification_cost": 1.9318763573964437,
+        "std_computing_cost": 1.416735847791036,
+        "model_size": 12236739
+    },
+    "MLP_1470": {
+        "std_verification_cost": 1.1909332513809203,
+        "std_computing_cost": 1.4337813297907511,
+        "model_size": 12375396
+    },
+    "MLP_1480": {
+        "std_verification_cost": 1.8874008973439536,
+        "std_computing_cost": 1.45057270526886,
+        "model_size": 12515023
+    },
+    "MLP_1490": {
+        "std_verification_cost": 1.3447376410166423,
+        "std_computing_cost": 1.4640641371409098,
+        "model_size": 12654843
+    },
+    "MLP_1500": {
+        "std_verification_cost": 1.027553645769755,
+        "std_computing_cost": 1.4808483044306437,
+        "model_size": 12795421
+    },
+    "MLP_1510": {
+        "std_verification_cost": 2.2276389439900717,
+        "std_computing_cost": 1.4954554319381714,
+        "model_size": 12937701
+    },
+    "MLP_1520": {
+        "std_verification_cost": 1.007086992263794,
+        "std_computing_cost": 1.5096907536188762,
+        "model_size": 13079046
+    },
+    "MLP_1530": {
+        "std_verification_cost": 1.9021409114201864,
+        "std_computing_cost": 1.5267225583394368,
+        "model_size": 13221661
+    },
+    "MLP_1540": {
+        "std_verification_cost": 1.586178708076477,
+        "std_computing_cost": 1.5441095113754273,
+        "model_size": 13365322
+    },
+    "MLP_1550": {
+        "std_verification_cost": 2.7854250113169354,
+        "std_computing_cost": 1.5610774596532186,
+        "model_size": 13509920
+    },
+    "MLP_1560": {
+        "std_verification_cost": 1.0100863059361775,
+        "std_computing_cost": 1.5774620691935222,
+        "model_size": 13654865
+    },
+    "MLP_1570": {
+        "std_verification_cost": 1.7880056222279868,
+        "std_computing_cost": 1.5930586338043213,
+        "model_size": 13800819
+    },
+    "MLP_1580": {
+        "std_verification_cost": 1.0176879008611044,
+        "std_computing_cost": 1.6110864480336506,
+        "model_size": 13947387
+    },
+    "MLP_1590": {
+        "std_verification_cost": 2.824646313985189,
+        "std_computing_cost": 1.6260172764460246,
+        "model_size": 14095229
+    },
+    "MLP_1600": {
+        "std_verification_cost": 1.6186794757843017,
+        "std_computing_cost": 1.6432230075200398,
+        "model_size": 14243104
+    },
+    "MLP_1610": {
+        "std_verification_cost": 1.365758228302002,
+        "std_computing_cost": 1.6605308294296264,
+        "model_size": 14392172
+    },
+    "MLP_1620": {
+        "std_verification_cost": 1.7236527840296427,
+        "std_computing_cost": 1.675529678662618,
+        "model_size": 14541735
+    },
+    "MLP_1630": {
+        "std_verification_cost": 1.4248961925506591,
+        "std_computing_cost": 1.6964733680089314,
+        "model_size": 14691751
+    },
+    "MLP_1640": {
+        "std_verification_cost": 1.555890194574992,
+        "std_computing_cost": 1.7118520259857177,
+        "model_size": 14842832
+    },
+    "MLP_1650": {
+        "std_verification_cost": 1.6164680004119873,
+        "std_computing_cost": 1.726287070910136,
+        "model_size": 14994012
+    },
+    "MLP_1660": {
+        "std_verification_cost": 1.3169241746266682,
+        "std_computing_cost": 1.7459701458613077,
+        "model_size": 15147001
+    },
+    "MLP_1670": {
+        "std_verification_cost": 1.2909415165583293,
+        "std_computing_cost": 1.7632181803385416,
+        "model_size": 15299882
+    },
+    "MLP_1680": {
+        "std_verification_cost": 1.5132177829742433,
+        "std_computing_cost": 1.7832976897557578,
+        "model_size": 15454388
+    },
+    "MLP_1690": {
+        "std_verification_cost": 1.3603981177012126,
+        "std_computing_cost": 1.8036222378412883,
+        "model_size": 15609428
+    },
+    "MLP_1700": {
+        "std_verification_cost": 1.618903120358785,
+        "std_computing_cost": 1.8174850543340046,
+        "model_size": 15764381
+    },
+    "MLP_1710": {
+        "std_verification_cost": 1.1734458128611247,
+        "std_computing_cost": 1.838193408648173,
+        "model_size": 15921365
+    },
+    "MLP_1720": {
+        "std_verification_cost": 1.4256594975789387,
+        "std_computing_cost": 1.8600761731465658,
+        "model_size": 16077931
+    },
+    "MLP_1730": {
+        "std_verification_cost": 1.3217934767405193,
+        "std_computing_cost": 1.88767449537913,
+        "model_size": 16235246
+    },
+    "MLP_1740": {
+        "std_verification_cost": 2.272891068458557,
+        "std_computing_cost": 1.899304013252258,
+        "model_size": 16394195
+    },
+    "MLP_1750": {
+        "std_verification_cost": 1.4829498926798503,
+        "std_computing_cost": 1.914793078104655,
+        "model_size": 16553455
+    },
+    "MLP_1760": {
+        "std_verification_cost": 2.513317847251892,
+        "std_computing_cost": 1.9298464457194011,
+        "model_size": 16713097
+    },
+    "MLP_1770": {
+        "std_verification_cost": 1.7208178520202637,
+        "std_computing_cost": 1.9500303109486898,
+        "model_size": 16873699
+    },
+    "MLP_1780": {
+        "std_verification_cost": 2.2289557218551637,
+        "std_computing_cost": 1.9649586915969848,
+        "model_size": 17034969
+    },
+    "MLP_1790": {
+        "std_verification_cost": 2.6173025369644165,
+        "std_computing_cost": 1.9788269440333048,
+        "model_size": 17197227
+    },
+    "MLP_1800": {
+        "std_verification_cost": 1.4336214145024617,
+        "std_computing_cost": 1.996318483352661,
+        "model_size": 17360708
+    },
+    "MLP_1810": {
+        "std_verification_cost": 1.2791786273320516,
+        "std_computing_cost": 2.0160204648971556,
+        "model_size": 17524300
+    },
+    "MLP_1820": {
+        "std_verification_cost": 1.9247569481531779,
+        "std_computing_cost": 2.036285312970479,
+        "model_size": 17688312
+    },
+    "MLP_1830": {
+        "std_verification_cost": 1.357997218767802,
+        "std_computing_cost": 2.0555549383163454,
+        "model_size": 17853731
+    },
+    "MLP_1840": {
+        "std_verification_cost": 2.260247572263082,
+        "std_computing_cost": 2.068089310328166,
+        "model_size": 18020027
+    },
+    "MLP_1850": {
+        "std_verification_cost": 1.5385589520136516,
+        "std_computing_cost": 2.0855671246846517,
+        "model_size": 18185776
+    },
+    "MLP_1860": {
+        "std_verification_cost": 1.0202420632044473,
+        "std_computing_cost": 2.1055159250895183,
+        "model_size": 18352943
+    },
+    "MLP_1870": {
+        "std_verification_cost": 1.854720131556193,
+        "std_computing_cost": 2.1251259167989094,
+        "model_size": 18522007
+    },
+    "MLP_1880": {
+        "std_verification_cost": 1.4163975397745767,
+        "std_computing_cost": 2.141976531346639,
+        "model_size": 18690369
+    },
+    "MLP_1890": {
+        "std_verification_cost": 2.190965755780538,
+        "std_computing_cost": 2.16196444829305,
+        "model_size": 18860095
+    },
+    "MLP_1900": {
+        "std_verification_cost": 2.3473212718963623,
+        "std_computing_cost": 2.181931710243225,
+        "model_size": 19030605
+    },
+    "MLP_1910": {
+        "std_verification_cost": 1.0134365161259968,
+        "std_computing_cost": 2.2011651754379273,
+        "model_size": 19201605
+    },
+    "MLP_1920": {
+        "std_verification_cost": 1.403395167986552,
+        "std_computing_cost": 2.2244180043538413,
+        "model_size": 19372197
+    },
+    "MLP_1930": {
+        "std_verification_cost": 2.288150421778361,
+        "std_computing_cost": 2.2408273140589396,
+        "model_size": 19545653
+    },
+    "MLP_1940": {
+        "std_verification_cost": 1.5071367263793944,
+        "std_computing_cost": 2.2590269962946574,
+        "model_size": 19718330
+    },
+    "MLP_1950": {
+        "std_verification_cost": 3.1701013644536338,
+        "std_computing_cost": 2.2789472500483194,
+        "model_size": 19893178
+    },
+    "MLP_1960": {
+        "std_verification_cost": 1.9669950564702352,
+        "std_computing_cost": 2.298447283109029,
+        "model_size": 20066956
+    },
+    "MLP_1970": {
+        "std_verification_cost": 1.3370246648788453,
+        "std_computing_cost": 2.31676660378774,
+        "model_size": 20243059
+    },
+    "MLP_1980": {
+        "std_verification_cost": 1.7167174180348714,
+        "std_computing_cost": 2.3360575437545776,
+        "model_size": 20420035
+    },
+    "MLP_1990": {
+        "std_verification_cost": 1.4490899960199992,
+        "std_computing_cost": 2.3556355396906534,
+        "model_size": 20596450
+    },
+    "MLP_2000": {
+        "std_verification_cost": 1.1930691003799438,
+        "std_computing_cost": 2.376341764132182,
+        "model_size": 20774767
+    }
+}
