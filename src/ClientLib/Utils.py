@@ -9,6 +9,7 @@ def GetExperimentAgent(experiment_config, env_config):
     from .Sequential import SequentialAgent
     from .Concurrent import ConcurrentAgent
     from .TrainSeq import TrainSeqAgent
+    from .DummyTrain import DummyTrainAgent
 
     if experiment_config['experiment_name'] == 'sequential':
         return SequentialAgent(experiment_config, env_config)
@@ -16,6 +17,8 @@ def GetExperimentAgent(experiment_config, env_config):
         return ConcurrentAgent(experiment_config, env_config)
     elif experiment_config['experiment_name'] == 'train_seq':
         return TrainSeqAgent(experiment_config, env_config)
+    elif experiment_config['experiment_name'] == 'dummy_train':
+        return DummyTrainAgent(experiment_config, env_config)
     else:
         return None
 

@@ -139,11 +139,11 @@ class TrainSeqAgent:
                 'D_node': i
             } for i in range(len(this.vc_map))]
         elif this.exp_config['train_mode'] == 'D':
-            # VC_map == T_map[:2], CLoad(X), DLoad(O)
+            # len(VC_map) == 1, len(T_map[:2]) == 5, CLoad(X), DLoad(O)
             return [{
                 'token': '5c9597f3c8245907ea71a89d9d39d08e',
-                'V_node': (i + 1) % 2,
-                'C_node': (i + 1) % 2,
+                'V_node': 0,
+                'C_node': 0,
                 'D_node': i
             } for i in range(len(this.t_map))]
         elif this.exp_config['train_mode'] == 'M':
@@ -152,8 +152,8 @@ class TrainSeqAgent:
                 'token': '5c9597f3c8245907ea71a89d9d39d08e',
                 'V_node': i,
                 'C_node': i,
-                'D_node': j
-            } for i in range(len(this.vc_map)) for j in range(len(this.t_map))]
+                'D_node': i
+            } for i in range(len(this.vc_map))]
 
     """ Other Utils """
     def ToServiceHelper(this, action, args):
