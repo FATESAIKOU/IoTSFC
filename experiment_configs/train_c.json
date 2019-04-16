@@ -1,7 +1,0 @@
-{
-    "experiment_name": "train_seq",
-    "reward_log_dir": "/home/fatesaikou/testPY/IoTSFC/rw_logs",
-    "weights_dir": "/home/fatesaikou/testPY/IoTSFC/weights",
-    "tag": "train_seq_c",
-    "train_mode": "C"
-}
