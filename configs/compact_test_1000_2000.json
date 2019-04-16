@@ -1,5 +1,5 @@
 {
-    "sequence_length": 1000,
+    "sequence_length": 100,
     "units_min": 1000,
     "units_max": 2000,
     "units_avg": 500,
@@ -16,7 +16,7 @@
     "d_update_width": 150,
     "v_systemload": 0.1,
     "c_systemload": 3.0,
-    "d_systemload": 1.5,
+    "d_systemload": 3.0,
     "v_threshold": 10000000.0,
     "c_threshold": 10000000.0,
     "d_threshold": 10000000.0,

@@ -1,18 +1,18 @@
 {
     "http://192.168.1.3:8001": {
         "C_AVA": 100,
-        "D_Load": "2048k",
-        "D_Load_To": "hedy@192.168.1.2 -p55555"
+        "D_Load": "0k",
+        "D_Load_To": "fatesaikou@192.168.1.9 -p2222"
     },
     "http://192.168.1.4:8001": {
         "C_AVA": 100,
-        "D_Load": "4096k",
-        "D_Load_To": "hedy@192.168.1.2 -p55555"
+        "D_Load": "3072k",
+        "D_Load_To": "fatesaikou@192.168.1.9 -p2222"
     },
     "http://192.168.1.5:8001": {
         "C_AVA": 100,
-        "D_Load": "0k",
-        "D_Load_To": "hedy@192.168.1.2 -p55555"
+        "D_Load": "6144k",
+        "D_Load_To": "fatesaikou@192.168.1.9 -p2222"
     },
     "http://192.168.1.6:8001": {
         "C_AVA": 100,
