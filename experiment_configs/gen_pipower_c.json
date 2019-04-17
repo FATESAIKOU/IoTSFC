@@ -1,0 +1,8 @@
+{
+    "experiment_name": "gen_pi_power",
+    "mode": "C",
+    "start_load": 0,
+    "end_load": 100,
+    "load_step": 10,
+    "log_filepath": "/home/fatesaikou/testPY/IoTSFC/pipower_logs/pipower.json"
+}

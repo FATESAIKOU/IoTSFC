@@ -1,0 +1,8 @@
+{
+    "experiment_name": "dummy_train",
+    "reward_log_dir": "/home/fatesaikou/testPY/IoTSFC/rw_logs",
+    "weights_dir": "/home/fatesaikou/testPY/IoTSFC/weights",
+    "tag": "c_c1530",
+    "train_mode": "C",
+    "log_filepath": "/home/fatesaikou/testPY/IoTSFC/rw_logs/train_seq_c_log.json"
+}

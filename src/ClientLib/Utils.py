@@ -10,6 +10,7 @@ def GetExperimentAgent(experiment_config, env_config):
     from .Concurrent import ConcurrentAgent
     from .TrainSeq import TrainSeqAgent
     from .DummyTrain import DummyTrainAgent
+    from .GenPiPower import GenPiPowerAgent
 
     if experiment_config['experiment_name'] == 'sequential':
         return SequentialAgent(experiment_config, env_config)
@@ -19,6 +20,8 @@ def GetExperimentAgent(experiment_config, env_config):
         return TrainSeqAgent(experiment_config, env_config)
     elif experiment_config['experiment_name'] == 'dummy_train':
         return DummyTrainAgent(experiment_config, env_config)
+    elif experiment_config['experiment_name'] == 'gen_pi_power':
+        return GenPiPowerAgent(experiment_config, env_config)
     else:
         return None
 
