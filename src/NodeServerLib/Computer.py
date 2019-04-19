@@ -30,7 +30,14 @@ class Computer:
 
     @staticmethod
     def CleanUp():
-        pass
+        global c_limit_p, c_stress_p
+        if c_limit_p != None:
+            os.killpg(os.getpgid(c_limit_p.pid), signal.SIGTERM)
+            c_limit_p = None
+
+        if c_stress_p != None:
+            os.killpg(os.getpgid(c_stress_p.pid), signal.SIGTERM)
+            c_stress_p = None
 
     @staticmethod
     def DoCompute(process_obj, debug):
