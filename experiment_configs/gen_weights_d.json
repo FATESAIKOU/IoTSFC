@@ -1,0 +1,7 @@
+{
+    "experiment_name": "gen_weights",
+    "weights_dir": "/home/fatesaikou/testPY/IoTSFC/weights",
+    "tag": "g_d_test",
+    "mode": "D",
+    "log_filepath": "/home/fatesaikou/testPY/IoTSFC/pipower_logs/pipower.json"
+}
