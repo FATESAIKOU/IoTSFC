@@ -1,0 +1,7 @@
+{
+    "experiment_name": "real_concurrent",
+    "reward_log_dir": "/home/fatesaikou/testPY/IoTSFC/rw_logs",
+    "weights_dir": "/home/fatesaikou/testPY/IoTSFC/weights",
+    "tag": "real_concurrent",
+    "paral_num": 5
+}

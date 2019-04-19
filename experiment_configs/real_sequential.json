@@ -1,0 +1,6 @@
+{
+    "experiment_name": "real_sequential",
+    "reward_log_dir": "/home/fatesaikou/testPY/IoTSFC/rw_logs",
+    "weights_dir": "/home/fatesaikou/testPY/IoTSFC/weights",
+    "tag": "real_sequential"
+}
