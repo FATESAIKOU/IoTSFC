@@ -121,12 +121,12 @@ class RLAgent():
 
         return SFC_desc
 
+    @staticmethod
     def UnlockSFC(SFC_desc):
         global V_Locked, C_Locked, D_Locked
         V_Locked.discard(SFC_desc['V_node'])
         C_Locked.discard(SFC_desc['C_node'])
         D_Locked.discard(SFC_desc['D_node'])
-
 
     @staticmethod
     def UpdateRL(rewards):
