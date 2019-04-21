@@ -110,10 +110,7 @@ class SimSequentialAgent:
             this.exp_config['reward_log_dir'], this.exp_config['tag']))
 
     def CleanUpEnv(this):
-        # Clean up Nodes env
-        for addr in this.env_config['NodeServerList']:
-            SendRequest(addr, 'CleanUp', None)
-
+        pass
 
     def GetCosts(this, pipower_log, sfc_desc, r):
         service_name = r['service_name']
