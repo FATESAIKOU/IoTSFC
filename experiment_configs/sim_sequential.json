@@ -1,0 +1,7 @@
+{
+    "experiment_name": "sim_sequential",
+    "reward_log_dir": "/home/fatesaikou/testPY/IoTSFC/rw_logs",
+    "weights_dir": "/home/fatesaikou/testPY/IoTSFC/weights",
+    "tag": "sim_sequential",
+    "log_filepath": "/home/fatesaikou/testPY/IoTSFC/pipower_logs/pipower.json"
+}

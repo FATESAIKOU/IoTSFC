@@ -8,8 +8,10 @@ The utils for Client.
 def GetExperimentAgent(experiment_config, env_config):
     from .Sequential import SequentialAgent
     from .RealSequential import RealSequentialAgent
+    from .SimSequential import SimSequentialAgent
     from .Concurrent import ConcurrentAgent
     from .RealConcurrent import RealConcurrentAgent
+    from .SimConcurrent import SimConcurrentAgent
     from .TrainSeq import TrainSeqAgent
     from .DummyTrain import DummyTrainAgent
     from .GenPiPower import GenPiPowerAgent
@@ -23,6 +25,10 @@ def GetExperimentAgent(experiment_config, env_config):
         return RealSequentialAgent(experiment_config, env_config)
     elif experiment_config['experiment_name'] == 'real_concurrent':
         return RealConcurrentAgent(experiment_config, env_config)
+    elif experiment_config['experiment_name'] == 'sim_sequential':
+        return SimSequentialAgent(experiment_config, env_config)
+    elif experiment_config['experiment_name'] == 'sim_concurrent':
+        return SimConcurrentAgent(experiment_config, env_config)
     elif experiment_config['experiment_name'] == 'train_seq':
         return TrainSeqAgent(experiment_config, env_config)
     elif experiment_config['experiment_name'] == 'dummy_train':
