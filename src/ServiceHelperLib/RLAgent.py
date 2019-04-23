@@ -20,6 +20,8 @@ class RLAgent():
     global V_Update_Width, C_Update_Width, D_Update_Width
     global V_Systemload, C_Systemload, D_Systemload
 
+    global V_Real_Performance, C_Real_Performance, D_Real_Performance
+
     global State_Max, State_Step, State_Num
 
     @staticmethod
@@ -27,16 +29,20 @@ class RLAgent():
         global V_Table, C_Table, D_Table
         global V_States, C_States, D_States
         global V_Locked, C_Locked, D_Locked
+        global V_Real_Performance, C_Real_Performance, D_Real_Performance
 
         V_Table = np.ones(shape=(State_Num, V_Node_Num))
+        V_Real_Performance = np.zeros(shape=(State_Num, V_Node_Num))
         V_States = np.array(range(1, State_Max, State_Step))
         V_Locked = set()
 
         C_Table = np.ones(shape=(State_Num, C_Node_Num))
+        C_Real_Performance = np.zeros(shape=(State_Num, C_Node_Num))
         C_States = np.array(range(1, State_Max, State_Step))
         C_Locked = set()
 
         D_Table = np.ones(shape=(State_Num, D_Node_Num))
+        D_Real_Performance = np.zeros(shape=(State_Num, D_Node_Num))
         D_States = np.array(range(1, State_Max, State_Step))
         D_Locked = set()
 
@@ -138,12 +144,13 @@ class RLAgent():
                 RLAgent.CalculateUpdateValue(rewards['request_desc'], rewards['event_list'])
 
             global V_Table, C_Table, D_Table
-            RLAgent.UpdateTable(V_Table, V_States, v_state, V_Update_Width,
-                v_update_value, rewards['SFC_desc']['V_node'])
-            RLAgent.UpdateTable(C_Table, C_States, c_state, C_Update_Width,
-                c_update_value, rewards['SFC_desc']['C_node'])
-            RLAgent.UpdateTable(D_Table, D_States, d_state, D_Update_Width,
-                d_update_value, rewards['SFC_desc']['D_node'])
+            global V_Real_Performance, C_Real_Performance, D_Real_Performance
+            RLAgent.UpdateTable(V_Table, V_States, V_Real_Performance,
+                v_state, V_Update_Width, v_update_value, rewards['SFC_desc']['V_node'])
+            RLAgent.UpdateTable(C_Table, C_States, C_Real_Performance,
+                c_state, C_Update_Width, c_update_value, rewards['SFC_desc']['C_node'])
+            RLAgent.UpdateTable(D_Table, D_States, D_Real_Performance,
+                d_state, D_Update_Width, d_update_value, rewards['SFC_desc']['D_node'])
         else:
             v_update_value = c_update_value = d_update_value = -1
             v_state = c_state = d_state = -1
@@ -161,18 +168,24 @@ class RLAgent():
         tag = graph_config.get('tag', None)
 
         Dump2DWeights(V_Table, 'V_Table-' + base_title, base_path + '/v_table-' + tag + '.png', env_labels['vc_list'])
+        Dump2DWeights(V_Real_Performance, 'V_Real_Performance-' + base_title, base_path + '/v_rp-' + tag + '.png', env_labels['vc_list'])
         Dump2DWeights(C_Table, 'C_Table-' + base_title, base_path + '/c_table-' + tag + '.png', env_labels['vc_list'])
+        Dump2DWeights(C_Real_Performance, 'C_Real_Performance-' + base_title, base_path + '/c_rp-' + tag + '.png', env_labels['vc_list'])
         Dump2DWeights(D_Table, 'D_Table-' + base_title, base_path + '/d_table-' + tag + '.png', env_labels['t_list'])
+        Dump2DWeights(D_Real_Performance, 'D_Real_Performance-' + base_title, base_path + '/d_rp-' + tag + '.png', env_labels['t_list'])
 
     @staticmethod
     def DumpWeights(dump_config):
         dir_base = dump_config['dir'] + '/' + dump_config['tag']
         return {
             'v_table': DumpWeights(V_Table, dir_base, 'v_table'),
+            'v_rp': DumpWeights(V_Real_Performance, dir_base, 'v_rp'),
             'v_states': DumpWeights(V_States, dir_base, 'v_states'),
             'c_table': DumpWeights(C_Table, dir_base, 'c_table'),
+            'c_rp': DumpWeights(C_Real_Performance, dir_base, 'c_rp'),
             'c_states': DumpWeights(C_States, dir_base, 'c_states'),
             'd_table': DumpWeights(D_Table, dir_base, 'd_table'),
+            'd_rp': DumpWeights(D_Real_Performance, dir_base, 'd_rp'),
             'd_states': DumpWeights(D_States, dir_base, 'd_states')
         }
 
@@ -182,12 +195,16 @@ class RLAgent():
 
         global V_Table, C_Table, D_Table
         global V_States, C_States, D_States
+        global V_Real_Performance, C_Real_Performance, D_Real_Performance
 
         V_Table = LoadWeights(dir_base, 'v_table')
+        V_Real_Performance = LoadWeights(dir_base, 'v_rp')
         V_States = LoadWeights(dir_base, 'v_states')
         C_Table = LoadWeights(dir_base, 'c_table')
+        C_Real_Performance = LoadWeights(dir_base, 'c_rp')
         C_States = LoadWeights(dir_base, 'c_states')
         D_Table = LoadWeights(dir_base, 'd_table')
+        D_Real_Performance = LoadWeights(dir_base, 'd_rp')
         D_States = LoadWeights(dir_base, 'd_states')
 
         return {
@@ -217,14 +234,16 @@ class RLAgent():
         c_cost = event_list['Computed'] - event_list['GotModel']
         d_cost = event_list['GotModel'] - event_list['GotReq_C']
 
-        v_update_value = (request['std_verification_cost'] * V_State_Factor / v_cost) * \
-                CalculateUpdateFactor(v_cost / request['prefer_verification_cost'], V_Systemload)
-        c_update_value = (request['std_computing_cost'] * C_State_Factor / c_cost) * \
-                CalculateUpdateFactor(c_cost / request['prefer_computing_cost'], C_Systemload)
-        d_update_value = (request['model_size'] * D_State_Factor / d_cost) * \
-                CalculateUpdateFactor(d_cost / request['prefer_data_cost'], D_Systemload)
+        v_update_value_raw = (request['std_verification_cost'] * V_State_Factor / v_cost)
+        v_update_value = v_update_value_raw * CalculateUpdateFactor(v_cost / request['prefer_verification_cost'], V_Systemload)
+        c_update_value_raw = (request['std_computing_cost'] * C_State_Factor / c_cost)
+        c_update_value = c_update_value_raw * CalculateUpdateFactor(c_cost / request['prefer_computing_cost'], C_Systemload)
+        d_update_value_raw = (request['model_size'] * D_State_Factor / d_cost)
+        d_update_value = d_update_value_raw * CalculateUpdateFactor(d_cost / request['prefer_data_cost'], D_Systemload)
 
-        return (v_update_value, c_update_value, d_update_value)
+        return ([v_update_value_raw, v_update_value],
+                [c_update_value_raw, c_update_value],
+                [d_update_value_raw, d_update_value])
 
     @staticmethod
     def SelectNode(table, state_list, locked_list, threshold, state, sd):
@@ -247,7 +266,7 @@ class RLAgent():
             return -1
 
         print("[Filtered weights] {}".format(sum_weights))
-        sum_weights = max(sum_weights) * 3 / sum_weights
+        sum_weights = max(sum_weights) / (sum_weights ** 2)
         sum_weights = sum_weights / sum(sum_weights)
         print("[Final weights] {}".format(sum_weights))
 
@@ -259,11 +278,13 @@ class RLAgent():
         return RLAgent.RefineRandomID(random_id, filtered_list)
 
     @staticmethod
-    def UpdateTable(table, state_list, state, sd, update_value, update_ind):
+    def UpdateTable(table, state_list, real_performance, state, sd, update_values, update_ind):
         weights = Gaussian(np.array(state_list), state, sd)
 
+        real_performance[:, update_ind] = real_performance[:, update_ind] + \
+                (update_values[0] - real_performance[:, update_ind]) * weights
         table[:, update_ind] = table[:, update_ind] + \
-                (np.abs(update_value - state_list) - table[:, update_ind]) * weights
+                (np.abs(update_values[1] - state_list) - table[:, update_ind]) * weights
 
     @staticmethod
     def FilterWeights(sum_weights, locked_list, threshold):
