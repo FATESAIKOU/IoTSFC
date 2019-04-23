@@ -2,6 +2,7 @@
 
 import os
 import json
+import time
 import numpy as np
 
 def WriteConfig(data, path):
@@ -50,8 +51,6 @@ def GenEnvLoads(c_env, d_env, tag):
             "D_Load_To": "hedy@192.168.1.2 -p55555"
         }
 
-    from pprint import pprint
-    pprint(base_loads)
     WriteConfig(base_loads, '/home/fatesaikou/testPY/IoTSFC/loads/' + tag + '.json')
 
 def gen_node_loads(node_num, load_dist):
@@ -121,11 +120,10 @@ def RunExperiment(exp_name, tag):
         loop_time = 1
     else:
         exp_c = configs_base + "experiment_configs/" + tag + ".json"
-        loop_time = 10
+        loop_time = 3
 
     exe_str = "python3 -u /home/fatesaikou/testPY/IoTSFC/src/Client_seq.py {} {} {} {} {} {}". format(exp_c, srv_c, nnlog_c, env_c, load_c, loop_time)
 
-    print(exe_str)
     os.system(exe_str)
 
 def GenDoExpConfig(req_info):
@@ -160,6 +158,7 @@ def DoExperiment(c_env, d_env, req_info):
 
     # Call weights generator
     RunExperiment('gen_weights', req_info['rw_log_tag'])
+    time.sleep(1)
 
     # Gen do_experiment_config
     GenDoExpConfig(req_info)
@@ -171,24 +170,68 @@ def DoExperiment(c_env, d_env, req_info):
     # Remove all of the internal files
     os.system("cd /home/fatesaikou/testPY/IoTSFC; find -name {}* -not -path './rw_logs/*' -delete".format(req_info['rw_log_tag']))
 
+"""
+config
+- mode [C, D, M]
+- tag_base
+- node_num_min
+- node_num_max
+- node_num_step
+- concurrent true or false
+- c_prefer_cost
+- c_systemload
+- d_prefer_cost
+- d_systemload
+"""
+def DoGridExperiment(config):
+    load_dists = [
+        [1, 1, 1, 1, 1, 1],
+        [1, 1, 0, 0, 0, 0],
+        [0, 0, 1, 1, 0, 0],
+        [0, 0, 0, 0, 1, 1],
+        [1, 0, 0, 1, 0, 1]
+    ]
+
+    for node_num in range(config['node_num_min'], config['node_num_max'] + 1, config['node_num_step']):
+        for i in range(len(load_dists)):
+            c_env = {
+                'node_num': node_num,
+                'node_load': load_dists[i],
+                'prefer_cost': config['c_prefer_cost'],
+                'systemload': config['c_systemload']
+            }
+            d_env = {
+                'node_num': node_num,
+                'node_load': load_dists[i],
+                'prefer_cost': config['d_prefer_cost'],
+                'systemload': config['d_systemload']
+            }
+            req_info = {
+                'mode': config['mode'],
+                'rw_log_tag': "{}_{}_n{}_p{}_cl{}_{}{}_dl{}_{}{}".format(
+                    config['tag_base'],
+                    config['mode'],
+                    node_num, node_num if config['concurrent'] else 1,
+                    i, config['c_prefer_cost'], config['c_systemload'],
+                    i, config['d_prefer_cost'], config['d_systemload']
+                ),
+                'concurrent_num': node_num if config['concurrent'] else 1
+            }
+
+            DoExperiment(c_env, d_env, req_info)
+
 if __name__ == '__main__':
-    DoExperiment(
-        {
-            'node_num': 6,
-            'node_load': [1, 1, 1, 1, 1, 1],
-            'prefer_cost': 2.0,
-            'systemload': 1.0
-        },
-        {
-            'node_num': 6,
-            'node_load': [1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-            'prefer_cost': 4,
-            'systemload': 6
-        },
-        {
-            'mode': 'C',
-            'rw_log_tag': 'test_compact',
-            'concurrent_num': 1
-        }
-    )
+    grid_config = {
+        'mode': 'C',
+        'tag_base': 'tg',
+        'node_num_min': 6,
+        'node_num_max': 10,
+        'node_num_step': 1,
+        'concurrent': False,
+        'c_prefer_cost': 2.0,
+        'c_systemload': 1.0,
+        'd_prefer_cost': 4.0,
+        'd_systemload': 6.0
+    }
+    DoGridExperiment(grid_config)
     print("End of test!")

@@ -6,6 +6,7 @@ The program for ServiceHelper to provide service.
 """
 
 import json
+import sys
 
 from urllib import parse
 from http.server import HTTPServer, BaseHTTPRequestHandler
@@ -36,7 +37,7 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     pass
 
 def run():
-    port = 8000
+    port = int(sys.argv[1])
 
     service_address = ('', port)
     httpd = ThreadedHTTPServer(service_address, RequestHandler)
