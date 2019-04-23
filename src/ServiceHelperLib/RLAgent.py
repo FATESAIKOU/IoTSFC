@@ -107,9 +107,9 @@ class RLAgent():
 
         global C_Locked, D_Locked
         V_Locked = set()
-        v_id = int(RLAgent.SelectNode(V_Table, V_States, V_Locked, V_Threshold, v_state, V_Update_Width))
-        c_id = int(RLAgent.SelectNode(C_Table, C_States, C_Locked, C_Threshold, c_state, C_Update_Width))
-        d_id = int(RLAgent.SelectNode(D_Table, D_States, D_Locked, D_Threshold, d_state, D_Update_Width))
+        v_id, v_perf = RLAgent.SelectNode(V_Table, V_States, V_Real_Performance, V_Locked, V_Threshold, v_state, V_Update_Width)
+        c_id, c_perf = RLAgent.SelectNode(C_Table, C_States, C_Real_Performance, C_Locked, C_Threshold, c_state, C_Update_Width)
+        d_id, d_perf = RLAgent.SelectNode(D_Table, D_States, D_Real_Performance, D_Locked, D_Threshold, d_state, D_Update_Width)
 
         if -1 in [v_id, c_id, d_id]:
             v_id = c_id = d_id = -1
@@ -121,8 +121,11 @@ class RLAgent():
         SFC_desc = {
             'token': '5c9597f3c8245907ea71a89d9d39d08e',
             'V_node': v_id,
+            'V_perf': v_perf,
             'C_node': c_id,
-            'D_node': d_id
+            'C_perf': c_perf,
+            'D_node': d_id,
+            'D_perf': d_perf
         }
 
         return SFC_desc
@@ -209,10 +212,13 @@ class RLAgent():
 
         return {
             'v_table': dir_base + '-v_table.weights',
+            'v_rp': dir_base + '-v_rp.weights',
             'v_states': dir_base + '-v_states.weights',
             'c_table': dir_base + '-c_table.weights',
+            'c_rp': dir_base + '-c_rp.weights',
             'c_states': dir_base + '-c_states.weights',
             'd_table': dir_base + '-d_table.weights',
+            'd_rp': dir_base + '-d_rp.weights',
             'd_states': dir_base + '-d_states.weights'
         }
 
@@ -246,7 +252,7 @@ class RLAgent():
                 [d_update_value_raw, d_update_value])
 
     @staticmethod
-    def SelectNode(table, state_list, locked_list, threshold, state, sd):
+    def SelectNode(table, state_list, real_performance, locked_list, threshold, state, sd):
         # Calculate state weights
         weights = Gaussian(np.array(state_list), state, sd)
 
@@ -263,7 +269,7 @@ class RLAgent():
 
         # If no node available, return None.
         if sum_weights.shape[0] < 1:
-            return -1
+            return -1, -1
 
         print("[Filtered weights] {}".format(sum_weights))
         sum_weights = max(sum_weights) / (sum_weights ** 2)
@@ -275,7 +281,10 @@ class RLAgent():
         random_id = np.random.choice(sum_weights.shape[0], 1, p=sum_weights)[0]
 
         # Refine the random_id with filtered_list
-        return RLAgent.RefineRandomID(random_id, filtered_list)
+        n_id = int(RLAgent.RefineRandomID(random_id, filtered_list))
+        n_perf = np.dot(real_performance[:, n_id], weights) / sum(weights)
+
+        return n_id, n_perf
 
     @staticmethod
     def UpdateTable(table, state_list, real_performance, state, sd, update_values, update_ind):
