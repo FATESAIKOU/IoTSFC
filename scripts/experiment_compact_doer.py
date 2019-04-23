@@ -212,8 +212,12 @@ def DoGridExperiment(config):
                     config['tag_base'],
                     config['mode'],
                     node_num, node_num if config['concurrent'] else 1,
-                    i, config['c_prefer_cost'], config['c_systemload'],
-                    i, config['d_prefer_cost'], config['d_systemload']
+                    i,
+                    str(int(config['c_prefer_cost'] * 10)).zfill(3),
+                    str(int(config['c_systemload'] * 10)).zfill(3),
+                    i,
+                    str(int(config['d_prefer_cost'] * 10)).zfill(3),
+                    str(int(config['d_systemload'] * 10)).zfill(3)
                 ),
                 'concurrent_num': node_num if config['concurrent'] else 1
             }
