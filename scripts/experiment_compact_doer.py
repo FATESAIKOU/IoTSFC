@@ -119,7 +119,7 @@ def RunExperiment(exp_name, tag):
         loop_time = 1
     else:
         exp_c = configs_base + "experiment_configs/" + tag + ".json"
-        loop_time = 3
+        loop_time = 10
 
     exe_str = "python3 -u /home/fatesaikou/testPY/IoTSFC/src/Client_seq.py {} {} {} {} {} {}". format(exp_c, srv_c, nnlog_c, env_c, load_c, loop_time)
 
@@ -173,7 +173,7 @@ if __name__ == '__main__':
     DoExperiment(
         {
             'node_num': 3,
-            'node_load': [1, 1, 1, 0, 0, 0],
+            'node_load': [1, 0, 1, 0, 0, 1],
             'prefer_cost': 2.0,
             'systemload': 1.0
         },
