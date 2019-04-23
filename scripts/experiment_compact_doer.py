@@ -50,6 +50,8 @@ def GenEnvLoads(c_env, d_env, tag):
             "D_Load_To": "hedy@192.168.1.2 -p55555"
         }
 
+    from pprint import pprint
+    pprint(base_loads)
     WriteConfig(base_loads, '/home/fatesaikou/testPY/IoTSFC/loads/' + tag + '.json')
 
 def gen_node_loads(node_num, load_dist):
@@ -172,8 +174,8 @@ def DoExperiment(c_env, d_env, req_info):
 if __name__ == '__main__':
     DoExperiment(
         {
-            'node_num': 3,
-            'node_load': [1, 0, 1, 0, 0, 1],
+            'node_num': 6,
+            'node_load': [1, 1, 1, 1, 1, 1],
             'prefer_cost': 2.0,
             'systemload': 1.0
         },
