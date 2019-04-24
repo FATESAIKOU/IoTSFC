@@ -73,7 +73,7 @@ def GenWeightExpConfig(req_info):
         "weights_dir": "/home/fatesaikou/testPY/IoTSFC/weights",
         "tag": req_info['rw_log_tag'],
         "mode": req_info['mode'],
-        "log_filepath": "/home/fatesaikou/testPY/IoTSFC/pipower_logs/pipower.json"
+        "log_filepath": "/home/fatesaikou/testPY/IoTSFC/pipower_logs/pipower_cm.json"
     }
 
     WriteConfig(weight_exp_config, '/home/fatesaikou/testPY/IoTSFC/experiment_configs/' + req_info['rw_log_tag'] + '_gw.json')
@@ -120,7 +120,7 @@ def RunExperiment(exp_name, tag):
         loop_time = 1
     else:
         exp_c = configs_base + "experiment_configs/" + tag + ".json"
-        loop_time = 3
+        loop_time = 10
 
     exe_str = "python3 -u /home/fatesaikou/testPY/IoTSFC/src/Client_seq.py {} {} {} {} {} {}". format(exp_c, srv_c, nnlog_c, env_c, load_c, loop_time)
 
@@ -158,7 +158,6 @@ def DoExperiment(c_env, d_env, req_info):
 
     # Call weights generator
     RunExperiment('gen_weights', req_info['rw_log_tag'])
-    time.sleep(1)
 
     # Gen do_experiment_config
     GenDoExpConfig(req_info)
@@ -229,9 +228,9 @@ if __name__ == '__main__':
         'mode': 'C',
         'tag_base': 'tg',
         'node_num_min': 6,
-        'node_num_max': 10,
+        'node_num_max': 50,
         'node_num_step': 1,
-        'concurrent': False,
+        'concurrent': True,
         'c_prefer_cost': 2.0,
         'c_systemload': 1.0,
         'd_prefer_cost': 4.0,
