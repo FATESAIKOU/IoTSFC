@@ -240,12 +240,12 @@ class RLAgent():
         c_cost = event_list['Computed'] - event_list['GotModel']
         d_cost = event_list['GotModel'] - event_list['GotReq_C']
 
-        v_update_value_raw = (request['std_verification_cost'] * V_State_Factor / v_cost)
-        v_update_value = v_update_value_raw * CalculateUpdateFactor(v_cost / request['prefer_verification_cost'], V_Systemload)
-        c_update_value_raw = (request['std_computing_cost'] * C_State_Factor / c_cost)
-        c_update_value = c_update_value_raw * CalculateUpdateFactor(c_cost / request['prefer_computing_cost'], C_Systemload)
-        d_update_value_raw = (request['model_size'] * D_State_Factor / d_cost)
-        d_update_value = d_update_value_raw * CalculateUpdateFactor(d_cost / request['prefer_data_cost'], D_Systemload)
+        v_update_value_raw = (request['std_verification_cost'] * 12000 / v_cost)
+        v_update_value = v_update_value_raw / 12000 * V_State_Factor * CalculateUpdateFactor(v_cost / request['prefer_verification_cost'], V_Systemload)
+        c_update_value_raw = (request['std_computing_cost'] * 12000 / c_cost)
+        c_update_value = c_update_value_raw / 12000 * C_State_Factor * CalculateUpdateFactor(c_cost / request['prefer_computing_cost'], C_Systemload)
+        d_update_value_raw = (request['model_size'] * 12000 / d_cost)
+        d_update_value = d_update_value_raw / 12000 * D_State_Factor * CalculateUpdateFactor(d_cost / request['prefer_data_cost'], D_Systemload)
 
         return ([v_update_value_raw, v_update_value],
                 [c_update_value_raw, c_update_value],
