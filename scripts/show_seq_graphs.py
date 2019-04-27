@@ -93,7 +93,7 @@ def GenTimesegCnt(rw_log, mode, graph_name):
 
     # Plt mean
     for i in range(10, 20):
-        mean = round(sum(datas[i]) / len(datas[i]), 2)
+        mean = round(sum(datas[i]) / max(len(datas[i]), 1), 2)
         plt.text(i - 9, 5.7, mean, horizontalalignment='center', color='green')
 
     # Other setting

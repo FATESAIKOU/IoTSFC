@@ -78,13 +78,13 @@ def GenWeightExpConfig(req_info):
 
     WriteConfig(weight_exp_config, '/home/fatesaikou/testPY/IoTSFC/experiment_configs/' + req_info['rw_log_tag'] + '_gw.json')
 
-def GenServiceConfig(c_env, d_env, tag):
+def GenServiceConfig(c_env, d_env, tag, units_avg=1200):
     base_config = {
-        "sequence_length": 100,
+        "sequence_length": 1000,
         "units_min": 1000,
         "units_max": 2000,
-        "units_avg": 500,
-        "units_sigma": 1500,
+        "units_avg": units_avg,
+        "units_sigma": 200,
         "units_step": 10,
         "v_state_factor": 1,
         "c_state_factor": 8000 * c_env['prefer_cost'],
@@ -116,22 +116,34 @@ def RunExperiment(exp_name, tag):
     load_c = configs_base + "loads/" + tag + ".json"
 
     if exp_name == 'gen_weights':
+        client_program = 'Client_seq.py'
         exp_c = configs_base + "experiment_configs/" + tag + "_gw.json"
         loop_time = 1
     else:
+        client_program = 'Client.py'
         exp_c = configs_base + "experiment_configs/" + tag + ".json"
         loop_time = 10
 
-    exe_str = "python3 -u /home/fatesaikou/testPY/IoTSFC/src/Client_seq.py {} {} {} {} {} {}". format(exp_c, srv_c, nnlog_c, env_c, load_c, loop_time)
+    exe_str = "python3 -u /home/fatesaikou/testPY/IoTSFC/src/{} {} {} {} {} {} {}". format(client_program, exp_c, srv_c, nnlog_c, env_c, load_c, loop_time)
 
     os.system(exe_str)
 
-def GenDoExpConfig(req_info):
+def GenDoExpConfig(req_info, units_avg):
+    # copy weights
+    weights_dir = "/home/fatesaikou/testPY/IoTSFC/weights"
+    for t in ['states', 'table', 'rp']:
+        for n in ['v', 'c', 'd']:
+            src_filename = "{}-{}_{}.weights".format(req_info['rw_log_tag'], n, t)
+            dst_filename = "{}_r{}-{}_{}.weights".format(req_info['rw_log_tag'], units_avg, n, t)
+
+            os.system("cp {}/{} {}/{}".format(
+                weights_dir, src_filename, weights_dir, dst_filename))
+
     base_exp_config = {
         "experiment_name": "",
         "reward_log_dir": "/home/fatesaikou/testPY/IoTSFC/rw_logs",
         "weights_dir": "/home/fatesaikou/testPY/IoTSFC/weights",
-        "tag": req_info['rw_log_tag'],
+        "tag": req_info['rw_log_tag'] + '_r' + str(units_avg),
         "log_filepath": "/home/fatesaikou/testPY/IoTSFC/pipower_logs/pipower_cm.json"
     }
 
@@ -159,12 +171,16 @@ def DoExperiment(c_env, d_env, req_info):
     # Call weights generator
     RunExperiment('gen_weights', req_info['rw_log_tag'])
 
-    # Gen do_experiment_config
-    GenDoExpConfig(req_info)
+    for avg in [1200, 1400, 1600, 1800]:
+        # Gen do_experiment_config
+        GenDoExpConfig(req_info, avg)
 
-    # Call experiment doer
-    # (Client or Client_seq with env_config, env_load and service_config)
-    RunExperiment('real_exp', req_info['rw_log_tag'])
+        # Gen service_config (c_env, d_env)
+        GenServiceConfig(c_env, d_env, req_info['rw_log_tag'], units_avg=avg)
+
+        # Call experiment doer
+        # (Client or Client_seq with env_config, env_load and service_config)
+        RunExperiment('real_exp', req_info['rw_log_tag'])
 
     # Remove all of the internal files
     os.system("cd /home/fatesaikou/testPY/IoTSFC; find -name {}* -not -path './rw_logs/*' -delete".format(req_info['rw_log_tag']))
@@ -231,7 +247,7 @@ if __name__ == '__main__':
     for i in range(20):
         grid_config = {
             'mode': 'M',
-            'tag_base': 'tg',
+            'tag_base': 'tr',
             'node_num_min': 6,
             'node_num_max': 6,
             'node_num_step': 1,
