@@ -173,14 +173,14 @@ def GenTimeGraphs(rw_log, mode, graph_tag):
     GenTimeDist(rw_log, mode, "/home/fatesaikou/Downloads/tmp/{}_timedist.png".format(graph_tag))
 
     # Gen segmented box graph
-    GenTimesegCnt(rw_log, mode, "/home/fatesaikou/Downloads/tmp/{}_timeseqcnt.png".format(graph_tag))
+    GenTimesegCnt(rw_log, mode, "/home/fatesaikou/Downloads/tmp/{}_timesegcnt.png".format(graph_tag))
 
 def GenResourceGraphs(rw_log, mode, graph_tag):
     # Gen performance dist
     GenResourceDist(rw_log, mode, "/home/fatesaikou/Downloads/tmp/{}_resdist.png".format(graph_tag))
 
     # Gen resource cost cnt
-    GenResourcesegCnt(rw_log, mode, "/home/fatesaikou/Downloads/tmp/{}_resseqdist.png".format(graph_tag))
+    GenResourcesegCnt(rw_log, mode, "/home/fatesaikou/Downloads/tmp/{}_ressegdist.png".format(graph_tag))
 
 def GenGraphs(rw_log, mode, graph_tag):
     # Gen time_cost graph
