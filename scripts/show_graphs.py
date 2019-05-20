@@ -67,13 +67,14 @@ def GenTimeDist(rw_log, mode, graph_name):
     plt.title('Time Cost')
     plt.xlabel('MLP hidden layer unit number')
     plt.ylabel('time cost')
-    plt.ylim(0, 6)
+    plt.ylim(0, 6 if mode == 'c' else 10)
     plt.grid()
     plt.legend()
 
     plt.savefig(graph_name)
 
 def GenTimesegCnt(rw_log, mode, graph_name):
+    t_max = 6 if mode == 'c' else 10
     data_key = "{}_cost".format(mode)
 
     # Get datas
@@ -94,14 +95,14 @@ def GenTimesegCnt(rw_log, mode, graph_name):
     # Plt mean
     for i in range(10, 20):
         mean = round(sum(datas[i]) / max(len(datas[i]), 1), 2)
-        plt.text(i - 9, 5.7, mean, horizontalalignment='center', color='green')
+        plt.text(i - 9, t_max * 0.95, mean, horizontalalignment='center', color='green')
 
     # Other setting
     plt.xticks(rotation=30)
     plt.title('Segmented Time Cost')
     plt.xlabel('MLP hidden layer unit number')
     plt.ylabel('time cost')
-    plt.ylim(0, 6)
+    plt.ylim(0, t_max)
     plt.grid()
     plt.tight_layout()
 
