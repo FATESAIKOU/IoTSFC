@@ -1,0 +1,14 @@
+{
+    "Computing Power = 100": { "C_AVA": 100, "D_Load": "0k"},
+    "Computing Power = 90": { "C_AVA": 90, "D_Load": "0k"},
+    "Computing Power = 80": { "C_AVA": 80, "D_Load": "0k"},
+    "Computing Power = 70": { "C_AVA": 70, "D_Load": "0k"},
+    "Computing Power = 60": { "C_AVA": 60, "D_Load": "0k"},
+    "Computing Power = 50": { "C_AVA": 50, "D_Load": "0k"},
+    "Bandwidth = 10MB": { "C_AVA": 100, "D_Load": "0k"},
+    "Bandwidth = 9MB": { "C_AVA": 100, "D_Load": "1024k"},
+    "Bandwidth = 8MB": { "C_AVA": 100, "D_Load": "2048k"},
+    "Bandwidth = 7MB": { "C_AVA": 100, "D_Load": "3072k"},
+    "Bandwidth = 6MB": { "C_AVA": 100, "D_Load": "4096k"},
+    "Bandwidth = 5MB": { "C_AVA": 100, "D_Load": "5120k"}
+}

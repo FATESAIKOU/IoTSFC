@@ -1,0 +1,8 @@
+{
+    "experiment_name": "gen_weights",
+    "weights_dir": "/home/fatesaikou/testPY/IoTSFC/weights",
+    "tag": "g_final",
+    "mode": "M",
+    "log_filepath": "/home/fatesaikou/testPY/IoTSFC/pipower_logs/pipower.json",
+    "ava_seq_persent": 50
+}

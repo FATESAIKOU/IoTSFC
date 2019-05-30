@@ -1,0 +1,32 @@
+{
+    "service_helper_url": "http://192.168.1.2:8000",
+    "tangle_node": "https://testnet140.tangle.works:443",
+    "model_dir": "../models",
+    "NodeServerList": [
+        "Computing Power = 100",
+        "Computing Power = 80",
+        "Computing Power = 60",
+        "Bandwidth = 10MB",
+        "Bandwidth = 8MB",
+        "Bandwidth = 6MB"
+    ],
+    "VC_map": [
+        "Computing Power = 100",
+        "Computing Power = 80",
+        "Computing Power = 60"
+    ],
+    "T_map": [
+        {
+            "type": "wifi",
+            "addr": "Bandwidth = 10MB"
+        },
+        {
+            "type": "wifi",
+            "addr": "Bandwidth = 8MB"
+        },
+        {
+            "type": "wifi",
+            "addr": "Bandwidth = 6MB"
+        }
+    ]
+}
