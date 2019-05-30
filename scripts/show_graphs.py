@@ -34,7 +34,9 @@ def TransformData(rw_log):
 
     return real_data
 
-def GenTimeDist(rw_log, mode, graph_name):
+def GenTimeDist(rw_log, mode, graph_name, c=None):
+    markers = ['.', '+', 'x', '*', 6, 7]
+
     data_key = "{}_cost".format(mode)
     node_key = "{}_node".format(mode)
 
@@ -50,11 +52,12 @@ def GenTimeDist(rw_log, mode, graph_name):
 
     # Plt data
     plt.close()
+    plt.figure(dpi=400)
     loads = ['Load: 0%', 'Load: 10%', 'Load: 20%', 'Load: 30%', 'Load: 40%', 'Load: 50%']
     for i in range(6):
         xs = [d[0] for d in datas[i]]
         ys = [d[1] for d in datas[i]]
-        plt.plot(xs, ys, '.', label=loads[i], alpha=0.1)
+        plt.plot(xs, ys, '.', label=loads[i], alpha=0.3, marker=markers[i])
 
     # Plt avg_cost and prefer_cost
     avg_cost = sum([r[data_key] for r in rw_log]) / len(rw_log)
@@ -86,6 +89,7 @@ def GenTimesegCnt(rw_log, mode, graph_name):
     # Plt data
     seg_labels = ["{}-{}".format(1000 + 100 * i, 1000 + 100 * (i+1)) for i in range(10)]
     plt.close()
+    plt.figure(dpi=400)
     plt.boxplot(
         datas[10:],
         vert=True,
@@ -127,6 +131,7 @@ def GenResourceDist(rw_log, mode, graph_name):
 
     # Plt data
     plt.close()
+    plt.figure(dpi=400)
     loads = ['Load: 0%', 'Load: 10%', 'Load: 20%', 'Load: 30%', 'Load: 40%', 'Load: 50%']
     for i in range(6):
         xs = [d[0] for d in datas[i]]
@@ -143,6 +148,7 @@ def GenResourceDist(rw_log, mode, graph_name):
     plt.savefig(graph_name)
 
 def GenResourcesegCnt(rw_log, mode, graph_name):
+    hatches = ['////', 'oo', '\\\\\\\\', '..', '+++', 'xxx']
     data_key = "{}_perf".format(mode)
     node_key = "{}_node".format(mode)
 
@@ -153,11 +159,11 @@ def GenResourcesegCnt(rw_log, mode, graph_name):
 
     # Plt data
     loads = ['Load: 0%', 'Load: 10%', 'Load: 20%', 'Load: 30%', 'Load: 40%', 'Load: 50%']
-    plt.figure(figsize=(12, 5))
+    plt.figure(figsize=(12, 5), dpi=400)
     width = 0.8 / 6
     ind = np.arange(10)
     for i in range(6):
-        plt.bar(ind + width * (i+1) + (-6 * 0.5 * width), datas[i][10:], width, label=loads[i])
+        plt.bar(ind + width * (i+1) + (-6 * 0.5 * width), datas[i][10:], width, label=loads[i], hatch=hatches[i], edgecolor='black', color='w')
 
     unit_labels = ["{}-{}".format(1000 + 100 * i, 1000 + 100 * (i+1)) for i in range(10)]
     plt.xticks(ind + width / 2, unit_labels)
