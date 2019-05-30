@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 def GenReciprocalGraph(param_set, save_path):
     plt.rcParams.update({'font.size': 20})
 
-    fig = plt.figure(figsize=(12, 6), dpi=800)
+    fig = plt.figure(figsize=(12, 6), dpi=400)
 
     ax = plt.subplot(111)
     ax.set_ylim([0, 10])
