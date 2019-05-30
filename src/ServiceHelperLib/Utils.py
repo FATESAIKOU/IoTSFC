@@ -20,19 +20,25 @@ def CalculateUpdateFactor(x, system_load):
 
 
 import matplotlib
+matplotlib.rcParams['text.usetex'] = True
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 def Dump2DWeights(table, title, save_path, labels):
-    fig = plt.figure()
-    fig.suptitle(title)
+    plt.rcParams.update({'font.size': 13})
+    linestyles = dict(enumerate([':', '--', '-']))
+    fig = plt.figure(dpi=800)
+    fig.suptitle('$'+title+'$')
 
     ax = plt.subplot(111)
     ax.set_ylim([0, int(table.max()) * 1.1])
     for i in range(table.shape[1]):
         data = table[:, i]
-        ax.plot(np.arange(data.shape[0]), data, label=labels[i])
+        ax.plot(np.arange(data.shape[0]) * 10, data, label='$'+labels[i]+'$', linestyle=linestyles.get(i, '-.'))
         ax.grid()
         ax.legend()
+
+    ax.set_xlabel('$complexity$')
+    ax.set_ylabel('$unfitness$')
 
     plt.savefig(save_path)
     plt.close()
