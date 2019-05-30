@@ -170,12 +170,12 @@ class RLAgent():
         env_labels = graph_config['env_labels']
         tag = graph_config.get('tag', None)
 
-        Dump2DWeights(V_Table, 'Verification\,Unfitness', base_path + '/v_table-' + tag + '.png', env_labels['vc_list'])
-        Dump2DWeights(V_Real_Performance, 'V\,RealPerformance', base_path + '/v_rp-' + tag + '.png', env_labels['vc_list'])
-        Dump2DWeights(C_Table, 'Computing\,Unfitness', base_path + '/c_table-' + tag + '.png', env_labels['vc_list'])
-        Dump2DWeights(C_Real_Performance, 'C\,RealPerformance', base_path + '/c_rp-' + tag + '.png', env_labels['vc_list'])
-        Dump2DWeights(D_Table, 'Transmitting\,Unfitness', base_path + '/d_table-' + tag + '.png', env_labels['t_list'])
-        Dump2DWeights(D_Real_Performance, 'D\,RealPerformance', base_path + '/d_rp-' + tag + '.png', env_labels['t_list'])
+        Dump2DWeights(V_Table, 'Verification Unfitness', base_path + '/v_table-' + tag + '.png', env_labels['vc_list'])
+        Dump2DWeights(V_Real_Performance, 'V RealPerformance', base_path + '/v_rp-' + tag + '.png', env_labels['vc_list'])
+        Dump2DWeights(C_Table, 'Computing Unfitness', base_path + '/c_table-' + tag + '.png', env_labels['vc_list'])
+        Dump2DWeights(C_Real_Performance, 'C RealPerformance', base_path + '/c_rp-' + tag + '.png', env_labels['vc_list'])
+        Dump2DWeights(D_Table, 'Transmitting Unfitness', base_path + '/d_table-' + tag + '.png', env_labels['t_list'])
+        Dump2DWeights(D_Real_Performance, 'D RealPerformance', base_path + '/d_rp-' + tag + '.png', env_labels['t_list'])
 
     @staticmethod
     def DumpWeights(dump_config):
