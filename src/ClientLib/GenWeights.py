@@ -8,6 +8,7 @@ The basic agent for SFC experiment training.
 import json
 import time
 import sys
+import random
 
 from .Utils import SendRequest, DumpRWLogs
 
@@ -58,6 +59,9 @@ class GenWeightsAgent:
         print(json.dumps(ret, indent=4), file=sys.stderr)
 
     def DoTrain(this, service_config, request_sequence):
+        # Get avaliable req number
+        ava_seq_len = int(len(request_sequence) * int(this.exp_config.get('ava_seq_persent', 100)) / 100)
+
         # Get pipower log
         with open(this.exp_config['log_filepath'], 'r') as src:
             pipower_log = json.loads(src.read())
@@ -67,7 +71,8 @@ class GenWeightsAgent:
 
         # Generate rewards & update model
         for sfc_desc in sfc_descs:
-            for r in request_sequence:
+            random.shuffle(request_sequence)
+            for r in request_sequence[:ava_seq_len]:
                 c_cost, d_cost = this.GetCosts(pipower_log, sfc_desc, r)
 
                 reward = {
@@ -92,7 +97,7 @@ class GenWeightsAgent:
         # Dump Weights
         this.ToServiceHelper('DrawOutTables', {
             'graph_config': {
-                'base_title': 'sequential',
+                'base_title': 'weights',
                 'base_path': '/home/fatesaikou/Downloads/tmp',
                 'tag': this.graph_tag,
                 'env_labels': {
