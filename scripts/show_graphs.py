@@ -5,6 +5,7 @@ import json
 import random
 import numpy as np
 
+import statistics
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -95,7 +96,9 @@ def GenTimesegCnt(rw_log, mode, graph_name):
     # Plt mean
     for i in range(10, 20):
         mean = round(sum(datas[i]) / max(len(datas[i]), 1), 2)
+        std = round(statistics.stdev(datas[i]), 2)
         plt.text(i - 9, t_max * 0.95, mean, horizontalalignment='center', color='green')
+        #plt.text(i - 9, t_max * 0.88, std, horizontalalignment='center', color='brown')
 
     # Other setting
     plt.xticks(rotation=30)

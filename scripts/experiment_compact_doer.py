@@ -73,7 +73,8 @@ def GenWeightExpConfig(req_info):
         "weights_dir": "/home/fatesaikou/testPY/IoTSFC/weights",
         "tag": req_info['rw_log_tag'],
         "mode": req_info['mode'],
-        "log_filepath": "/home/fatesaikou/testPY/IoTSFC/pipower_logs/pipower_cm.json"
+        "log_filepath": "/home/fatesaikou/testPY/IoTSFC/pipower_logs/pipower_cm.json",
+        "ava_seq_persent": req_info['ava_seq_persent']
     }
 
     WriteConfig(weight_exp_config, '/home/fatesaikou/testPY/IoTSFC/experiment_configs/' + req_info['rw_log_tag'] + '_gw.json')
@@ -87,14 +88,14 @@ def GenServiceConfig(c_env, d_env, tag):
         "units_sigma": 1500,
         "units_step": 10,
         "v_state_factor": 1,
-        "c_state_factor": 8000 * c_env['prefer_cost'],
-        "d_state_factor": 0.001 * d_env['prefer_cost'],
+        "c_state_factor": 5000 * (c_env['prefer_cost'] / 0.5),
+        "d_state_factor": 0.0012 * d_env['prefer_cost'],
         "prefer_v_cost": 0.01,
         "prefer_c_cost": c_env['prefer_cost'],
         "prefer_d_cost": d_env['prefer_cost'],
         "v_update_width": 300,
-        "c_update_width": 150,
-        "d_update_width": 150,
+        "c_update_width": c_env['updatewidth'],
+        "d_update_width": d_env['updatewidth'],
         "v_systemload": 0.1,
         "c_systemload": c_env['systemload'],
         "d_systemload": d_env['systemload'],
@@ -192,34 +193,40 @@ def DoGridExperiment(config):
     ]
 
     for node_num in range(config['node_num_min'], config['node_num_max'] + 1, config['node_num_step']):
-        for i in range(len(load_dists)):
+        for i in range(1, len(load_dists)):
             for concurrent_num in [1, 2, 4, 6]:
                 c_env = {
                     'node_num': node_num,
                     'node_load': load_dists[i],
                     'prefer_cost': config['c_prefer_cost'],
-                    'systemload': config['c_systemload']
+                    'systemload': config['c_systemload'],
+                    'updatewidth': config['c_updatewidth']
                 }
                 d_env = {
                     'node_num': node_num,
                     'node_load': load_dists[i],
                     'prefer_cost': config['d_prefer_cost'],
-                    'systemload': config['d_systemload']
+                    'systemload': config['d_systemload'],
+                    'updatewidth': config['d_updatewidth']
                 }
                 req_info = {
                     'mode': config['mode'],
-                    'rw_log_tag': "{}_{}_n{}_p{}_cl{}_{}{}_dl{}_{}{}".format(
+                    'rw_log_tag': "{}_{}_n{}_p{}_cl{}_{}{}{}_dl{}_{}{}{}_ava{}".format(
                         config['tag_base'],
                         config['mode'],
                         node_num, concurrent_num,
                         i,
                         str(int(config['c_prefer_cost'] * 10)).zfill(3),
                         str(int(config['c_systemload'] * 10)).zfill(3),
+                        str(int(config['c_updatewidth'])).zfill(4),
                         i,
                         str(int(config['d_prefer_cost'] * 10)).zfill(3),
-                        str(int(config['d_systemload'] * 10)).zfill(3)
+                        str(int(config['d_systemload'] * 10)).zfill(3),
+                        str(int(config['d_updatewidth'])).zfill(4),
+                        str(config['ava_seq_persent'])
                     ),
-                    'concurrent_num': concurrent_num
+                    'concurrent_num': concurrent_num,
+                    'ava_seq_persent': config['ava_seq_persent']
                 }
 
                 DoExperiment(c_env, d_env, req_info)
@@ -228,18 +235,22 @@ def DoGridExperiment(config):
                     break
 
 if __name__ == '__main__':
-    for i in range(20):
+    #for uw in [165, 825, 1650]:
+    for uw in [3300]:
         grid_config = {
             'mode': 'M',
             'tag_base': 'tg',
             'node_num_min': 6,
             'node_num_max': 6,
             'node_num_step': 1,
-            'concurrent': True,
-            'c_prefer_cost': 1.5 + 0.1 * i,
-            'c_systemload': 6.0,
-            'd_prefer_cost': 2.0 + 0.15 * i,
-            'd_systemload': 6.0
+            'concurrent': False,
+            'c_prefer_cost': 2.0,
+            'c_systemload': 10.0,
+            'c_updatewidth': uw,
+            'd_prefer_cost': 4.0,
+            'd_systemload': 10.0,
+            'd_updatewidth': uw,
+            'ava_seq_persent': 10,
         }
         DoGridExperiment(grid_config)
     print("End of test!")

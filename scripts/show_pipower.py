@@ -24,7 +24,7 @@ def TransformData(pipower_log):
     return datas
 
 def GenPiPowerGraph(pipower_log, mode, target, graph_name):
-    t_max = 6 if mode == 'c' else 16
+    t_max = 6 if mode == 'c' else 12
     datas = TransformData(pipower_log[target])
 
     # Plt data
@@ -59,12 +59,14 @@ def GenPiPowerGraph(pipower_log, mode, target, graph_name):
 """ Complex Sequence """
 def GenGraphs(pipower, graph_tag):
     GenPiPowerGraph(pipower['computing'], 'c', '0', "/home/fatesaikou/Downloads/tmp/{}_pipower_c0_segdist.png".format(graph_tag))
-    GenPiPowerGraph(pipower['computing'], 'c', '50', "/home/fatesaikou/Downloads/tmp/{}_pipower_c50_segdist.png".format(graph_tag))
-    GenPiPowerGraph(pipower['computing'], 'c', '80', "/home/fatesaikou/Downloads/tmp/{}_pipower_c80_segdist.png".format(graph_tag))
+    GenPiPowerGraph(pipower['computing'], 'c', '30', "/home/fatesaikou/Downloads/tmp/{}_pipower_c30_segdist.png".format(graph_tag))
+    GenPiPowerGraph(pipower['computing'], 'c', '60', "/home/fatesaikou/Downloads/tmp/{}_pipower_c60_segdist.png".format(graph_tag))
+    GenPiPowerGraph(pipower['computing'], 'c', '90', "/home/fatesaikou/Downloads/tmp/{}_pipower_c90_segdist.png".format(graph_tag))
 
     GenPiPowerGraph(pipower['transmitting'], 'd', '0', "/home/fatesaikou/Downloads/tmp/{}_pipower_d0_segdist.png".format(graph_tag))
+    GenPiPowerGraph(pipower['transmitting'], 'd', '3072', "/home/fatesaikou/Downloads/tmp/{}_pipower_d3072_segdist.png".format(graph_tag))
     GenPiPowerGraph(pipower['transmitting'], 'd', '5120', "/home/fatesaikou/Downloads/tmp/{}_pipower_d5120_segdist.png".format(graph_tag))
-    GenPiPowerGraph(pipower['transmitting'], 'd', '8192', "/home/fatesaikou/Downloads/tmp/{}_pipower_d8192_segdist.png".format(graph_tag))
+    GenPiPowerGraph(pipower['transmitting'], 'd', '6144', "/home/fatesaikou/Downloads/tmp/{}_pipower_d6144_segdist.png".format(graph_tag))
 
 if __name__ == '__main__':
     pipower_path = sys.argv[1]

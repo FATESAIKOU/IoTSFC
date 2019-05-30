@@ -28,7 +28,8 @@ def Dump2DWeights(table, title, save_path, labels):
     fig = plt.figure(dpi=800)
 
     ax = plt.subplot(111)
-    ax.set_ylim([0, int(table.max()) * 1.1])
+    #ax.set_ylim([0, int(table.max()) * 1.1])
+    ax.set_ylim([0, 17500 * 1.1])
     for i in range(table.shape[1]):
         data = table[:, i]
         ax.plot(np.arange(data.shape[0]) * 10, data, label=labels[i], linestyle=linestyles.get(i, '-.'))

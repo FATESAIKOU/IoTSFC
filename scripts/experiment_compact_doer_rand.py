@@ -84,7 +84,7 @@ def GenServiceConfig(c_env, d_env, tag, units_avg=1200):
         "units_min": 1000,
         "units_max": 2000,
         "units_avg": units_avg,
-        "units_sigma": 200,
+        "units_sigma": 250,
         "units_step": 10,
         "v_state_factor": 1,
         "c_state_factor": 8000 * c_env['prefer_cost'],
@@ -122,7 +122,7 @@ def RunExperiment(exp_name, tag):
     else:
         client_program = 'Client.py'
         exp_c = configs_base + "experiment_configs/" + tag + ".json"
-        loop_time = 10
+        loop_time = 5
 
     exe_str = "python3 -u /home/fatesaikou/testPY/IoTSFC/src/{} {} {} {} {} {} {}". format(client_program, exp_c, srv_c, nnlog_c, env_c, load_c, loop_time)
 
@@ -171,7 +171,7 @@ def DoExperiment(c_env, d_env, req_info):
     # Call weights generator
     RunExperiment('gen_weights', req_info['rw_log_tag'])
 
-    for avg in [1200, 1400, 1600, 1800]:
+    for avg in [1250, 1500, 1750]:
         # Gen do_experiment_config
         GenDoExpConfig(req_info, avg)
 
@@ -209,7 +209,7 @@ def DoGridExperiment(config):
 
     for node_num in range(config['node_num_min'], config['node_num_max'] + 1, config['node_num_step']):
         for i in range(len(load_dists)):
-            for concurrent_num in [1, 2, 4, 6]:
+            for concurrent_num in [6]:
                 c_env = {
                     'node_num': node_num,
                     'node_load': load_dists[i],
@@ -244,18 +244,17 @@ def DoGridExperiment(config):
                     break
 
 if __name__ == '__main__':
-    for i in range(20):
-        grid_config = {
-            'mode': 'M',
-            'tag_base': 'tr',
-            'node_num_min': 6,
-            'node_num_max': 6,
-            'node_num_step': 1,
-            'concurrent': True,
-            'c_prefer_cost': 1.5 + 0.1 * i,
-            'c_systemload': 6.0,
-            'd_prefer_cost': 2.0 + 0.15 * i,
-            'd_systemload': 6.0
-        }
-        DoGridExperiment(grid_config)
+    grid_config = {
+        'mode': 'M',
+        'tag_base': 'tr',
+        'node_num_min': 6,
+        'node_num_max': 6,
+        'node_num_step': 1,
+        'concurrent': True, # or false
+        'c_prefer_cost': 2.0,
+        'c_systemload': 10.0,
+        'd_prefer_cost': 4.0,
+        'd_systemload': 10.0
+    }
+    DoGridExperiment(grid_config)
     print("End of test!")
