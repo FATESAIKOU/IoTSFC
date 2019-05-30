@@ -11,7 +11,6 @@ def GenReciprocalGraph(param_set, save_path):
     plt.rcParams.update({'font.size': 20})
 
     fig = plt.figure(figsize=(12, 6), dpi=800)
-    fig.suptitle(r'$y = \frac{log(x) + L}{L}$')
 
     ax = plt.subplot(111)
     ax.set_ylim([0, 3])
@@ -19,13 +18,17 @@ def GenReciprocalGraph(param_set, save_path):
     for i in param_set:
         xs = np.linspace(0.000001, 1.2, 6000)
         ys = (np.log(xs) + i) / i
-        l = "$L={}$".format(i)
+        l = "$L=$ {}".format(i)
         ax.plot(xs, ys, label=l)
 
     ax.grid()
     ax.legend()
-    ax.set_xlabel(r'$x$')
-    ax.set_ylabel(r'$y$')
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+
+    fmt = matplotlib.ticker.FormatStrFormatter("{%0.1f}")
+    ax.xaxis.set_major_formatter(fmt)
+    ax.yaxis.set_major_formatter(fmt)
 
     plt.savefig(save_path)
     plt.close()

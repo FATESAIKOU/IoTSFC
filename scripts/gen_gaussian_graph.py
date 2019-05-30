@@ -11,7 +11,6 @@ def GenReciprocalGraph(param_set, save_path):
     plt.rcParams.update({'font.size': 20})
 
     fig = plt.figure(figsize=(12, 6), dpi=800)
-    fig.suptitle(r'$g(x, \mu, \sigma) = e^{-\frac{(x - \mu)^2}{2\sigma^2}}$')
 
     ax = plt.subplot(111)
     ax.set_ylim([0, 1.1])
@@ -19,13 +18,17 @@ def GenReciprocalGraph(param_set, save_path):
     for i in param_set:
         xs = np.linspace(-7, 7, 6000)
         ys = np.exp(-np.power(xs - 0, 2.) / (2 * np.power(i, 2.)))
-        l = "$\sigma={}$".format(i)
+        l = '$\sigma=$ {}'.format(i)
         ax.plot(xs, ys, label=l)
 
     ax.grid()
     ax.legend()
-    ax.set_xlabel('$x$')
-    ax.set_ylabel('$y$')
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+
+    fmt = matplotlib.ticker.FormatStrFormatter("{%0.1f}")
+    ax.xaxis.set_major_formatter(fmt)
+    ax.yaxis.set_major_formatter(fmt)
 
     plt.savefig(save_path)
     plt.close()
