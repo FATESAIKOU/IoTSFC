@@ -26,7 +26,6 @@ def Dump2DWeights(table, title, save_path, labels):
     plt.rcParams.update({'font.size': 10})
     linestyles = dict(enumerate([':', '--', '-']))
     fig = plt.figure(dpi=800)
-    #fig.suptitle(title)
 
     ax = plt.subplot(111)
     ax.set_ylim([0, int(table.max()) * 1.1])
